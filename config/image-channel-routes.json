@@ -4813,5 +4813,31 @@
       "sourceArray": true,
       "maxPromptLength": 5000
     }
+  },
+  "fal/openai/gpt-image-2.6/flare/text-to-image": {
+    "generation": {
+      "endpoint": "openai/gpt-image-2.6/flare/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "maxPromptLength": 32000
+    }
+  },
+  "fal/openai/gpt-image-2.6/sunburst/text-to-image": {
+    "generation": {
+      "endpoint": "openai/gpt-image-2.6/sunburst/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "maxPromptLength": 32000
+    }
   }
 }

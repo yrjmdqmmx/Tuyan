@@ -690,6 +690,34 @@
             "text"
           ]
         }
+      },
+      {
+        "id": "glm-5.3-flashx-legal",
+        "label": "GLM-5.3-FlashX-Legal",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "仅支持思考模式；图研可提交文本和图片。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
       }
     ],
     "siliconflow": [
@@ -10280,33 +10308,6 @@
         }
       },
       {
-        "id": "MiniMax-M2.7",
-        "label": "MiniMax M2.7",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方文档目录；未验证账户权限或真实推理。",
-        "capabilities": {},
-        "metadata": {
-          "vendor": "MiniMax",
-          "lifecycle": "stable",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://platform.minimax.io/docs/api-reference/text-openai-api",
-          "regions": [
-            "global",
-            "cn"
-          ],
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ]
-        }
-      },
-      {
         "id": "image-01",
         "label": "MiniMax Image-01",
         "roles": [
@@ -10343,87 +10344,6 @@
           ],
           "outputModalities": [
             "image"
-          ]
-        }
-      },
-      {
-        "id": "MiniMax-M2.7-highspeed",
-        "label": "MiniMax M2.7-highspeed",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方文档目录；未验证账户权限或真实推理。",
-        "capabilities": {},
-        "metadata": {
-          "vendor": "MiniMax",
-          "lifecycle": "stable",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://platform.minimax.io/docs/api-reference/text-openai-api",
-          "regions": [
-            "global",
-            "cn"
-          ],
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ]
-        }
-      },
-      {
-        "id": "MiniMax-M2.5",
-        "label": "MiniMax M2.5",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方文档目录；未验证账户权限或真实推理。",
-        "capabilities": {},
-        "metadata": {
-          "vendor": "MiniMax",
-          "lifecycle": "stable",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://platform.minimax.io/docs/api-reference/text-openai-api",
-          "regions": [
-            "global",
-            "cn"
-          ],
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ]
-        }
-      },
-      {
-        "id": "MiniMax-M2.5-highspeed",
-        "label": "MiniMax M2.5-highspeed",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方文档目录；未验证账户权限或真实推理。",
-        "capabilities": {},
-        "metadata": {
-          "vendor": "MiniMax",
-          "lifecycle": "stable",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://platform.minimax.io/docs/api-reference/text-openai-api",
-          "regions": [
-            "global",
-            "cn"
-          ],
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
           ]
         }
       },
@@ -14733,6 +14653,74 @@
           "outputModalities": [
             "image"
           ]
+        }
+      },
+      {
+        "id": "openai/gpt-image-2.6/flare/text-to-image",
+        "label": "GPT Image 2.6 Flare",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "文生图，输出 PNG。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://fal.ai/models/openai/gpt-image-2.6/flare/text-to-image/api",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "openai",
+          "recommended": false
+        }
+      },
+      {
+        "id": "openai/gpt-image-2.6/sunburst/text-to-image",
+        "label": "GPT Image 2.6 Sunburst",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "文生图，输出 PNG。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://fal.ai/models/openai/gpt-image-2.6/sunburst/text-to-image/api",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "openai",
+          "recommended": false
         }
       }
     ],
@@ -28526,6 +28514,18 @@
         "expirationDate": null,
         "replacementModelId": "gemini-nano-banana-2.1",
         "lifecycleSourceUrl": "https://ai.google.dev/gemini-api/docs/changelog"
+      },
+      "gemini-2.5-pro": {
+        "routingNotice": {
+          "text": "2026-12-01 起，Google 将请求自动转发至 gemini-3.8-flash，按目标型号计费。",
+          "sourceUrl": "https://ai.google.dev/gemini-api/docs/deprecations"
+        }
+      },
+      "gemini-2.5-flash": {
+        "routingNotice": {
+          "text": "2026-12-01 起，Google 将请求自动转发至 gemini-3.5-flash-lite，按目标型号计费。",
+          "sourceUrl": "https://ai.google.dev/gemini-api/docs/deprecations"
+        }
       }
     },
     "deepseek": {

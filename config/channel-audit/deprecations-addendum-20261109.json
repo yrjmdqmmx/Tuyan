@@ -3,50 +3,6 @@
   "note": "2026-11-17 batch 1 official evidence re-read; Ant Ling 2.6 identities moved to removed-models.json. Source/read-date ledger: retirements-20261117.json. Date-only deadlines use the existing UTC-day convention; exact UTC+8 times are preserved.",
   "scheduledDeprecations": [
     {
-      "channel": "minimax",
-      "apiModelId": "MiniMax-M2.5",
-      "stopDate": "2026-11-18",
-      "replacement": null,
-      "sourceUrl": "https://platform.minimax.io/docs/faq/models",
-      "scheduled": true,
-      "inTuyanCatalog": true,
-      "displayName": "MiniMax M2.5",
-      "replacementDisplayName": null
-    },
-    {
-      "channel": "minimax",
-      "apiModelId": "MiniMax-M2.5-highspeed",
-      "stopDate": "2026-11-18",
-      "replacement": null,
-      "sourceUrl": "https://platform.minimax.io/docs/faq/models",
-      "scheduled": true,
-      "inTuyanCatalog": true,
-      "displayName": "MiniMax M2.5-highspeed",
-      "replacementDisplayName": null
-    },
-    {
-      "channel": "minimax",
-      "apiModelId": "MiniMax-M2.7",
-      "stopDate": "2026-11-18",
-      "replacement": null,
-      "sourceUrl": "https://platform.minimax.io/docs/faq/models",
-      "scheduled": true,
-      "inTuyanCatalog": true,
-      "displayName": "MiniMax M2.7",
-      "replacementDisplayName": null
-    },
-    {
-      "channel": "minimax",
-      "apiModelId": "MiniMax-M2.7-highspeed",
-      "stopDate": "2026-11-18",
-      "replacement": null,
-      "sourceUrl": "https://platform.minimax.io/docs/faq/models",
-      "scheduled": true,
-      "inTuyanCatalog": true,
-      "displayName": "MiniMax M2.7-highspeed",
-      "replacementDisplayName": null
-    },
-    {
       "channel": "openai",
       "apiModelId": "gpt-image-2",
       "stopDate": "2027-02-10",
@@ -111,6 +67,17 @@
       "inTuyanCatalog": true,
       "displayName": "Qwen3.5-plus-2026-04-20",
       "replacementDisplayName": "Qwen3.8 Flash"
+    },
+    {
+      "channel": "gemini",
+      "apiModelId": "gemini-3.1-flash-lite",
+      "stopDate": "2027-05-07T00:00:00+08:00",
+      "replacement": "gemini-3.5-flash-lite",
+      "sourceUrl": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "scheduled": true,
+      "inTuyanCatalog": true,
+      "displayName": "Gemini 3.1 Flash-Lite",
+      "replacementDisplayName": "Gemini 3.5 Flash-Lite"
     }
   ],
   "alreadyRetiredOnOfficialPage": [

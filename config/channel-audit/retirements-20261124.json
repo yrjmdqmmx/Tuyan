@@ -1,0 +1,48 @@
+{
+  "recordedAt": "2026-11-24",
+  "baselineCommit": "686e41235ff2c91f55131223598fafef553e9512",
+  "remove": [
+    {
+      "provider": "minimax",
+      "id": "MiniMax-M2.7",
+      "date": "2026-11-18",
+      "source": "https://platform.minimax.io/docs/faq/models",
+      "evidence_read": "2026-11-23",
+      "evidence": "https://platform.minimax.io/docs/release-notes/models.md"
+    },
+    {
+      "provider": "minimax",
+      "id": "MiniMax-M2.7-highspeed",
+      "date": "2026-11-18",
+      "source": "https://platform.minimax.io/docs/faq/models",
+      "evidence_read": "2026-11-23",
+      "evidence": "https://platform.minimax.io/docs/release-notes/models.md"
+    },
+    {
+      "provider": "minimax",
+      "id": "MiniMax-M2.5",
+      "date": "2026-11-18",
+      "source": "https://platform.minimax.io/docs/faq/models",
+      "evidence_read": "2026-11-23",
+      "evidence": "https://platform.minimax.io/docs/release-notes/models.md"
+    },
+    {
+      "provider": "minimax",
+      "id": "MiniMax-M2.5-highspeed",
+      "date": "2026-11-18",
+      "source": "https://platform.minimax.io/docs/faq/models",
+      "evidence_read": "2026-11-23",
+      "evidence": "https://platform.minimax.io/docs/release-notes/models.md"
+    }
+  ],
+  "upcoming": [
+    {
+      "provider": "gemini",
+      "id": "gemini-3.1-flash-lite",
+      "date": "2027-05-07",
+      "time": "2027-05-07T00:00:00+08:00",
+      "source": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "evidence_read": "2026-11-23"
+    }
+  ]
+}

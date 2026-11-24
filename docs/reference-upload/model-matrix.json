@@ -203,6 +203,32 @@
     },
     {
       "provider": "zhipu",
+      "model": "glm-5.3-flashx-legal",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "zhipu",
       "model": "glm-5v-turbo",
       "workflow": "generation",
       "protocol": "openai-chat-completions",

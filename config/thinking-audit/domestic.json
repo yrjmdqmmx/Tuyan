@@ -1134,7 +1134,8 @@
       "provider": "zhipu",
       "modelIds": [
         "glm-5.3-flash",
-        "glm-5.3-flashx"
+        "glm-5.3-flashx",
+        "glm-5.3-flashx-legal"
       ],
       "roles": [
         "main",
@@ -5093,10 +5094,6 @@
       "id": "domestic-minimax-068",
       "provider": "minimax",
       "modelIds": [
-        "MiniMax-M2.7",
-        "MiniMax-M2.7-highspeed",
-        "MiniMax-M2.5",
-        "MiniMax-M2.5-highspeed",
         "MiniMax-M2.1",
         "MiniMax-M2.1-highspeed",
         "MiniMax-M2"

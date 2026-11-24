@@ -8703,62 +8703,6 @@
     },
     {
       "channel": "minimax",
-      "apiModelId": "MiniMax-M2.7",
-      "displayName": "MiniMax M2.7",
-      "kind": "unconfirmed",
-      "versionId": "MiniMax-M2.7",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://platform.minimax.io/docs/api-reference/text-openai-api"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "MiniMax M2.7"
-    },
-    {
-      "channel": "minimax",
-      "apiModelId": "MiniMax-M2.7-highspeed",
-      "displayName": "MiniMax M2.7-highspeed",
-      "kind": "unconfirmed",
-      "versionId": "MiniMax-M2.7-highspeed",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://platform.minimax.io/docs/api-reference/text-openai-api"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "MiniMax M2.7-highspeed"
-    },
-    {
-      "channel": "minimax",
-      "apiModelId": "MiniMax-M2.5",
-      "displayName": "MiniMax M2.5",
-      "kind": "unconfirmed",
-      "versionId": "MiniMax-M2.5",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://platform.minimax.io/docs/api-reference/text-openai-api"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "MiniMax M2.5"
-    },
-    {
-      "channel": "minimax",
-      "apiModelId": "MiniMax-M2.5-highspeed",
-      "displayName": "MiniMax M2.5-highspeed",
-      "kind": "unconfirmed",
-      "versionId": "MiniMax-M2.5-highspeed",
-      "checkedAt": "2026-09-21",
-      "sourceUrls": [
-        "https://platform.minimax.io/docs/api-reference/text-openai-api"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "渠道文档未明确固定快照或滚动指向；不从厂商、发布日期或系列名推断。",
-      "previousDisplayName": "MiniMax M2.5-highspeed"
-    },
-    {
-      "channel": "minimax",
       "apiModelId": "MiniMax-M2.1",
       "displayName": "MiniMax M2.1",
       "kind": "unconfirmed",
@@ -27265,6 +27209,57 @@
       ],
       "idEvidence": "exact-id",
       "notes": "渠道资料确认此调用标识；未确认固定快照或滚动目标。"
+    },
+    {
+      "channel": "zhipu",
+      "apiModelId": "glm-5.3-flashx-legal",
+      "displayName": "GLM-5.3-FlashX-Legal",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-11-24",
+      "sourceUrls": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "官方文档列出精确调用 ID，未指定固定快照。"
+    },
+    {
+      "channel": "fal",
+      "apiModelId": "openai/gpt-image-2.6/flare/text-to-image",
+      "displayName": "GPT Image 2.6 Flare",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-11-24",
+      "sourceUrls": [
+        "https://fal.ai/models/openai/gpt-image-2.6/flare/text-to-image/api"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "官方文档列出精确调用 ID，未指定固定快照。",
+      "transport": {
+        "generation": {
+          "endpoint": "openai/gpt-image-2.6/flare/text-to-image"
+        }
+      },
+      "apiIdentifier": "openai/gpt-image-2.6/flare/text-to-image"
+    },
+    {
+      "channel": "fal",
+      "apiModelId": "openai/gpt-image-2.6/sunburst/text-to-image",
+      "displayName": "GPT Image 2.6 Sunburst",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-11-24",
+      "sourceUrls": [
+        "https://fal.ai/models/openai/gpt-image-2.6/sunburst/text-to-image/api"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "官方文档列出精确调用 ID，未指定固定快照。",
+      "transport": {
+        "generation": {
+          "endpoint": "openai/gpt-image-2.6/sunburst/text-to-image"
+        }
+      },
+      "apiIdentifier": "openai/gpt-image-2.6/sunburst/text-to-image"
     }
   ],
   "baselineCommit": "ec24b730282c820881e206986df1f48b7dd98215",

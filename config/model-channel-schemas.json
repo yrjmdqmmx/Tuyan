@@ -24692,5 +24692,513 @@
     "schemaSource": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=krea/v3/edit",
     "schemaSha256": "7fef795b20e341f15a946128b733dbea9ba42253cc576e54b6bd5cb8b92168de",
     "checkedAt": "2026-10-19"
+  },
+  "fal/openai/gpt-image-2.6/flare/text-to-image": {
+    "input": {
+      "x-fal-order-properties": [
+        "prompt",
+        "image_size",
+        "background",
+        "quality",
+        "reasoning_effort",
+        "num_images",
+        "output_format",
+        "output_compression",
+        "frame_count",
+        "frame_duration_ms",
+        "svg_model",
+        "sync_mode",
+        "enable_safety_checker"
+      ],
+      "properties": {
+        "prompt": {
+          "maxLength": 32000,
+          "type": "string",
+          "minLength": 1
+        },
+        "background": {
+          "enum": [
+            "auto",
+            "transparent",
+            "opaque"
+          ],
+          "type": "string",
+          "default": "auto"
+        },
+        "output_format": {
+          "enum": [
+            "jpeg",
+            "png",
+            "webp",
+            "gif",
+            "svg"
+          ],
+          "type": "string",
+          "default": "png"
+        },
+        "enable_safety_checker": {
+          "type": "boolean",
+          "default": true
+        },
+        "reasoning_effort": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "type": "string",
+          "default": "high"
+        },
+        "image_size": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/ImageSize"
+            },
+            {
+              "enum": [
+                "square_hd",
+                "square",
+                "portrait_4_3",
+                "portrait_16_9",
+                "landscape_4_3",
+                "landscape_16_9",
+                "auto"
+              ],
+              "type": "string"
+            }
+          ],
+          "default": "landscape_4_3"
+        },
+        "num_images": {
+          "default": 1,
+          "maximum": 10,
+          "type": "integer",
+          "minimum": 1
+        },
+        "frame_duration_ms": {
+          "default": 200,
+          "maximum": 2000,
+          "type": "integer",
+          "minimum": 20
+        },
+        "svg_model": {
+          "enum": [
+            "gpt-6-astra",
+            "gpt-5.5",
+            "gpt-5.4",
+            "gpt-5.6-terra",
+            "gpt-6-luna",
+            "gpt-6-sol"
+          ],
+          "type": "string",
+          "default": "gpt-6-astra"
+        },
+        "frame_count": {
+          "default": 9,
+          "maximum": 16,
+          "type": "integer",
+          "minimum": 2
+        },
+        "quality": {
+          "enum": [
+            "auto",
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "type": "string",
+          "default": "high"
+        },
+        "output_compression": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sync_mode": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "type": "object",
+      "required": [
+        "prompt"
+      ]
+    },
+    "output": {
+      "x-fal-order-properties": [
+        "images"
+      ],
+      "properties": {
+        "images": {
+          "items": {
+            "$ref": "#/components/schemas/ImageFile"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object",
+      "required": [
+        "images"
+      ]
+    },
+    "schemas": {
+      "ImageSize": {
+        "x-fal-order-properties": [
+          "width",
+          "height"
+        ],
+        "properties": {
+          "width": {
+            "exclusiveMinimum": 0,
+            "maximum": 14142,
+            "type": "integer",
+            "default": 512
+          },
+          "height": {
+            "exclusiveMinimum": 0,
+            "maximum": 14142,
+            "type": "integer",
+            "default": 512
+          }
+        },
+        "type": "object"
+      },
+      "ImageFile": {
+        "x-fal-order-properties": [
+          "url",
+          "content_type",
+          "file_name",
+          "file_size",
+          "width",
+          "height"
+        ],
+        "properties": {
+          "file_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "url": {
+            "type": "string"
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "file_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "content_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ]
+      }
+    },
+    "version": null,
+    "official": true,
+    "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.6/flare/text-to-image/api",
+    "reviewedAt": "2026-11-24"
+  },
+  "fal/openai/gpt-image-2.6/sunburst/text-to-image": {
+    "input": {
+      "x-fal-order-properties": [
+        "prompt",
+        "image_size",
+        "background",
+        "quality",
+        "reasoning_effort",
+        "num_images",
+        "output_format",
+        "output_compression",
+        "frame_count",
+        "frame_duration_ms",
+        "svg_model",
+        "sync_mode",
+        "enable_safety_checker"
+      ],
+      "properties": {
+        "quality": {
+          "enum": [
+            "auto",
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "default": "high",
+          "type": "string"
+        },
+        "frame_duration_ms": {
+          "maximum": 2000,
+          "minimum": 20,
+          "default": 200,
+          "type": "integer"
+        },
+        "image_size": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/ImageSize"
+            },
+            {
+              "enum": [
+                "square_hd",
+                "square",
+                "portrait_4_3",
+                "portrait_16_9",
+                "landscape_4_3",
+                "landscape_16_9",
+                "auto"
+              ],
+              "type": "string"
+            }
+          ],
+          "default": "landscape_4_3"
+        },
+        "output_format": {
+          "enum": [
+            "jpeg",
+            "png",
+            "webp",
+            "gif",
+            "svg"
+          ],
+          "default": "png",
+          "type": "string"
+        },
+        "reasoning_effort": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "default": "high",
+          "type": "string"
+        },
+        "svg_model": {
+          "enum": [
+            "gpt-6-astra",
+            "gpt-5.5",
+            "gpt-5.4",
+            "gpt-5.6-terra",
+            "gpt-6-luna",
+            "gpt-6-sol"
+          ],
+          "default": "gpt-6-astra",
+          "type": "string"
+        },
+        "frame_count": {
+          "maximum": 16,
+          "minimum": 2,
+          "default": 9,
+          "type": "integer"
+        },
+        "num_images": {
+          "maximum": 10,
+          "minimum": 1,
+          "default": 1,
+          "type": "integer"
+        },
+        "output_compression": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "prompt": {
+          "minLength": 1,
+          "maxLength": 32000,
+          "type": "string"
+        },
+        "enable_safety_checker": {
+          "default": true,
+          "type": "boolean"
+        },
+        "background": {
+          "enum": [
+            "auto",
+            "transparent",
+            "opaque"
+          ],
+          "default": "auto",
+          "type": "string"
+        },
+        "sync_mode": {
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "prompt"
+      ],
+      "type": "object"
+    },
+    "output": {
+      "x-fal-order-properties": [
+        "images"
+      ],
+      "properties": {
+        "images": {
+          "items": {
+            "$ref": "#/components/schemas/ImageFile"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "images"
+      ],
+      "type": "object"
+    },
+    "schemas": {
+      "ImageSize": {
+        "properties": {
+          "height": {
+            "exclusiveMinimum": 0,
+            "maximum": 14142,
+            "default": 512,
+            "type": "integer"
+          },
+          "width": {
+            "exclusiveMinimum": 0,
+            "maximum": 14142,
+            "default": 512,
+            "type": "integer"
+          }
+        },
+        "x-fal-order-properties": [
+          "width",
+          "height"
+        ],
+        "type": "object"
+      },
+      "ImageFile": {
+        "x-fal-order-properties": [
+          "url",
+          "content_type",
+          "file_name",
+          "file_size",
+          "width",
+          "height"
+        ],
+        "properties": {
+          "height": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "file_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "url": {
+            "type": "string"
+          },
+          "file_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "content_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "type": "object"
+      }
+    },
+    "version": null,
+    "official": true,
+    "sourceUrl": "https://fal.ai/models/openai/gpt-image-2.6/sunburst/text-to-image/api",
+    "reviewedAt": "2026-11-24"
   }
 }

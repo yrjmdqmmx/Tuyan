@@ -12583,6 +12583,24 @@
         "https://fal.ai/models/krea/v3/edit/api"
       ],
       "notes": "按 fal 独立端点文档；显式尺寸。Krea 3 上限4,220,160总像素，不能显示4K。"
+    },
+    "fal/openai/gpt-image-2.6/flare/text-to-image": {
+      "generation": "fal_openai_gpt-image-2_pixels",
+      "editing": null,
+      "reviewedAt": "2026-11-24",
+      "sources": [
+        "https://fal.ai/models/openai/gpt-image-2.6/flare/text-to-image/api"
+      ],
+      "notes": "16 像素对齐，最长边 3840，比例 ≤3:1，总像素 655360–8294400。"
+    },
+    "fal/openai/gpt-image-2.6/sunburst/text-to-image": {
+      "generation": "fal_openai_gpt-image-2_pixels",
+      "editing": null,
+      "reviewedAt": "2026-11-24",
+      "sources": [
+        "https://fal.ai/models/openai/gpt-image-2.6/sunburst/text-to-image/api"
+      ],
+      "notes": "16 像素对齐，最长边 3840，比例 ≤3:1，总像素 655360–8294400。"
     }
   }
 }

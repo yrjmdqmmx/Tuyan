@@ -1,3 +1,9 @@
+## 2026-11-24 · 模型目录、转发公告与模型卡（草案，未发布）
+
+- [x] Shared / Core：沿用 v43，移除 MiniMax 直连 M2.5、M2.7 及各自的 highspeed 型号。新增智谱 GLM-5.3-FlashX-Legal（文本和图片输入）与 fal GPT Image 2.6 Flare / Sunburst 文生图。两条 fal 路由复用已核实的尺寸限制，输出 PNG；智谱鉴权及模型权限失败返回中文提示。
+- [x] Web / 小程序：展示现有规格、最大输出与带日期的下线标记。Gemini 2.5 Pro / Flash 的可选字段 `routingNotice` 含 `text` 与 `sourceUrl`，说明 12 月 1 日后的 Google 转发与计费；保留调用 ID。Gemini 3.1 Flash-Lite 通过现有截止机制登记 2027-05-07。
+- [x] Gateway / 已保存配置：保留四个 MiniMax 原身份和厂商分组，提示重新选择；新增绑定与执行沿用 MODEL_UNAVAILABLE。其余渠道的同名型号保持原状态。
+
 ## 2026-11-18 · 补齐静态型号版本证据（未发布）
 
 - [x] Shared / Core：补齐 46 个精确渠道型号的版本审计。硅基流动 `deepseek-ai/DeepSeek-V4.1-Flash` 的 10 月 21 日同 ID 升级公告对应 `deepseek-v4.1-flash-1017`。其余 45 项保留 `unconfirmed` 与空目标；另有 10 项已有记录将未知目标统一为 `ModelVersion.id` 约定的空字符串。

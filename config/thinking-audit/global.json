@@ -65479,6 +65479,54 @@
         "https://developers.openai.com/api/docs/models/gpt-image-2.6-sunburst"
       ],
       "checkedAt": "2026-11-09"
+    },
+    {
+      "id": "global:fal:openai/gpt-image-2.6/flare/text-to-image",
+      "provider": "fal",
+      "modelIds": [
+        "openai/gpt-image-2.6/flare/text-to-image"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "operations": [
+        "generation"
+      ],
+      "status": "unsupported",
+      "statusReason": "文生图接口未提供思考参数。",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://fal.ai/models/openai/gpt-image-2.6/flare/text-to-image/api"
+      ],
+      "checkedAt": "2026-11-24"
+    },
+    {
+      "id": "global:fal:openai/gpt-image-2.6/sunburst/text-to-image",
+      "provider": "fal",
+      "modelIds": [
+        "openai/gpt-image-2.6/sunburst/text-to-image"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "operations": [
+        "generation"
+      ],
+      "status": "unsupported",
+      "statusReason": "文生图接口未提供思考参数。",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://fal.ai/models/openai/gpt-image-2.6/sunburst/text-to-image/api"
+      ],
+      "checkedAt": "2026-11-24"
     }
   ],
   "excluded": [

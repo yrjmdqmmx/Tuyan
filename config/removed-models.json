@@ -732,5 +732,37 @@
     "replacementApiId": null,
     "sourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
     "displayName": "GLM-4.5V"
+  },
+  "minimax/MiniMax-M2.5": {
+    "stopDate": "2026-11-18",
+    "replacementApiId": null,
+    "sourceUrl": "https://platform.minimax.io/docs/faq/models",
+    "displayName": "MiniMax M2.5",
+    "replacementDisplayName": null,
+    "developer": "minimax"
+  },
+  "minimax/MiniMax-M2.5-highspeed": {
+    "stopDate": "2026-11-18",
+    "replacementApiId": null,
+    "sourceUrl": "https://platform.minimax.io/docs/faq/models",
+    "displayName": "MiniMax M2.5-highspeed",
+    "replacementDisplayName": null,
+    "developer": "minimax"
+  },
+  "minimax/MiniMax-M2.7": {
+    "stopDate": "2026-11-18",
+    "replacementApiId": null,
+    "sourceUrl": "https://platform.minimax.io/docs/faq/models",
+    "displayName": "MiniMax M2.7",
+    "replacementDisplayName": null,
+    "developer": "minimax"
+  },
+  "minimax/MiniMax-M2.7-highspeed": {
+    "stopDate": "2026-11-18",
+    "replacementApiId": null,
+    "sourceUrl": "https://platform.minimax.io/docs/faq/models",
+    "displayName": "MiniMax M2.7-highspeed",
+    "replacementDisplayName": null,
+    "developer": "minimax"
   }
 }
