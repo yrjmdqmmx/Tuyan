@@ -17,9 +17,9 @@ const registry={providers:STATIC_MODEL_REGISTRY};
 const library={connections:[{id:'c',provider:'xiaomi',label:'小米连接',hasCredential:true}],models:[{id:'old',connectionId:'c',modelId:'mimo-v2.5'}]};
 const setup=()=>({registry,library:structuredClone(library),ready:true,busy:false,registryStatus:'ready',save:async()=>true});
 
-test('all 103 removed identities, including seven serverless-only retirements are hidden from catalog, removed from cards while saved data stays unchanged',()=>{
+test('all 167 removed identities, including seven serverless-only retirements are hidden from catalog, removed from cards while saved data stays unchanged',()=>{
   const now=Date.parse('2026-11-09'),visible=new Set(catalogRows(registry).map(row=>row.provider+'/'+row.model.id));
-  assert.equal(Object.keys(MODEL_AUDIT_DATA.removed).length,154);
+  assert.equal(Object.keys(MODEL_AUDIT_DATA.removed).length,167);
   for(const key of Object.keys(MODEL_AUDIT_DATA.removed)){
     const split=key.indexOf('/'),provider=key.slice(0,split),modelId=key.slice(split+1);
     if(!removedModel(provider,modelId,now))continue;

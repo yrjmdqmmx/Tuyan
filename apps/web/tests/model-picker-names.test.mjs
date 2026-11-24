@@ -29,7 +29,7 @@ test('R21 static picker titles preserve all 1,033 display names from 8c456709', 
       count++
     }
   }
-  assert.equal(count, 981)
+  assert.equal(count, 968)
 })
 
 test('R21 picker options preserve static names and submit exact IDs across DeepSeek, Bailian and TokenDance', t => {

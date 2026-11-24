@@ -12,7 +12,7 @@ import{newDraft}from'../src/workspace/workspaceState.js'
 const notice='https://www.aliyun.com/notice/118728',spec='https://help.aliyun.com/zh/model-studio/qwen3-5-plus'
 const ids=['qwen3.5-plus','qwen3.5-plus-2026-02-15','qwen3.5-plus-2026-04-20']
 afterEach(cleanup)
-test('R25 I5 all 981 Web cards: every displayed retirement badge opens a non-excluded source',()=>{
+test('R25 I5 all 968 Web cards: every displayed retirement badge opens a non-excluded source',()=>{
  let cards=0,badges=0
  for(const[p,e]of Object.entries(STATIC_MODEL_REGISTRY))for(const m of e.models){
   cards++;const audit=auditedModelSpecs(p,m.id),lifecycle=auditedModelLifecycle(p,m.id,Date.parse('2026-11-10'))
@@ -24,7 +24,7 @@ test('R25 I5 all 981 Web cards: every displayed retirement badge opens a non-exc
   }else assert.ok(!lifecycle||!lifecycle.sourceUrl||audit.excludedSources.includes(lifecycle.sourceUrl))
   cleanup()
  }
- assert.equal(cards,981);assert.equal(badges,8)
+ assert.equal(cards,968);assert.equal(badges,9)
 })
 test('R25 I5 all three Bailian cards separate specification and retirement sources and use colon dates',()=>{
  for(const id of ids){
@@ -40,7 +40,7 @@ test('R25 I5 all three Bailian cards separate specification and retirement sourc
 })
 test('R25 I5 a missing or excluded source suppresses the badge instead of opening an empty notice',()=>{
  for(const sourceUrl of [null,'https://help.aliyun.com/zh/model-studio/model-depreciation']){
-  render(React.createElement(ModelLifecycleBadge,{provider:'qianfan',modelId:'qwen-image-edit',lifecycle:{state:'scheduled',stopDate:'2027-01-19',sourceUrl}}))
+  render(React.createElement(ModelLifecycleBadge,{provider:'siliconflow',modelId:'Qwen/Qwen-Image-Edit',lifecycle:{state:'scheduled',stopDate:'2027-01-19',sourceUrl}}))
   assert.equal(screen.queryByRole('button',{name:/将下线|已下线/}),null);cleanup()
  }
 })

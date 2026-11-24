@@ -1,11 +1,11 @@
 {
   "base": "8c456709",
   "counts": {
-    "files": 70,
-    "assertionAndFixtureInputChanges": 423,
+    "files": 73,
+    "assertionAndFixtureInputChanges": 439,
     "consumedJsonFixtures": 16,
-    "semanticFixtureChanges": 975,
-    "justified": 1397,
+    "semanticFixtureChanges": 983,
+    "justified": 1421,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -120,7 +120,7 @@
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
-      "diffSha256": "469f0a432ab2b06b6c65967417283d025973dfbad962433987d6d557ae2f5334",
+      "diffSha256": "9015d1d12e7cd3c0674599a921514ba500860a49673d6c614ab5d1863bbb18eb",
       "changes": [
         {
           "line": 105,
@@ -898,6 +898,19 @@
           "phase": "November 24 expired-entry review",
           "old": "The test or evidence fixture describes the catalog before the November 24 review.",
           "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 98,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
           "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
           "evidence": [
             "config/channel-audit/retirements-20261124.json",
@@ -2036,7 +2049,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r13.test.mjs",
-      "diffSha256": "fc10fdeb64a20209a36023e434ba67c39db17862cbe77cd0cca8d50b583808b3",
+      "diffSha256": "1cf7d9cbdbae72fc60f7dcc3d4ac3e2d83aac0601977daa28847640a0bd65266",
       "changes": [
         {
           "line": 40,
@@ -2606,6 +2619,19 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 83,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "The mixed archive/current scan had 2042 rows and 96 first links to retirement notices.",
+          "new": "Check the same archive plus the reduced current registry, including the new retirement page on both surfaces.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -2765,7 +2791,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r6a.test.mjs",
-      "diffSha256": "a1eac794e726dfbf9bac23821b012ba98c36fe411a90d1d9c5aa1a6b21bc9325",
+      "diffSha256": "c08fc4ff48de0b074556cdf5f41da9fb43b6fbadefc293d5726a3c2bf9eb78da",
       "changes": [
         {
           "line": 35,
@@ -3187,6 +3213,19 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 48,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -3388,7 +3427,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r8.test.mjs",
-      "diffSha256": "5c49ce612ee1b126dc25cc0bd1cfaa2d466dc5a3b5b5afb8bd45c3c135086389",
+      "diffSha256": "e246ba32436bf4a2c3e111a003607177b60dfb8fa181bed9a56ab4653cc7025c",
       "changes": [
         {
           "line": 94,
@@ -3489,6 +3528,19 @@
           "phase": "November 24 expired-entry review",
           "old": "The test or evidence fixture describes the catalog before the November 24 review.",
           "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 80,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
           "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
           "evidence": [
             "config/channel-audit/retirements-20261124.json",
@@ -4125,9 +4177,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 20,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check the updated removal ledger and preserve exact saved references on reopening; reject retired selections.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "da3a1ca92f218bc4dfccc849dbc7eecb818a95fc0e5f1acc7c34295c9ee270b9"
+      "diffSha256": "932f93928db3d9a61e79cebaf9daf8d5789212042a5ce78dd9c758d175a22d0b"
     },
     {
       "file": "apps/web/tests/model-card-footer-r16.test.mjs",
@@ -4338,7 +4403,7 @@
     },
     {
       "file": "apps/web/tests/model-specifications.test.mjs",
-      "diffSha256": "00930b05d0a8791c56c9050054b724d7317d51bd2a0395f9153dc768328d7ef8",
+      "diffSha256": "bc9d24b14342cf02e421b755a088281707aa5cd52fe1b0e112f5adcb1c3e4f1f",
       "changes": [
         {
           "line": 80,
@@ -4663,6 +4728,19 @@
           "reason": "The footer identifies the first source. Users can open 模型规格 to read the status sentences and the full 资料来源 list.",
           "evidence": [
             "apps/web/src/components/ModelSpecifications.jsx"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 127,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "The cross-channel context test exercises the Qianfan DeepSeek OCR model.",
+          "new": "Use the surviving 1017 Flash snapshot to check its channel-specific context, attribution and unknown custom-channel limit.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -5321,9 +5399,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 89,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check the updated removal ledger and preserve exact saved references on reopening; reject retired selections.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f11fd96cd08cda5fdc968685f7bc0b97d3f7c52d69c10aac839fec3a3ff833b3"
+      "diffSha256": "6d13037073ad1735d25bc5c1a45d12ad23d05214e18ca71cf0cf4f33c98e6398"
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r8.test.cjs",
@@ -5367,9 +5458,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 74,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "dec29f2bf1cf3ca5038aad39096d07d4ab25ed3e1b6bd8f1ec0e7bf00d56f2e2"
+      "diffSha256": "eddecef3dc679969a7b83c7623ec44d78c38a40fbf121942033663adaae58cc0"
     },
     {
       "file": "apps/paperbanana-api/tests/catalog-retirement-followup.test.ts",
@@ -5618,9 +5722,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 184,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check the updated removal ledger and preserve exact saved references on reopening; reject retired selections.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "5e4210eca0caf80c0d10fdb6515deec4549fb6dab91eee14f7f1ff7a8b246508"
+      "diffSha256": "763d6aeb14145a06570bddb9117814c957d9c4cdcf920d274501342a25e515fd"
     },
     {
       "file": "apps/paperbanana-api/tests/model-audit-r13.test.ts",
@@ -5767,9 +5884,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 108,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check the updated removal ledger and preserve exact saved references on reopening; reject retired selections.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "d67660efeaaf0a08fc86255801810a2a23fb915e700866fc75d56ea18f1d17ab"
+      "diffSha256": "844f17bb4e93d568a2c9bec0f988188c521746d4463ba938bccaab46d108d394"
     },
     {
       "file": "apps/paperbanana-api/tests/model-channel-contracts.test.ts",
@@ -5970,9 +6100,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 38,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check the updated removal ledger and preserve exact saved references on reopening; reject retired selections.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f6e2e208432aa0416aa20181c853a93d4043a9cdebd0673b6d49bc050019cb08"
+      "diffSha256": "47ffeeadb757f1a2da545f032377717a8eba90d5d501a3b00118d7b11a5d847a"
     },
     {
       "file": "apps/auth-gateway/tests/integration/account-lifecycle.mjs",
@@ -6167,9 +6310,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 112,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Two Qianfan image-edit fixtures submitted new recovery-test jobs to the old model.",
+          "new": "Verify a saved edit workflow is rejected before transport or creation of a chargeable execution. The lower-level recovery test reads an existing result.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "60360d1124716bbe3e779a9c52d9ce7c49004a12d22f11f1cd5d6b714615eb0a"
+      "diffSha256": "a32e7bdc44039e51b5ba03cd85b60d86d0b605444b24e3f935f5f1e595522bc1"
     },
     {
       "file": "tests/model-catalog-source-contract.test.mjs",
@@ -6512,9 +6668,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 48,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "The historical integration included three Qianfan vision-only routes and sent a mocked DeepSeek OCR request.",
+          "new": "Check all historical identities against either an active contract or their exact removal evidence. Reject the original OCR workflow locally.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "bbfdb7c5c44ec33d82440880b2b2a62b61a3ae3e00855e4a88aa5c0a92cd16a0"
+      "diffSha256": "cd69c9ee195a95a59c7c6d7df53b2b21a80e1c1ebc8777c814251c8d0b44fd4d"
     },
     {
       "file": "apps/paperbanana-api/tests/replicate-followup-20261009.test.ts",
@@ -6724,6 +6893,63 @@
         }
       ],
       "diffSha256": "41dd1a2e45906739ddef96c71c88e8c217dc096950feeb346249622f2268c152"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/qianfan-image-channel.test.ts",
+      "changes": [
+        {
+          "line": 18,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Transport and price tests generated Qwen images and generated a Qwen edit to seed recovery.",
+          "new": "Use the active MuseSteamer route for transport and price assertions, reject both retired routes and recover a previously stored Qwen edit without a submission.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "7dc49e50dfcc0bc4acc7ac6b30178341af1bf937b3c0ba8f674a707afd428e99"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/thinking-other-channels-followup.test.ts",
+      "changes": [
+        {
+          "line": 38,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Verify exact thinking profiles for surviving models and the absence of the retired Qianfan profiles.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "397309a9c1e07d6b3b5e7c2af6cc8a0ee1984d081a202b4aaf15720df8224f28"
+    },
+    {
+      "file": "apps/paperbanana-api/tests/thinking-qianfan-console-23.test.ts",
+      "changes": [
+        {
+          "line": 65,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Verify exact thinking profiles for surviving models and the absence of the retired Qianfan profiles.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "8fd675665b29cfdb68b30787e834040ea8f262ccd78744df97558894277e2cfe"
     }
   ],
   "fixtures": [
@@ -6766,7 +6992,7 @@
     },
     {
       "file": "config/model-audit.generated.json",
-      "diffSha256": "61efa0a1b637774bc9bc7013387acc671ed0824df590007c3fc73329db23002d",
+      "diffSha256": "5b898d711941edd9fff1e44ebf0ad7bdcb80bfcb8366492d761b0c2a52385846",
       "changes": [
         {
           "line": 2,
@@ -27250,6 +27476,19 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Synchronize active catalog, per-model route evidence and the dated retirement lookup for the 14 approved Qianfan identities.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -27593,9 +27832,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 92,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Synchronize active catalog, per-model route evidence and the dated retirement lookup for the 14 approved Qianfan identities.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "a5957e2397036444bde5ae40c22b9894f7440b9506147a1ee54724a51897998a"
+      "diffSha256": "ba841ea5041bcf1b0bab973022ddaac74205c551a560dd55d5a294f2c199cae6"
     },
     {
       "file": "config/channel-audit/v381-contracts.json",
@@ -27695,9 +27947,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 7697,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Synchronize active catalog, per-model route evidence and the dated retirement lookup for the 14 approved Qianfan identities.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "a331c51d563a345c4c9e68f71ed57199c56c8382768dd11513b1db8d233a5e81"
+      "diffSha256": "bd50e359a82f2b010d78c52dfdbacc96aea93e2339dbd4693afc370d67d787b6"
     },
     {
       "file": "config/model-catalog-updates.json",
@@ -28308,9 +28573,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 24523,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Synchronize active catalog, per-model route evidence and the dated retirement lookup for the 14 approved Qianfan identities.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "974e4c9537e2afbacce6dfa667c906bad1ba0c39380dca210348b9bd66dfc9a5"
+      "diffSha256": "5e749648ae1a649b60a68cb16a9940a5f31fd41109f726d51749fd09d287497a"
     },
     {
       "file": "config/model-version-audit.json",
@@ -29777,9 +30055,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 23856,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Synchronize active catalog, per-model route evidence and the dated retirement lookup for the 14 approved Qianfan identities.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "20730c7f8169857433832d5917e57d8d8b952d9174906d62114afbee99166491"
+      "diffSha256": "9ab746d4059eb0f65f11ba861eca92b65ba9cedae9fba0e2a7cbce59229a21c6"
     },
     {
       "file": "config/removed-models.json",
@@ -30416,9 +30707,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 1159,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Synchronize active catalog, per-model route evidence and the dated retirement lookup for the 14 approved Qianfan identities.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "5eb41f826c14f4f5cc585f0b73c74641b856b49050b7a55b6b48c7be8da8a024"
+      "diffSha256": "85146c8d3e24c553aeffacbe191e5f302609e23323c052028a60dd0949c410cd"
     },
     {
       "file": "docs/reference-upload/model-matrix.json",
@@ -30658,9 +30962,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 13534,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "14a0bf97c0f88fb309ab19d3860f3484850ee8cff4dc4554d62913e44bc48bf9"
+      "diffSha256": "d37a4518c614bff644a898f7671e0ed8205f0457d2960982e12fd2eeeea22195"
     },
     {
       "file": "apps/paperbanana-api/package.json",
@@ -30765,9 +31082,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 633,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Synchronize active catalog, per-model route evidence and the dated retirement lookup for the 14 approved Qianfan identities.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "8bfb98c6853fa0157906f87e7f439e16d145d01bfd4d287ce2ade0f837e8a080"
+      "diffSha256": "c7b2c724bbd176ad7aa45a41b4e6e15fc91eb4e7cd0b8bbcadc3e175d091c2fc"
     },
     {
       "file": "config/channel-audit/runware-contracts.json",
@@ -30880,7 +31210,7 @@
     {
       "file": "apps/web/tests/model-card-r22b.test.mjs",
       "comparisonBase": "2550c736",
-      "diffSha256": "3a2bf5f8b869fe566e1ef184562079b5ccaa49ff37cc3180fb22f501c85f950e",
+      "diffSha256": "a8aff13d14d9daa15b45f188633db39552e2b03a1a84d3fb3a9bcdc6480ad4ee",
       "changes": [
         {
           "phase": "R22 Phase C",
@@ -31027,6 +31357,19 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 35,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -31129,9 +31472,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 32,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check 965 current Core identities while preserving the separate historical evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "d3fcb78132f0e4e90f211834bdd9a9d03107c8cf4587904b6730dcce498e47b7"
+      "diffSha256": "84910329360abb8a3c12435eac7b21950df26e7fb161b76344d155ab7e503c54"
     },
     {
       "file": "apps/web/tests/model-modality-phase2.test.mjs",
@@ -31235,14 +31591,27 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 39,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check 965 current Core identities while preserving the separate historical evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "49be25c7c6d55f8eaed99dac208110afcac68db4a6663bac4bbd7b9b8d480da2"
+      "diffSha256": "797b489490f45f2b79176f93df14e2118b48050a230b34906e0f8021df6a8e10"
     },
     {
       "file": "apps/miniprogram/tests/model-card-r22b.test.cjs",
       "comparisonBase": "1dcd8b13",
-      "diffSha256": "29cf555aa0a2fb8f0c3df7bc9b5dd41749fda49d014e1fe6146e8dd5414fb52e",
+      "diffSha256": "175ecc3bad389d1207dccde157e0c15b9be52a243b9405dd59318e260fb80a6d",
       "changes": [
         {
           "line": 19,
@@ -31322,6 +31691,19 @@
           "phase": "November 24 expired-entry review",
           "old": "The test or evidence fixture describes the catalog before the November 24 review.",
           "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 14,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
           "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
           "evidence": [
             "config/channel-audit/retirements-20261124.json",
@@ -31647,7 +32029,7 @@
     {
       "file": "apps/web/tests/model-card-source-titles-r23.test.mjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "a2ee205a834a09dff2c09a4a89727b57f5283908fb7338a155936ac92dc894a2",
+      "diffSha256": "e77a743368999459ed725923aaf50fb61e399c8db1a1ab27cf181b1bb5af010e",
       "changes": [
         {
           "line": 25,
@@ -31864,13 +32246,26 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 41,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "065df98049d0798371b38c6202258ae911474ef094f24278b4d9b9d672a9cd22",
+      "diffSha256": "5358691067dc20f2eecbd4f0a19d5fff2d37be4d3a6cdad0cb9125e5116c8a48",
       "changes": [
         {
           "line": 16,
@@ -32053,6 +32448,19 @@
           "phase": "November 24 expired-entry review",
           "old": "The test or evidence fixture describes the catalog before the November 24 review.",
           "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 25,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
           "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
           "evidence": [
             "config/channel-audit/retirements-20261124.json",
@@ -32382,14 +32790,27 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 11,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "6a0fccdcdb7cc0199bdeca4f98fc1ef2e0551943f40dab59c96e890297a669f6"
+      "diffSha256": "f399338f9d49ab006a9db66bfb61d22e2729bcf1650987fc846140215f9b11e7"
     },
     {
       "file": "apps/web/tests/model-card-r23.test.mjs",
       "comparisonBase": "4e18513c",
-      "diffSha256": "75e96e36a9b58ea777ac5d49b0b9798eee16290c731a80674adfa4b9e6478ae1",
+      "diffSha256": "ad594716801a5f2c1c54d7786b2bd73c519eb873455248ce60a22ec7f6766a93",
       "changes": [
         {
           "phase": "R24 Phase I1",
@@ -32478,6 +32899,19 @@
           "phase": "November 24 expired-entry review",
           "old": "The test or evidence fixture describes the catalog before the November 24 review.",
           "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 27,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
           "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
           "evidence": [
             "config/channel-audit/retirements-20261124.json",
@@ -35431,9 +35865,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 17,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "b3c92012b03cf4fe7f8f97218e25c9c1d7cc6a77acccb8e3974e4924d07ac800"
+      "diffSha256": "82f1eec106bdfe101a1e9eade74c03e5bfa53e74115de6264180edeab1682a42"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -35615,9 +36062,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 17,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f4d14b2decf05b9942a8df77fe88d55c7bd76e6926226b1db9f1e71bba85d4af"
+      "diffSha256": "7650fc8e2522c729fb444d9a898b8cf52b701bfd761b0393a5e974dbe096c2df"
     },
     {
       "file": "scripts/source-titles-r24.test.mjs",
@@ -35901,9 +36361,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "67c4d85f79d53a01697b1249996c40961d6d5dd92df366d6286c69f5f239ce31"
+      "diffSha256": "a27d03d3511afc6ed97ef62a96bb39f87f0620fc26ebcec7eface8989736d61b"
     },
     {
       "file": "apps/web/tests/model-card-r24.test.mjs",
@@ -36054,9 +36527,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 7,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "77e4c52d47dd408d1944eeebc544365123699a1159c3348cbf56cd1ac812e609"
+      "diffSha256": "2ba9054ffc471ea4b372d56a101c41cdf7aab0deaa91a3c1bbe3b23324d82393"
     },
     {
       "file": "test-support/fixtures/model-card-r24.json",
@@ -36451,9 +36937,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ef4154c0fb813d2fc54c056589ea51aedf5b9af71f20b85e1a72aee8edf88281"
+      "diffSha256": "9f73933c93d061580ed0674040575f6d25f633a1960086ee03599fd60438f2cf"
     },
     {
       "file": "apps/web/tests/model-card-i4-r24.test.mjs",
@@ -36717,9 +37216,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 8,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "5aa0c41fb9281b895d8f503223202fd7939f72658cee3ebac5c6a1c6ddac46b6"
+      "diffSha256": "855dbab728a24f6c6bc1799387207464f1420ed8d1b8036c0111313615a728a5"
     },
     {
       "file": "apps/web/tests/model-card-i5-r25.test.mjs",
@@ -36871,9 +37383,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 15,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f9be7fab489567eb55f252a6fd3feb99596d8a7ff11346de87a4acdab7f3675c"
+      "diffSha256": "8563cb64d45ba2b2204703235a83b85d7bfbd8e9f64fa8ae50053e7513eaf238"
     },
     {
       "file": "scripts/model-evidence-i5-r25.test.mjs",
@@ -36958,9 +37483,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 13,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check 965 current Core identities while preserving the separate historical evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "d1f0bcb79d893e481afd77990c5e352dd4090f7fc842638c88925365f2d89ef3"
+      "diffSha256": "e67ae3d0af06429ab23e4941a57300d946b4a0a5edb1867ecba14e98fa06b34c"
     },
     {
       "file": "test-support/phase2-modality.d.mts",
@@ -38261,9 +38799,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 12,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "53d4371f6d23c61b3dfa3a16cf5e9bab8c07ff0c8af9190cb6f85004f5f6d5d2"
+      "diffSha256": "2e60f30b397d3e2684f149d5faa561f82ddc57826e53f707ac158743ee0bd4ee"
     },
     {
       "file": "test-support/image-input-r27.mjs",
@@ -38841,9 +39392,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 4,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "f256e38fe26daf2bb0f8acdf2df61e72a13ec75cace82dab4d41969a657019f7"
+      "diffSha256": "badea256b8b4ac700337dc196ecfe0751be5b6bf7ee9d0c3648f7450c73ffdf0"
     },
     {
       "file": "apps/web/tests/model-icon-simplify-r27.test.mjs",
@@ -39210,9 +39774,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 19,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "0cf817c9ec10782e115ee1323a201a384b3b8cffad4116b448cba27c481c4bce"
+      "diffSha256": "672339f7ab53b761a87dc43be1457fe0cb77aafe54434ebe10d5a23fd723b326"
     },
     {
       "file": "test-support/icon-simplify-r27.mjs",
@@ -39807,9 +40384,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 31,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "40e8b0266cabe5a9d5cdbf6194b9340f5d3c287c1c9f686035a0a6ba4caaac06"
+      "diffSha256": "fefd618c5d4d98e4ad93f0fbe608c0999f4636bd3314bb6ab1314f4bf3b5b684"
     },
     {
       "file": "test-support/founder-fixes-r28.mjs",
@@ -39907,9 +40497,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 26,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ac12b8700e8884479085c03b1a1e109c1f2ad2fd6739a89b221e8ff792622ef7"
+      "diffSha256": "b489a87766ee0770ca34e88842b67f896b78a9ec1da8a93731dd088b30ccbdb2"
     },
     {
       "file": "apps/miniprogram/tests/model-founder-fixes-r28.test.cjs",
@@ -40281,9 +40884,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 29,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "d02498f2394c01c5502de82beae4f30b1cc4aa7ec19f2da497cb57ae004c0ea5"
+      "diffSha256": "eba0339f640c81762a10c71552a795cff82c8bc4c9f435723f18187e2567e317"
     },
     {
       "file": "test-support/dialog-dates-r26.mjs",
@@ -40367,9 +40983,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check 968 current cards, including 481 unpublished token-limit fields, while preserving the historical comparison.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "1903c9bcc65d4c90e9ae6f6254ff423199489a29899eb289b89203b6cba03a87"
+      "diffSha256": "77181992672b258ffd0c7c37a4129103be3f5d7bcc533eee8b001091f6cf038e"
     },
     {
       "file": "apps/web/tests/model-pm-r30.test.mjs",
@@ -40456,9 +41085,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 10,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check 968 current cards, including 481 unpublished token-limit fields, while preserving the historical comparison.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "44aca02bc7457b62c26f5fbb87b8a07f116dd7998d2053685a3c86c528cd664a"
+      "diffSha256": "25d317539e8b073365f5c60c63d56edc897f9c8418a1b68988588f3e2489b547"
     },
     {
       "file": "scripts/model-pm-r30.test.mjs",
@@ -40519,9 +41161,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 8,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check 968 current cards, including 481 unpublished token-limit fields, while preserving the historical comparison.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "76d05305cbb06de7fccfe8cb1d314b86a250b0e672fa47e2554b3bec88662ae7"
+      "diffSha256": "38f920410169cb8e3a4c7efe7e8647c81ebc79e58ca2ef67e4726de2bad7a7d4"
     },
     {
       "file": "test-support/pm-decisions-r30.mjs",
@@ -40600,9 +41255,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 21,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check 968 current cards, including 481 unpublished token-limit fields, while preserving the historical comparison.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "a5742d4c4df3d190ac6c384d58d0087869ca620ac404900520633e216bb88acb"
+      "diffSha256": "6decafd6bbab5eb87a64f8c1af50c2117ed5308ca8ad4a61dfbe2c45ef1d901c"
     },
     {
       "file": "apps/auth-gateway/tests/execution-capability-r22.test.js",
@@ -40752,9 +41420,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 9,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check 965 current Core identities while preserving the separate historical evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "33301aca305d96f1c008ba279d598ec40fe0115cc5a2d229ae7b2283b9b4fee3"
+      "diffSha256": "d6240569aaaf033010ce6b7b688f74011950c7fec4b0810b088ba8798d334f74"
     },
     {
       "file": "apps/miniprogram/tests/execution-capability-r22.test.cjs",
@@ -40820,9 +41501,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "330e52065262b531366d706c63b3700c050238628630ef30ca5f6b4adfd69fca"
+      "diffSha256": "35adae895e0efbb44416b7f24d818edb2dc582cfeab7b64db0eccc71af370ccf"
     },
     {
       "file": "apps/miniprogram/tests/status-sentences-r29.test.cjs",
@@ -40867,9 +41561,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 3,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "429f2201ad36dc8509ce4ba2b3447e07144d67a52bc2d437c0d7dcbbaa0f96ae"
+      "diffSha256": "05acb7afef19a69b46dce8406b44ae929a1a0e4cdab17e66eef956dac59d68b3"
     },
     {
       "file": "apps/paperbanana-api/tests/execution-capability-r22.test.ts",
@@ -40937,9 +41644,22 @@
             "scripts/model-retirements-20261117.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 10,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "78501bdda092fe6f19c7b69938bfcc368b1c2954d41980a7449b92600d871c19"
+      "diffSha256": "2ad0efaec617e86b915a3a8d5273060b23c97a1d0e12e5d7f2346d4889935ee5"
     },
     {
       "file": "apps/paperbanana-api/tests/model-modality-phase2.test.ts",
@@ -40984,9 +41704,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 28,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check 965 current Core identities while preserving the separate historical evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "4728a3d8fca287a7472908853116d5bc256d04e59171f91b49be9ef11d73a67c"
+      "diffSha256": "ad7cb549da67570643f4f5932b4f4a86cd511720dc1fe118ec690f99c3b187f8"
     },
     {
       "file": "apps/web/tests/execution-capability-r22.test.mjs",
@@ -41122,9 +41855,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 32,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "ac5bc838d8aaa4d5c7acfebf2ba40b10bed2274df59e2022783d54154f7f7ffc"
+      "diffSha256": "20bf61bd9e459a4c97ce9c5f1153804860357b69ec34c406cca23fd258a1f394"
     },
     {
       "file": "apps/web/tests/model-source-titles-r29.test.mjs",
@@ -41169,9 +41915,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 10,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "6bbbfa6c2cdc71b390c59c6224683f8eca3cfe406c81f3c1ba3bf21cad4aa77e"
+      "diffSha256": "2c2be33822c99f1ba3c378e0cbb7675387ec9cca4a0c7c55d4bd9a34aa9a68c0"
     },
     {
       "file": "apps/web/tests/status-sentences-r29.test.mjs",
@@ -41216,9 +41975,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 9,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "0a0a0ab4f14a02467643b6499f066d1bce955f4358fec85fd29fa89d68445c9d"
+      "diffSha256": "fd2c3956a84ec61de5b8cbe2c8904e683a676790565f524689ebbdc4c9fd6b64"
     },
     {
       "file": "scripts/frozen-history.test.mjs",
@@ -41263,9 +42035,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 46,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "a2d12da8abcee40f227ef144cd04f3c5941cd51786b4bd55b3b4e3547ba91162"
+      "diffSha256": "ddf3c20d2e491b2acdb1d83226db11da5641f80f87d10b628a9a7a39d07a137c"
     },
     {
       "file": "scripts/historical-card-reports.test.mjs",
@@ -41408,9 +42193,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 17,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "19582bd39a6e27d22b4c6eb661121bf679a2bf3aa485670a7f858b9ba7401a36"
+      "diffSha256": "2eb4606e8d373026fdbb9dd0ec1cd91ad1c3f494c2a5ffa187d825bbd67d2ccf"
     },
     {
       "file": "scripts/source-titles-r29.test.mjs",
@@ -41455,9 +42253,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 9,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "8f1ffc3d975dc9d063ac2496036ee74e16b2452a03c93f1ee1366f3eae4f9101"
+      "diffSha256": "53d077e3611eac469696eba6ec178169f495463e2c9b338847ce2788661b73f8"
     },
     {
       "file": "scripts/status-sentences-r29.test.mjs",
@@ -41502,14 +42313,27 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 8,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "b37af2e039c9be519aa59d903cbc9ee1eaf273fcb9207145cf69c499643b486e"
+      "diffSha256": "03ccd470d9686d8c841a9612ea801ba1604d906fea35e93c869cb4603c5a0af3"
     },
     {
       "file": "scripts/model-retirements-20261117.test.mjs",
       "comparisonBase": "57bc2ad0",
-      "diffSha256": "f0b8ef1d99d593d71dd5298f7f3ba785453efba26fef2ab911d6f45e832e1190",
+      "diffSha256": "8ff4daba0842356418ae8c2cd9850e0764106832efb264b2b260194241ee1ce7",
       "changes": [
         {
           "phase": "November 18 catalog contract reconciliation",
@@ -41549,13 +42373,26 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 23,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Check the updated removal ledger and preserve exact saved references on reopening; reject retired selections.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "test-support/retirement-evidence.mjs",
       "comparisonBase": "57bc2ad0",
-      "diffSha256": "d1783d83dfb64a8d443c66b7dead4cad6a4c45d8636df4d4150c66a7112fec28",
+      "diffSha256": "5f27520937ed7225af2ce8278513508bd08de75bc7312f447ff5ce41d3aaafe7",
       "changes": [
         {
           "phase": "November 18 catalog contract reconciliation",
@@ -41589,6 +42426,19 @@
           "phase": "November 24 expired-entry review",
           "old": "The test or evidence fixture describes the catalog before the November 24 review.",
           "new": "Check the 981 surviving static identities; reconstruct the pre-review identities for historical comparisons.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 31,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
           "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
           "evidence": [
             "config/channel-audit/retirements-20261124.json",
@@ -41639,9 +42489,22 @@
             "apps/web/tests/model-catalog-20261124.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "line": 21,
+          "comparisonBase": "6fdbb6ec",
+          "phase": "November 24 Qianfan retirement review",
+          "old": "Task B retained the 13 Qianfan models and had no December 4 notice.",
+          "new": "Apply the approved 13 Qianfan removals and the December 4 notice to the current catalog; historical reports retain their reviewed evidence.",
+          "reason": "Apply the approved exact catalog delta and retain coverage for surviving identities.",
+          "evidence": [
+            "config/channel-audit/retirements-20261124.json",
+            "apps/web/tests/model-catalog-20261124.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "c3f49bbe713d78800198156ba05518bb1efd98d659d5f04d8d84b42a05aa677d"
+      "diffSha256": "f54f68f285dcdb93aa7910061a38a9009647503cb09152c509e616066ac599b7"
     },
     {
       "file": "scripts/freeze-retirement-projections.mjs",

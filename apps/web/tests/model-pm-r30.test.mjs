@@ -7,7 +7,7 @@ import {ModelSpecifications} from '../src/components/ModelSpecifications.jsx'
 import {STATIC_MODEL_REGISTRY} from '../src/lib/staticModelCatalog.js'
 import {imageInputPresentations} from '../../../test-support/image-input-r27.mjs'
 import {assertPMDecisions,forbiddenBody} from '../../../test-support/pm-decisions-r30.mjs'
-test('R30 all 981 rendered dialogs omit verification/provenance rows, preserve source-hover dates and match Mini numeric absence',async t=>{
+test('R30 all 968 rendered dialogs omit verification/provenance rows, preserve source-hover dates and match Mini numeric absence',async t=>{
  t.mock.timers.enable({apis:['Date'],now:Date.parse(frozenTime)})
  const rows=await imageInputPresentations();assertPMDecisions(rows)
  let unknown=0
@@ -30,5 +30,5 @@ test('R30 all 981 rendered dialogs omit verification/provenance rows, preserve s
    for(const link of dialog.querySelectorAll('a.model-evidence-source'))if(row.web.data.checkedAt)assert.ok(link.title.endsWith('（核实日期：'+row.web.data.checkedAt+'）'),key)
   }finally{cleanup()}
  }
- assert.equal(unknown,495)
+ assert.equal(unknown,481)
 })

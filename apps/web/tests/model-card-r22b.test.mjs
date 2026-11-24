@@ -32,7 +32,7 @@ test('R22B all 74 TokenDance cards use rendered evidence; seven histories retain
   assert.equal(screen.queryByRole('link'), null)
   screen.getByText('官方文档待确认')
 })
-test('R22B all 981 cards have unique canonical URLs and unique visible source names', () => {
+test('R22B all 968 cards have unique canonical URLs and unique visible source names', () => {
   let count = 0
   for (const [channel, provider] of Object.entries(STATIC_MODEL_REGISTRY)) for (const entry of provider.models) {
     const card = modelCardSpecifications(channel, entry), rows = modelSourceRows(card)
@@ -41,7 +41,7 @@ test('R22B all 981 cards have unique canonical URLs and unique visible source na
     for (const row of rows) if (row.url.startsWith('https://tokendance.space/models/')) assert.ok(isVerifiedTokenDancePage(row.url))
     count++
   }
-  assert.equal(count, 981)
+  assert.equal(count, 968)
 })
 test('R22B normalized duplicates across evidence lists render once with Bailian page subjects in the mobile dialog', t => {
   const url='https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash'

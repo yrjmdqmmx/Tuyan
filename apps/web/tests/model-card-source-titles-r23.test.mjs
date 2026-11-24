@@ -38,7 +38,7 @@ test('R23F3 known model punctuation survives general/quickstart slugs and genuin
   assert.equal(modelSourceRows(card).find(row => row.url.endsWith('/stable-diffusion-35')).label, '官方文档 · Stability · Stable Diffusion 3.5')
 })
 
-test('R23F all 981 rendered Web cards and evidence/notice dialogs pass the title scan without changing URLs or names', t => {
+test('R23F all 968 rendered Web cards and evidence/notice dialogs pass the title scan without changing URLs or names', t => {
   const cards = []; let renderedRows = 0, notices = 0
   for (const [provider, entry] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
     const data = modelCardSpecifications(provider, model), rows = modelSourceRows(data), card = provider + '/' + model.id
@@ -70,7 +70,7 @@ test('R23F all 981 rendered Web cards and evidence/notice dialogs pass the title
       notices++; cleanup()
     }
   }
-  assert.equal(cards.length, 981); assert.ok(renderedRows > 981); assert.ok(notices > 0)
+  assert.equal(cards.length, 968); assert.ok(renderedRows > 968); assert.ok(notices > 0)
   assert.deepEqual(scanTitles(cards), [])
   t.diagnostic(JSON.stringify({cards:cards.length,renderedRows,notices,suspicious:0}))
 })

@@ -181,8 +181,7 @@ export function assertSurvivingDefaults(provider: string, defaults: any) {
   for (const [role, id] of Object.entries(defaults)) {
     if (!removedKeys.includes(provider + '/' + id)) continue
     assertRemoved(provider, String(id))
-    assert.ok(['stepfun', 'tokenhub'].includes(provider), provider)
-    assert.equal(role, 'image')
+    assert.ok(['stepfun/image', 'tokenhub/image', 'qianfan/vision'].includes(provider + '/' + role))
     expected[role] = ''
   }
   assert.deepEqual(catalog[provider].defaults, expected)

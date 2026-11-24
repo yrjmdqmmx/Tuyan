@@ -11,9 +11,9 @@ import batch from '../../../config/channel-audit/retirements-20261117.json' with
 
 beforeEach(t => t.mock.method(Date, 'now', () => Date.parse('2026-11-25T10:00:00+08:00')));
 afterEach(cleanup);
-for (const [provider, modelId] of [['openai', 'o1'], ['antling', 'Ling-2.6-1T'], ['ark', 'doubao-seed-1-6-250615'], ['bailian', 'qwen3-max'], ['runware', 'openai:1@1'], ...['MiniMax-M2.5','MiniMax-M2.5-highspeed','MiniMax-M2.7','MiniMax-M2.7-highspeed'].map(id => ['minimax',id])]) {
+for (const [provider, modelId] of [['openai', 'o1'], ['antling', 'Ling-2.6-1T'], ['ark', 'doubao-seed-1-6-250615'], ['bailian', 'qwen3-max'], ['runware', 'openai:1@1'], ['qianfan', 'ernie-5.0'], ['qianfan', 'qwen-image'], ...['MiniMax-M2.5','MiniMax-M2.5-highspeed','MiniMax-M2.7','MiniMax-M2.7-highspeed'].map(id => ['minimax',id])]) {
   test(`batch 1 saved ${provider}/${modelId} preset survives reopening and shows unavailable guidance`, () => {
-    const role = provider === 'runware' ? 'image' : 'main';
+    const role = provider === 'runware' || modelId === 'qwen-image' ? 'image' : 'main';
     const preset = { name: 'Saved research preset', models: { [role]: { libraryModelId: 'old', connectionId: 'c', accessProvider: provider, modelId } } };
     const library = { connections: [{ id: 'c', provider, label: 'Saved connection', hasCredential: true }], models: [{ id: 'old', connectionId: 'c', modelId }] };
     const saved = JSON.stringify({ preset, library });

@@ -7,7 +7,7 @@ import {STATIC_MODEL_REGISTRY} from '../src/lib/staticModelCatalog.js'
 import {currentTitlePresentations} from '../../../test-support/source-title-report-r29.mjs'
 import {sourceSurfaces,assertUnifiedTitles,attributionTitle} from '../../../test-support/source-titles-r29.mjs'
 import {assertNoConditionalLabels} from '../../../test-support/conditional-labels-r29.mjs'
-test('R29 all 981 rendered cards: footer, field/dialog, links and retirement sources have exactly one title per URL',async()=>{
+test('R29 all 968 rendered cards: footer, field/dialog, links and retirement sources have exactly one title per URL',async()=>{
   const rows=await currentTitlePresentations()
   for(const [provider,entry]of Object.entries(STATIC_MODEL_REGISTRY))for(const model of entry.models){
     const key=provider+'/'+model.id,row=rows[key]

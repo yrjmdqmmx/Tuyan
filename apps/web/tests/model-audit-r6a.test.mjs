@@ -45,7 +45,7 @@ test('the pre-phase-2 static baseline still retains every previously supported m
 
 test('every static card retains main supported modalities and all product image-input requirements', () => {
   assert.equal(baseline.commit, 'c7b6a2fc')
-  assert.equal(rows.length, 981)
+  assert.equal(rows.length, 968)
   for (const { provider, model } of rows) {
     const key = provider + '/' + model.id, before = structuredClone(model)
     const card = modelCardSpecifications(provider, model), caps = model.capabilities || {}

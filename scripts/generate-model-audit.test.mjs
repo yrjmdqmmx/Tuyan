@@ -35,7 +35,7 @@ test('R8 removed names match frozen main labels with one documented R9 override;
   assert.ok(overrides['bailian/deepseek-v4-flash'].reason.trim())
   const input = read('../config/model-audit.generated.json')
   const supplement = read('../config/channel-audit/model-audit-supplement-20261109.json')
-  assert.equal(Object.keys(removed).length, 154)
+  assert.equal(Object.keys(removed).length, 167)
   for (const key of Object.keys(oracle.models)) {
     const row = removed[key]
     assert.ok(row.displayName?.trim(), key)
@@ -130,15 +130,15 @@ test('null, unsupported and N/A stay distinct; invalid numbers and request defau
   assert.deepEqual(data.facts[data.rows['openai/gpt-image-2.6-flare'][2]].slice(0,2),[null,'not-applicable'])
   assert.deepEqual(generateModelAudit(input), data)
 })
-test('committed snapshot has only the seven permitted additions and eight scheduled notices plus 154 message-only removals', () => {
+test('committed snapshot has only the seven permitted additions and nine scheduled notices plus 167 message-only removals', () => {
   const data = JSON.parse(fs.readFileSync(new URL('../config/model-audit.generated.json',import.meta.url),'utf8'))
   assert.equal(data.verifiedAt,'2026-11-09')
   assert.equal(data.additions.length,7)
-  assert.equal(Object.keys(data.notices).length,8)
+  assert.equal(Object.keys(data.notices).length,9)
   const counts = {retired:0,scheduled:0,unavailable:0}
   for (const notice of Object.values(data.notices)) counts[Date.parse(notice.stopDate)>Date.parse('2026-11-09')?'scheduled':notice.scope==='full'?'retired':'unavailable']++
-  assert.deepEqual(counts,{retired:0,scheduled:8,unavailable:0})
-  assert.equal(Object.keys(data.removed).length,154)
+  assert.deepEqual(counts,{retired:0,scheduled:9,unavailable:0})
+  assert.equal(Object.keys(data.removed).length,167)
   for (const key of Object.keys(data.removed)) assert.equal(data.rows[key],undefined)
   assert.ok(!data.additions.some(row=>row.id==='glm-5.3-flashx-legal'))
   assert.ok(data.rows['antling/Ling-3.1-flash']);assert.ok(data.rows['antling/Ling-3.2-flash'])

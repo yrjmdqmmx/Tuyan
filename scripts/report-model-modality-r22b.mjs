@@ -23,13 +23,13 @@ const {modelSourceName:oldSourceName}=await productBundle("export { modelSourceN
 const current=Object.entries(catalogBeforeNovember24(STATIC_MODEL_REGISTRY)).flatMap(([channel,p])=>p.models.map(model=>({channel,model,card:card(channel,model)})))
 assert.equal(current.length,1033)
 const full=Object.entries(registry.providers).flatMap(([channel,p])=>p.models.map(model=>({channel,model,card:card(channel,model)})))
-assert.equal(full.length,978)
+assert.equal(full.length,965)
 for(const row of full){assert.equal(row.card.sources[0],card(row.channel,{id:row.model.id}).sources[0]);assert.deepEqual(row.card.fields,row.model.cardSpecifications.fields)}
 assertReviewedLinks(id=>card('tokendance',{id}))
 const {modelCardName,presentRegistryModel}=await productBundle("export { modelCardName } from './apps/web/src/lib/modelCardSpecifications.js'; export { presentRegistryModel } from './apps/web/src/lib/modelPresentation.js'")
 const names=JSON.parse(fs.readFileSync(root+'apps/web/tests/fixtures/model-picker-names-8c456709.json')).names
 for(const row of current)assert.equal(modelCardName(row.channel,presentRegistryModel(row.channel,row.model)),names[row.channel][row.model.id])
-const counts={staticCards:current.length,fullCoreCards:full.length + 55 - 3,unchangedPickerNames:current.length,verifiedPages:67,historicalFallbacks:7,missingFallbacks:0,sourceRowsBefore:0,sourceRowsAfter:0,duplicateUrlRowsBefore:0,duplicateUrlRowsAfter:0,duplicateLabelsBefore:0,duplicateLabelsAfter:0,vendorTokenFields:0,vendorTokenCards:0,unknownTokenFields:0}
+const counts={staticCards:current.length,fullCoreCards:full.length + 68 - 3,unchangedPickerNames:current.length,verifiedPages:67,historicalFallbacks:7,missingFallbacks:0,sourceRowsBefore:0,sourceRowsAfter:0,duplicateUrlRowsBefore:0,duplicateUrlRowsAfter:0,duplicateLabelsBefore:0,duplicateLabelsAfter:0,vendorTokenFields:0,vendorTokenCards:0,unknownTokenFields:0}
 const vendor=[], links=[]
 for(const row of current){
  const prior=before(row.channel,row.model), key=row.channel+'/'+row.model.id, rows=restoreI12Sources(previousBatchSources('web',key,november24Projection('web',key)?.before?.rows || modelSourceRows(row.card)),key,'web')

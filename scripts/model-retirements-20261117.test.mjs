@@ -20,8 +20,8 @@ test('batch 1 removes exactly 31 catalog identities and preserves every survivin
   assert.equal(batch.remove.length, 31);
   assert.equal(removals.size, 31);
   assert.deepEqual(Object.fromEntries(['openai', 'siliconflow', 'antling'].map(p => [p, batch.remove.filter(r => r.provider === p).length])), { openai: 20, siliconflow: 8, antling: 3 });
-  assert.equal(Object.keys(MODEL_AUDIT_DATA.removed).length, 154);
-  assert.equal(Object.values(catalog).reduce((sum, p) => sum + p.models.length, 0), 981);
+  assert.equal(Object.keys(MODEL_AUDIT_DATA.removed).length, 167);
+  assert.equal(Object.values(catalog).reduce((sum, p) => sum + p.models.length, 0), 968);
   // Main's static catalog omitted the display-only specification. Keep its exact hash
   // and independently lock the complete merged catalog to the surviving #251 rows.
   assert.equal(hash(november17Catalog), '009e4d21d27462aa062c53fcac0fab3dd98102115428e13a2ac1ab21ed90a9f5');
@@ -83,7 +83,7 @@ test('batch 1 leaves all 51 protected candidates and their notices unchanged', (
 });
 test('batch 1 ten sourced notices keep UTC+8 times and evidence dates without admitting new models', () => {
   assert.equal(batch.upcoming.length, 10);
-  assert.equal(Object.keys(MODEL_AUDIT_DATA.notices).length, 8);
+  assert.equal(Object.keys(MODEL_AUDIT_DATA.notices).length, 9);
   for (const row of batch.upcoming.filter(row => row.provider !== 'minimax')) {
     const stop = Date.parse(row.time || row.date);
     const notice = auditedModelLifecycle(row.provider, row.id, stop - 1);

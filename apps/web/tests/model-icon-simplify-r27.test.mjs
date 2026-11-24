@@ -16,7 +16,7 @@ const tokens = fs.readFileSync(new URL('../src/styles.css', import.meta.url), 'u
 const ink = tokens.match(/--ink: (#[a-f0-9]{6})/)[1], muted = tokens.match(/--muted: (#[a-f0-9]{6})/)[1]
 const rgb = hex => 'rgb(' + hex.slice(1).match(/../g).map(v => parseInt(v, 16)).join(', ') + ')'
 const noDate = text => text.replace(/（(?:核实日期：)?\d{4}-\d{2}-\d{2}）/g, '')
-test('R27 I8 all 981 Web cards render identical solid grey unsupported/unknown glyphs, three short labels and exact evidence dialogs', () => {
+test('R27 I8 all 968 Web cards render identical solid grey unsupported/unknown glyphs, three short labels and exact evidence dialogs', () => {
   const style = document.createElement('style')
   style.textContent = css.replaceAll('var(--ink)', ink).replaceAll('var(--muted)', muted)
   document.head.append(style)
@@ -61,7 +61,7 @@ test('R27 I8 all 981 Web cards render identical solid grey unsupported/unknown g
       } finally { cleanup() }
       cards++
     }
-    assert.equal(cards, 981); assert.equal(decisionA, 15)
+    assert.equal(cards, 968); assert.equal(decisionA, 15)
     assert.deepEqual([...states].sort(), ['conditional', 'supported', 'unknown', 'unsupported'])
     console.log('R27 I8 Web states: ' + JSON.stringify(counts))
   } finally { style.remove(); cleanup() }

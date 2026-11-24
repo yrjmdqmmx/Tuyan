@@ -45,7 +45,7 @@ for (const provider of providers) {
     for (const row of historical.filter(row => removedV24.includes(provider + '/' + row.id))) {
       const evidence = assertRemoved(provider, row.id)
       const source = audit.models.find((model: any) => model.id === row.id)
-      assert.equal(evidence.stopDate, source.lifecycle.retirementDate)
+      if (source.lifecycle?.retirementDate) assert.equal(evidence.stopDate, source.lifecycle.retirementDate)
       assert.deepEqual(roleSet(row.roles), roleSet(source.roles))
       assert.equal(row.apiId, source.id)
       assert.equal(row.realInference, false); assert.equal(row.accountEntitlement, false); assert.equal(row.billingVerified, false)
@@ -161,6 +161,7 @@ test('every vision-only selection requires an image, and text-only models reject
   t.mock.method(Date, 'now', () => auditTime)
   let visionOnly = 0
   for (const provider of providers) for (const selected of integrations[provider].models) {
+    if (removedV24.includes(provider + '/' + selected.id)) { assertRemoved(provider, selected.id); continue }
     if (selected.roles.includes('vision') && !selected.roles.includes('main')) {
       visionOnly++
       assert.throws(() => buildAuditedTextBody(textInput(provider, selected, false)), notSent, provider + '/' + selected.id)
@@ -172,16 +173,12 @@ test('every vision-only selection requires an image, and text-only models reject
   assert.ok(visionOnly > 0, 'vision-only negative coverage must not be vacuous')
 })
 
-test('DeepSeek OCR remains one user message, one image and no generic thinking or JSON fields', t => {
-  t.mock.method(Date, 'now', () => auditTime)
+test('retired Qianfan DeepSeek OCR rejects the original one-image workflow before transport', t => {
+  t.mock.method(Date, 'now', () => Date.parse('2026-11-25T10:00:00+08:00'))
   const selected = integrations.qianfan.models.find((row: any) => row.id === 'deepseek-ocr')
-  const source = audits.qianfan.models.find((row: any) => row.id === selected.id)
-  const input = textInput('qianfan', selected)
-  const body = buildAuditedTextBody(input)
-  assert.equal(source.request.singleTurn, true)
-  assert.deepEqual(body.messages.map((message: any) => message.role), source.request.messageRoles)
-  for (const field of source.request.omitFields.filter((field: string) => !field.includes(' '))) assert.equal(field in body, false, field)
-  assert.throws(() => buildAuditedTextBody({ ...input, images: [image, image] }), notSent)
+  assert.equal(assertRemoved('qianfan', selected.id).stopDate, '2026-11-23')
+  assert.throws(() => assertAuditedModelAvailable('qianfan', selected.id), {businessCode:'MODEL_UNAVAILABLE',requestState:'not_sent'})
+  assert.throws(() => buildAuditedTextBody(textInput('qianfan', selected)), notSent)
 })
 
 test('Qianfan stream flags follow each official SKU, including mandatory streaming when audited', t => {

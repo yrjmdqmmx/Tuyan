@@ -5,7 +5,7 @@ const context={Component(v){definition=v},exports:{},require:createRequire(filen
 vm.runInNewContext(fs.readFileSync(filename,'utf8')+'\nthis.present=presentModel',context,{filename})
 const notice='https://www.aliyun.com/notice/118728',spec='https://help.aliyun.com/zh/model-studio/qwen3-5-plus'
 const ids=['qwen3.5-plus','qwen3.5-plus-2026-02-15','qwen3.5-plus-2026-04-20']
-test('R25 I5 all 981 compiled Mini cards: every retirement badge copies its own non-excluded notice URL',async t=>{
+test('R25 I5 all 968 compiled Mini cards: every retirement badge copies its own non-excluded notice URL',async t=>{
  const {frozenTime}=await import('../../../test-support/execution-capability.mjs')
  t.mock.timers.enable({apis:['Date'],now:Date.parse(frozenTime)})
  const {verifiedRetirement}=await import('../../../test-support/retirement-evidence.mjs')
@@ -22,7 +22,7 @@ test('R25 I5 all 981 compiled Mini cards: every retirement badge copies its own 
    assert.ok(card.specSources.some(r=>r.url===spec));for(const fact of Object.values(audit.fields))assert.equal(fact.sourceUrl,spec)
   }
  }
- assert.equal(cards,981);assert.equal(badges,8)
+ assert.equal(cards,968);assert.equal(badges,9)
  const wxml=fs.readFileSync(filename.replace(/\.js$/,'.wxml'),'utf8')
  assert.match(wxml,/wx:if="\{\{item.scheduled\}\}"[^>]+data-url="\{\{item.retirementSource.url\}\}"[^>]+data-source="\{\{item.retirementSource.label\}\}"[^>]+catchtap="copySource"/)
 })

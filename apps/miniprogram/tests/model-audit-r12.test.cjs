@@ -95,7 +95,7 @@ test('R13 compiled picker shows all seven vendor replacements and no catalog car
     for (const source of presented.specSources) assert.ok(!deadUrls.has(source.url), channel + '/' + model.id)
     assert.ok(!deadUrls.has(auditedModelSpecs(channel, model.id).sourceUrl))
   }
-  assert.equal(cards, 981)
+  assert.equal(cards, 968)
 })
 
 test('R13B pre-phase-2 static notice priorities and all 34 visible notices remain reproducible', async () => {

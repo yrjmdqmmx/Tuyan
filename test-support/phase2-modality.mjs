@@ -10,7 +10,7 @@ const retained = rows => Object.fromEntries(Object.entries(rows).filter(([key]) 
 export const evidence = {...historicalEvidence, links:retained(historicalEvidence.links), reviews:retained({...historicalEvidence.reviews, ...imageInputR27.reviews})}
 export function assertPhase2Facts(get, compact = false, review = evidence) {
   assert.equal(Object.keys(review.tables).length, 34)
-  assert.equal(Object.keys(review.reviews).length, review === evidence ? 26 : 27)
+  assert.equal(Object.keys(review.reviews).length, review === evidence ? 25 : 27)
   let decisions = 0
   for (const [key, row] of Object.entries(review.tables)) for (const field of ['inputModalities', 'outputModalities']) {
     const fact = get(key).fields[field]
@@ -35,7 +35,7 @@ export function assertPhase2Facts(get, compact = false, review = evidence) {
     }
     decisions++
   }
-  assert.equal(decisions, review === evidence ? 28 : 30)
+  assert.equal(decisions, review === evidence ? 27 : 30)
 }
 export async function phase2Registry() {
   const runtime = await tokenDanceTestRuntime('snapshot')

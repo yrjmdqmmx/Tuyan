@@ -28,6 +28,7 @@ export function batchExecutionFixture() {
   }))
   for (const name of ['core','web','mini','miniNormalizedStatic','miniNormalizedLive']) {
     for (const [provider, entry] of Object.entries(fixture[name])) {
+      if (provider === 'qianfan' && entry.defaults) entry.defaults.vision = ''
       if (provider === 'tokenhub' && entry.defaults) entry.defaults.image = ''
       entry.models = entry.models.filter(model => !retiredKeys.has(provider+'/'+model.id))
       for (const model of entry.models) {

@@ -1,7 +1,7 @@
 const test=require('node:test'), assert=require('node:assert/strict'), fs=require('node:fs')
 const {loadComponent}=require('./helpers/component.cjs')
 const {modalityIconStates}=require('../miniprogram/utils/card-presentation.js')
-test('R27 I8 all 981 compiled Mini cards use one solid grey non-supported glyph and exact modal distinctions',async()=>{
+test('R27 I8 all 968 compiled Mini cards use one solid grey non-supported glyph and exact modal distinctions',async()=>{
  const {imageInputPresentations,review}=await import('../../../test-support/image-input-r27.mjs')
  const {expectedI11:expectedR28}=await import('../../../test-support/source-title-history-r29.mjs')
  const root=__dirname+'/../miniprogram/components/model-picker/',wxml=fs.readFileSync(root+'model-picker.wxml','utf8'),css=fs.readFileSync(root+'model-picker.wxss','utf8')
@@ -32,7 +32,7 @@ test('R27 I8 all 981 compiled Mini cards use one solid grey non-supported glyph 
   }
   cards++
  }
- assert.equal(cards,981);assert.equal(decisionA,15);assert.equal(events.length,0)
+ assert.equal(cards,968);assert.equal(decisionA,15);assert.equal(events.length,0)
  const vendor=modalityIconStates('',{state:'unsupported',provenance:'vendor',sourceUrl:'https://example.com/spec',verifiedAt:'2026-11-09'})
  for(const icon of vendor)assert.equal(icon.tooltip,'该模型不支持' + icon.label + '输入')
  const legacy=modalityIconStates('文本、音频（有限支持）')

@@ -7,6 +7,9 @@ const batch = require('../../../config/channel-audit/retirements-20261117.json')
 for (const [provider, modelId, developer, hint, replacement] of [
   ...['MiniMax-M2.5','MiniMax-M2.5-highspeed','MiniMax-M2.7','MiniMax-M2.7-highspeed'].map(id => ['minimax',id,'MiniMax',id.replace('MiniMax-', 'MiniMax ')+'：原型号已不可用，请重新选择。','']),
   ['ark', 'doubao-seed-1-6-250615', '字节跳动', 'doubao-seed-1-6-250615：原型号已不可用，请重新选择。', ''],
+  ['qianfan', 'ernie-5.0', '百度', 'ERNIE 5.0：原型号已不可用，请重新选择。', ''],
+  // Neither retired Qwen image route has a surviving Alibaba image option on this channel.
+  ['qianfan', 'qwen-image', '', 'Qwen Image：原型号已不可用，请重新选择。', ''],
   ['runware', 'openai:1@1', 'OpenAI', 'GPT Image 1：原型号已不可用，请重新选择。', ''],
   ['bailian', 'qwen3-max', '阿里巴巴', 'Qwen3-max：原型号已不可用，请重新选择。', ''],
   ['openai', 'o1', 'OpenAI', 'o1：原型号已不可用，请重新选择。', ''],
@@ -18,7 +21,7 @@ for (const [provider, modelId, developer, hint, replacement] of [
     const store = require('../miniprogram/utils/model-registry-store.js').getModelRegistryState();
     const previous = store.registry; store.registry = { providers: STATIC_MODEL_REGISTRY };
     t.after(() => { store.registry = previous; });
-    const role = provider === 'runware' ? 'image' : 'main';
+    const role = provider === 'runware' || modelId === 'qwen-image' ? 'image' : 'main';
     const outputFormat = role === 'image' ? 'png' : 'svg';
     const settings = {
       configurationMode: 'advanced', simpleProvider: provider, outputFormat, imageSize: '2K', aspectRatio: '1:1', providerRegions: {},
@@ -101,4 +104,26 @@ test('Mini selectable Gemini routing notes and dated retirement use the Shanghai
   clock.mock.mockImplementation(() => stop);
   assert.equal(auditedModelLifecycle(provider,id),null);
   assert.ok(removedModel(provider,id));
+});
+
+test('Qianfan DeepSeek Flash 0731 is selectable with a dated badge until its Shanghai retirement', t => {
+  const provider = 'qianfan', id = 'deepseek-v4-flash-0731';
+  const clock = t.mock.method(Date, 'now', () => Date.parse('2026-11-25T10:00:00+08:00'));
+  const { instance: picker, events } = loadComponent('components/model-picker/model-picker.js');
+  picker.getRegistry = () => ({ providers: STATIC_MODEL_REGISTRY });
+  Object.assign(picker.properties, { selectedProvider: provider, selectedModel: id, role: 'main', outputFormat: 'svg' });
+  picker.resetFlow();
+  picker.showModels();
+  const card = picker.data.visibleCompatibleModels.find(model => model.id === id);
+  assert.equal(card.scheduled, true);
+  assert.equal(card.retirementDate, '2026-12-04');
+  picker.choose({currentTarget:{dataset:{model:id}}});
+  assert.equal(events[0].detail.modelId, id);
+  clock.mock.mockImplementation(() => Date.parse('2026-12-05T10:00:00+08:00'));
+  picker.resetFlow();
+  picker.showModels();
+  assert.equal(picker.data.visibleCompatibleModels.some(model => model.id === id), false);
+  assert.match(picker.data.removedHint, /原型号已不可用，请重新选择/);
+  assert.equal(picker.data.savedReplacement, 'deepseek-v4.1-flash-1017');
+  assert.equal(picker.properties.selectedModel, id);
 });

@@ -6,6 +6,7 @@ import {ModelLifecycleBadge,ModelSpecifications} from '../src/components/ModelSp
 import {STATIC_MODEL_REGISTRY as catalog} from '../src/lib/staticModelCatalog.js'
 import {modelCardSpecifications} from '../src/lib/modelCardSpecifications.js'
 import {auditedModelLifecycle,removedModel} from '../src/lib/modelAudit.js'
+import {modelOption} from '../src/workspace/workspaceModels.js'
 
 test('Gemini forwarding cards retain their request IDs across the provider switch', t => {
   t.after(cleanup)
@@ -70,4 +71,22 @@ test('Ark Seed 2.0 Pro remains selectable on November 25 with the corrected Janu
   assert.equal(removedModel('ark', id), null)
   clock.mock.mockImplementation(() => Date.parse(model.expirationAt))
   assert.equal(removedModel('ark', id).stopDate, model.expirationAt)
+})
+
+test('Qianfan DeepSeek Flash 0731 is selectable on November 25 and retired on December 5', t => {
+  t.after(cleanup)
+  const provider = 'qianfan', id = 'deepseek-v4-flash-0731'
+  const entry = {id:'saved', connectionId:'c', modelId:id}
+  const library = {connections:[{id:'c', provider, hasCredential:true}], models:[entry]}
+  const option = () => modelOption(entry, library, {providers:catalog}, 'main', 'svg')
+  const clock = t.mock.method(Date, 'now', () => Date.parse('2026-11-25T10:00:00+08:00'))
+  assert.equal(option().reason, '')
+  const lifecycle = auditedModelLifecycle(provider, id)
+  assert.equal(lifecycle.replacement, 'deepseek-v4.1-flash-1017')
+  const view = render(React.createElement(ModelLifecycleBadge, {provider, modelId:id, lifecycle}))
+  assert.equal(view.getByRole('button').textContent, '将下线 2026-12-04')
+  clock.mock.mockImplementation(() => Date.parse('2026-12-05T10:00:00+08:00'))
+  assert.equal(auditedModelLifecycle(provider, id), null)
+  assert.match(option().reason, /原型号已不可用，请重新选择/)
+  assert.equal(removedModel(provider, id).replacementApiId, lifecycle.replacement)
 })
