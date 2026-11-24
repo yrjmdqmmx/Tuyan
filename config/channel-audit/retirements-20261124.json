@@ -469,6 +469,110 @@
       "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
       "evidence_read": "2026-11-24",
       "evidence": "完整模型退役历史记录: ERNIE-X1.1-Preview 退役 2026-09-29"
+    },
+    {
+      "provider": "qianfan",
+      "id": "qwen-image",
+      "date": "2026-11-23",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "qwen-image-edit",
+      "date": "2026-11-23",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "deepseek-ocr",
+      "date": "2026-11-23",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "ernie-4.5-turbo-128k",
+      "date": "2026-10-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "ernie-4.5-turbo-20260402",
+      "date": "2026-10-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "ernie-4.5-turbo-32k",
+      "date": "2026-10-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "ernie-4.5-turbo-vl",
+      "date": "2026-10-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "ernie-4.5-turbo-vl-32k",
+      "date": "2026-10-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "ernie-5.0",
+      "date": "2026-10-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "ernie-5.0-thinking-latest",
+      "date": "2026-10-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "ernie-5.0-thinking-preview",
+      "date": "2026-10-29",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "internvl3-38b",
+      "date": "2026-11-23",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
+    },
+    {
+      "provider": "qianfan",
+      "id": "qianfan-ocr",
+      "date": "2026-11-23",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20)"
     }
   ],
   "upcoming": [
@@ -488,6 +592,15 @@
       "evidence_read": "2026-11-24",
       "evidence": "Ark batch 10 lists a model-specific EOS 2027-01-22 14:00 UTC+8 for this ID; catalog currently says 2026-11-24 -> correct the retirement date, keep selectable (will show 将下线)",
       "time": "2027-01-22T14:00:00+08:00"
+    },
+    {
+      "provider": "qianfan",
+      "id": "deepseek-v4-flash-0731",
+      "date": "2026-12-04",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+      "evidence_read": "2026-11-24",
+      "evidence": "Qianfan 模型版本升级及退役机制, 完整模型退役历史记录 table (page updated 2026-11-20); official successor DeepSeek-V4.1-Flash-1017. The provider gives a date. The time field is the product cutoff at midnight Asia/Shanghai.",
+      "time": "2026-12-04T00:00:00+08:00"
     }
   ]
 }

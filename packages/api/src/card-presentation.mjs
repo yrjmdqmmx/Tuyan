@@ -71,6 +71,7 @@ function sourceRole(value, role) {
   const path = decodeURIComponent(parts.join('/'))
   return /deprecat|depreciat|retire|sunset|下线/i.test(path)
     || /(^|\.)aliyun\.com$/i.test(host) && /^notice\/\d+\/?$/.test(path)
+    || host === 'cloud.baidu.com' && path === 'doc/qianfan/s/zmh4stou3'
     || host === 'docs.x.ai' && /^developers\/migration\//.test(path) ? '下线公告' : role
 }
 // Native Mini has no URL/URLSearchParams. Match sourceIdentity's existing

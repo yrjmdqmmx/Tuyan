@@ -23856,58 +23856,6 @@
     },
     {
       "channel": "qianfan",
-      "apiModelId": "ernie-5.0",
-      "displayName": "ERNIE 5.0",
-      "kind": "rolling",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
-        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "ernie-5.0-thinking-preview",
-      "displayName": "ERNIE 5.0 Thinking Preview",
-      "kind": "rolling",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
-        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "ernie-5.0-thinking-latest",
-      "displayName": "ERNIE 5.0 Thinking Latest",
-      "kind": "rolling",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
-        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
       "apiModelId": "ernie-5.0-thinking-exp",
       "displayName": "ERNIE 5.0 Thinking Exp",
       "kind": "rolling",
@@ -23917,85 +23865,6 @@
         "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
         "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
         "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "ernie-4.5-turbo-32k",
-      "displayName": "ERNIE 4.5 Turbo 32K",
-      "kind": "rolling",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "ernie-4.5-turbo-128k",
-      "displayName": "ERNIE 4.5 Turbo 128K",
-      "kind": "rolling",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "ernie-4.5-turbo-20260402",
-      "displayName": "ERNIE 4.5 Turbo 20260402",
-      "kind": "fixed",
-      "versionId": "ernie-4.5-turbo-20260402",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "ernie-4.5-turbo-vl",
-      "displayName": "ERNIE 4.5 Turbo VL",
-      "kind": "rolling",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
-        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "ernie-4.5-turbo-vl-32k",
-      "displayName": "ERNIE 4.5 Turbo VL 32K",
-      "kind": "rolling",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
-        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm"
       ],
       "idEvidence": "exact-id",
       "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
@@ -24064,23 +23933,6 @@
         "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
         "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
         "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "internvl3-38b",
-      "displayName": "InternVL3-38B",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
-        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
-        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm"
       ],
       "idEvidence": "exact-id",
       "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
@@ -24244,39 +24096,6 @@
     },
     {
       "channel": "qianfan",
-      "apiModelId": "deepseek-ocr",
-      "displayName": "DeepSeek-OCR",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/Dmba8k71y",
-        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm",
-        "https://cloud.baidu.com/doc/qianfan-api/s/6mhelwygh"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "qianfan-ocr",
-      "displayName": "Qianfan-OCR",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/Dmba8k71y",
-        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
-        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
       "apiModelId": "musesteamer-air-image",
       "displayName": "MuseSteamer Air Image",
       "kind": "unconfirmed",
@@ -24285,36 +24104,6 @@
       "sourceUrls": [
         "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
         "https://cloud.baidu.com/doc/qianfan-api/s/Ymio9i9i4",
-        "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "qwen-image",
-      "displayName": "Qwen Image",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/8m7u6un8a",
-        "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
-      ],
-      "idEvidence": "exact-id",
-      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
-    },
-    {
-      "channel": "qianfan",
-      "apiModelId": "qwen-image-edit",
-      "displayName": "Qwen Image Edit",
-      "kind": "unconfirmed",
-      "versionId": "",
-      "checkedAt": "2026-09-22",
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/Rm9m76ekf",
         "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
       ],
       "idEvidence": "exact-id",

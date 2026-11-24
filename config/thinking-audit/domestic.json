@@ -6863,11 +6863,7 @@
       "provider": "qianfan",
       "modelIds": [
         "deepseek-v4.1-flash",
-        "qwen3.5-397b-a17b",
-        "ernie-4.5-turbo-vl",
-        "ernie-4.5-turbo-vl-32k",
-        "ernie-5.0",
-        "ernie-5.0-thinking-latest"
+        "qwen3.5-397b-a17b"
       ],
       "roles": [
         "main",
@@ -6898,9 +6894,6 @@
         "deepseek-v4-pro-0813",
         "deepseek-v4-flash-0731",
         "deepseek-flash",
-        "ernie-4.5-turbo-128k",
-        "ernie-4.5-turbo-20260402",
-        "ernie-4.5-turbo-32k",
         "ernie-5.0-thinking-exp"
       ],
       "roles": [
@@ -7061,8 +7054,6 @@
       "id": "domestic-qianfan-113",
       "provider": "qianfan",
       "modelIds": [
-        "qwen-image",
-        "qwen-image-edit",
         "musesteamer-air-image"
       ],
       "roles": [
@@ -7091,97 +7082,6 @@
       ],
       "statusReason": "image-parameters",
       "checkedAt": "2026-10-17"
-    },
-    {
-      "id": "domestic-qianfan-114",
-      "provider": "qianfan",
-      "modelIds": [
-        "deepseek-ocr",
-        "internvl3-38b",
-        "qianfan-ocr"
-      ],
-      "roles": [
-        "vision"
-      ],
-      "protocols": [
-        "openai-chat-completions"
-      ],
-      "status": "unconfirmed",
-      "controls": [],
-      "clearFields": [],
-      "requestMappings": [],
-      "constraints": {
-        "neverIncreaseOutputBudget": true
-      },
-      "conflicts": [],
-      "notes": [
-        "官方已核查资料未确认当前精确型号/角色/协议可设置思考控制。"
-      ],
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv"
-      ]
-    },
-    {
-      "id": "domestic-qianfan-115",
-      "provider": "qianfan",
-      "modelIds": [
-        "ernie-5.0-thinking-preview"
-      ],
-      "roles": [
-        "main",
-        "vision"
-      ],
-      "protocols": [
-        "openai-chat-completions"
-      ],
-      "status": "supported",
-      "controls": [
-        {
-          "key": "mode",
-          "label": "思考模式",
-          "type": "enum",
-          "values": [
-            true,
-            false
-          ],
-          "field": "enable_thinking",
-          "default": true
-        }
-      ],
-      "clearFields": [
-        "enable_thinking",
-        "thinking_budget"
-      ],
-      "requestMappings": [
-        {
-          "key": "mode",
-          "field": "enable_thinking",
-          "encoding": "identity",
-          "wireValues": [
-            true,
-            false
-          ]
-        }
-      ],
-      "constraints": {
-        "neverIncreaseOutputBudget": true
-      },
-      "conflicts": [],
-      "notes": [
-        "思考专题明确此型号默认开启，优先于 API 通用 false；预算上限需模型卡。"
-      ],
-      "sourceUrls": [
-        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv"
-      ],
-      "documentedControls": [
-        {
-          "field": "thinking_budget",
-          "min": 100,
-          "max": null,
-          "status": "range-unconfirmed",
-          "default": null
-        }
-      ]
     },
     {
       "id": "domestic-qianfan-116",

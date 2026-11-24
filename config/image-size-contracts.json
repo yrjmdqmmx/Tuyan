@@ -7695,40 +7695,6 @@
         }
       }
     },
-    "qianfan-qwen-image": {
-      "mode": "pixels",
-      "tiers": {
-        "1K": {
-          "targetEdge": 1024
-        },
-        "2K": {
-          "targetEdge": 2048
-        }
-      },
-      "auto": "square",
-      "minSide": 512,
-      "maxSide": 2048,
-      "minPixels": 262144,
-      "maxPixels": 4194304,
-      "maxRatio": 4
-    },
-    "qianfan-qwen-image-edit": {
-      "mode": "pixels",
-      "tiers": {
-        "1K": {
-          "targetEdge": 1024
-        },
-        "2K": {
-          "targetEdge": 2048
-        }
-      },
-      "auto": "square",
-      "minSide": 512,
-      "maxSide": 2048,
-      "minPixels": 262144,
-      "maxPixels": 4194304,
-      "maxRatio": 4
-    },
     "novita-ming-design": {
       "mode": "table",
       "ratios": [
@@ -12148,26 +12114,6 @@
       "sources": [
         "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
         "https://cloud.baidu.com/doc/qianfan-api/s/Ymio9i9i4",
-        "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
-      ]
-    },
-    "qianfan/qwen-image": {
-      "generation": "qianfan-qwen-image",
-      "editing": null,
-      "reviewedAt": "2026-09-22",
-      "sources": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/8m7u6un8a",
-        "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
-      ]
-    },
-    "qianfan/qwen-image-edit": {
-      "generation": null,
-      "editing": "qianfan-qwen-image-edit",
-      "reviewedAt": "2026-09-22",
-      "sources": [
-        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "https://cloud.baidu.com/doc/qianfan-api/s/Rm9m76ekf",
         "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
       ]
     },
