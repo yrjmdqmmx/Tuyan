@@ -22,13 +22,13 @@ test('R23F3 compiled Mini restores known dotted versions and preserves curated/t
  }
 })
 
-test('R23F all 1033 compiled Mini cards and copy dialogs pass the title scan; generated titles match the shared helper',async t=>{
+test('R23F all 968 compiled Mini cards and copy dialogs pass the title scan; generated titles match the shared helper',async t=>{
  const {scanTitles,titleBaseline}=await import('../../../test-support/source-titles-r23.mjs')
- const {expectedHumanRows}=await import('../../../test-support/source-links-i3-r24.mjs')
+ const {currentSourceReview,expectedHumanRows}=await import('../../../test-support/source-links-i3-r24.mjs')
  const shared=await import('../../../packages/api/src/card-presentation.mjs')
  const cards=[];let dialogs=0
  for(const [provider,entry]of Object.entries(STATIC_MODEL_REGISTRY))for(const model of entry.models){
-  const card=provider+'/'+model.id,data=context.present(model,'','',provider),old=titleBaseline.mini.find(row=>row.card===card)
+  const card=provider+'/'+model.id,data=context.present(model,'','',provider),old=currentSourceReview(titleBaseline.mini,card,'mini')
   const rows=structuredClone(data.specSources)
   assert.equal(data.label,old.name,card);assert.deepEqual(rows.map(row=>row.url),expectedHumanRows(old.rows,card,'mini').map(row=>row.url),card)
   assert.equal(new Set(rows.map(row=>row.label)).size,rows.length,card)
@@ -41,7 +41,7 @@ test('R23F all 1033 compiled Mini cards and copy dialogs pass the title scan; ge
   }
   cards.push({card,name:old.name,rows})
  }
- assert.equal(cards.length,1033);assert.ok(dialogs>1033);assert.deepEqual(scanTitles(cards),[])
+ assert.equal(cards.length,968);assert.ok(dialogs>968);assert.deepEqual(scanTitles(cards),[])
  t.diagnostic(JSON.stringify({cards:cards.length,dialogs,suspicious:0}))
 })
 
@@ -60,5 +60,5 @@ test('R23F Mini icon taps show the missing-page hint for exactly seven historica
    changed++
   }else {for(const icon of unknown)assert.match(icon.tooltip,/^官方资料未说明是否支持(文本|图像|视频|音频)(输入|输出)$/);assert.doesNotMatch(JSON.stringify(data.specRows),/渠道页无此型号/);controls++}
  }
- assert.equal(changed,7);assert.equal(controls,67)
+ assert.equal(changed,7);assert.equal(controls, 65)
 })

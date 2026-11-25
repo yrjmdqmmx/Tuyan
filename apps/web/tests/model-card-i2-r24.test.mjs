@@ -1,7 +1,7 @@
 import {frozenTime} from '../../../test-support/execution-capability.mjs'
 import conflictCards from '../../../test-support/fixtures/conflict-cards-r26.json' with {type:'json'}
 import {assertDialogDates,assertUnknownIconDates} from '../../../test-support/dialog-dates-r26.mjs'
-import {expectedHumanRows} from '../../../test-support/source-links-i3-r24.mjs'
+import {currentSourceReview,expectedHumanRows} from '../../../test-support/source-links-i3-r24.mjs'
 import test,{afterEach} from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -14,7 +14,7 @@ import {modalityIconStates} from '../../../packages/api/src/modality-presentatio
 import {titleIssues,dialogIssues,reviewBaseline} from '../../../test-support/source-titles-r24.mjs'
 afterEach(cleanup)
 
-test('R24 I2 all 1033 Web evidence dialogs and ten notices have readable styled links and clean copy',t=>{
+test('R24 I2 all 968 Web evidence dialogs and nine notices have readable styled links and clean copy',t=>{
  t.mock.timers.enable({apis:['Date'],now:Date.parse(frozenTime)})
  const css=fs.readFileSync(new URL('../src/components/ModelSpecifications.css',import.meta.url),'utf8')
  assert.match(css,/\.tw-dialog\.model-evidence-dialog a\.model-evidence-source\s*\{[^}]*color: var\(--accent, #267f68\)/)
@@ -25,7 +25,7 @@ test('R24 I2 all 1033 Web evidence dialogs and ten notices have readable styled 
  let cards=0,rows=0,notices=0
  try {
   for(const [provider,entry] of Object.entries(STATIC_MODEL_REGISTRY))for(const model of entry.models) {
-   const card=provider+'/'+model.id,old=reviewBaseline.web.find(c=>c.card===card)
+   const card=provider+'/'+model.id,old=currentSourceReview(reviewBaseline.web,card,'web')
    const {container}=render(React.createElement(ModelSpecifications,{provider,model}))
    for(const icon of container.querySelectorAll('.model-modality-icon'))assert.deepEqual(dialogIssues(icon.title),[],card)
    const footer=container.querySelector('.model-spec-sources a')
@@ -63,7 +63,7 @@ test('R24 I2 all 1033 Web evidence dialogs and ten notices have readable styled 
    }
   }
  }finally{style.remove()}
- assert.equal(cards,1033);assert.equal(rows,2391);assert.equal(notices,10)
+ assert.equal(cards,968);assert.equal(rows,2228);assert.equal(notices,9)
  t.diagnostic(JSON.stringify({cards,rows,notices,titleFindings:0,copyFindings:0}))
 })
 

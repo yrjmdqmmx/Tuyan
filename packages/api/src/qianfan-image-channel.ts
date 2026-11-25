@@ -1,3 +1,4 @@
+import { assertAuditedModelAvailable } from './model-audit.js'
 import type { ImageChannelCheckpoint, ImageChannelInput, ImageChannelTransport } from './image-channel-adapters.js'
 
 const BASE = 'https://qianfan.baidubce.com/v2'
@@ -141,6 +142,7 @@ export async function callQianfanImageChannel(input: ImageChannelInput, io: Imag
   // Recovery precedes source, key and prompt validation: these are not needed to download an existing result.
   if (previous?.result || previous?.resultUrl) return download(previous.result?.url ?? previous.resultUrl, previous.result?.metadata)
   if (previous) throw unknownResult()
+  assertAuditedModelAvailable(input.provider, input.model)
   const prepared = buildQianfanImageRequest(input)
   if (typeof input.apiKey !== 'string' || !input.apiKey.trim() || /[\r\n]/.test(input.apiKey)) invalid('千帆普通 API Key 无效。')
   const checkpoint: ImageChannelCheckpoint = { provider: input.provider, model: input.model, state: { phase: 'submitting', protocol: 'synchronous', submittedAt: io.now() } }

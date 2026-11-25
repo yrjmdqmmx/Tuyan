@@ -17,6 +17,7 @@ export function applyPhase2(data, review = evidence) {
       || page?.status !== 200 || page.checkedAt.slice(0, 10) !== row.verifiedAt || !page.sha256?.match(/^[a-f0-9]{64}$/)
       || !page.excerpts?.includes(row.quote) || (row.supportingQuotes || []).some(quote => !page.excerpts?.includes(quote)))
       throw new Error(`Invalid phase 2 channel evidence: ${key}`)
+    if (data.removed?.[key]) return
     data.rows[key] ||= [...data.fields.map(() => intern(data.facts, [null, 'unknown', null, null])), 1, null]
   }
   function replace(key, field, value, row, exhaustive) {
@@ -35,6 +36,7 @@ export function applyPhase2(data, review = evidence) {
     const table = row.quote.match(/^输入模态 (.*?) 输出模态 (.*)$/)
     for (const [index, field] of fields.entries()) if (JSON.stringify(table?.[index + 1].match(/Text|Image|Audio|Video/g)?.map(x => x.toLowerCase())) !== JSON.stringify(row[field]))
       throw new Error(`Table values disagree with quote: ${key}/${field}`)
+    if (data.removed?.[key]) continue
     for (const field of fields) replace(key, field, row[field], row, true)
   }
   for (const [key, rows] of Object.entries(review.reviews)) for (const [field, row] of Object.entries(rows)) {
@@ -43,6 +45,7 @@ export function applyPhase2(data, review = evidence) {
       || Object.entries(row.decisions).some(([id, state]) => !modalities.includes(id) || !['supported', 'unknown'].includes(state)
         || row.mode === 'positive-only' && (row.value?.includes(id) !== (state === 'supported')) || row.mode === 'mask' && state !== 'unknown'))
       throw new Error(`Invalid phase 2 decision: ${key}/${field}`)
+    if (data.removed?.[key]) continue
     if (row.mode === 'positive-only') replace(key, field, row.value, row, false)
     else {
       // Silence about one modality cannot erase unrelated, previously known facts.
@@ -51,7 +54,7 @@ export function applyPhase2(data, review = evidence) {
     }
   }
   for (const [key, row] of Object.entries(review.links)) {
-    if (row.availability !== 'unverified' || row.verifiedAt !== review.verifiedAt || !row.attempts.length || data.removed?.[key])
+    if (row.availability !== 'unverified' || row.verifiedAt !== review.verifiedAt || !row.attempts.length)
       throw new Error(`Invalid phase 2 retained model: ${key}`)
     for (const attempt of row.attempts) {
       const url = new URL(attempt.sourceUrl), final = new URL(attempt.finalUrl)

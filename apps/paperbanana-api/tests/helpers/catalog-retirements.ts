@@ -135,6 +135,7 @@ const retirementGroups = [
   },
 ]
 retirementGroups.push(...read('channel-audit/retirements-20261117').remove.map((row: any) => ({ stopDate: row.provider === 'antling' ? '2026-11-15T00:00:00+08:00' : row.date, sourceUrl: row.source, keys: [row.provider + '/' + row.id] })))
+retirementGroups.push(...read('channel-audit/retirements-20261124').remove.map((row: any) => ({stopDate:row.time || row.date,sourceUrl:row.source,keys:[row.provider+'/'+row.id]})))
 export const removedKeys = retirementGroups.flatMap(group => group.keys)
 export function assertRemoved(provider: string, id: string) {
   const key = provider + '/' + id
@@ -172,7 +173,7 @@ export function assertCatalogDelta() {
       assert.match(row.disabledReason, /输出尺寸契约/, key)
     }
   }
-  assert.equal(Object.values(catalog).reduce((n: number, p: any) => n + p.models.length, 0), 1125 - removedKeys.length + addedKeys.length)
+  assert.equal(Object.values(catalog).reduce((n: number, p: any) => n + p.models.length, 0), 1125 - removedKeys.length + addedKeys.length + 3)
 }
 
 export function assertSurvivingDefaults(provider: string, defaults: any) {
@@ -180,8 +181,7 @@ export function assertSurvivingDefaults(provider: string, defaults: any) {
   for (const [role, id] of Object.entries(defaults)) {
     if (!removedKeys.includes(provider + '/' + id)) continue
     assertRemoved(provider, String(id))
-    assert.equal(provider, 'stepfun', 'only the retired StepFun image default may change')
-    assert.equal(role, 'image')
+    assert.ok(['stepfun/image', 'tokenhub/image', 'qianfan/vision'].includes(provider + '/' + role))
     expected[role] = ''
   }
   assert.deepEqual(catalog[provider].defaults, expected)

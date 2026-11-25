@@ -72,7 +72,9 @@ test('verified no-control models preserve normal fields and reject fabricated th
     ...['openai/gpt-image-2', 'google/gemini-3-pro-image', 'Qwen/Qwen-Image-2.0', 'google/imagen-4.0-fast', 'google/imagen-4.0-preview', 'google/imagen-4.0-ultra', 'prunaai/p-image-ideogram'].map(model => ['together', model, 'image', 'provider-images']),
   ]
   for (const [provider, modelId, role, protocol] of cases) {
-    assert.equal(thinkingProfile(provider, modelId, role as any, protocol).status, 'unsupported')
+    const profile = thinkingProfile(provider, modelId, role as any, protocol)
+    if (provider === 'ark' && modelId !== 'doubao-seedream-5-0-flash-260915') assert.equal(profile, undefined)
+    else assert.equal(profile.status, 'unsupported')
     const body = { model: modelId, prompt: 'fixture', width: 1024, height: 1024, steps: 28, guidance_scale: 7.5, max_tokens: 256, optimize_prompt_options: { mode: 'standard' } }
     const selection = { provider, modelId, protocol, options: {} }
     assert.deepEqual(applyThinkingSnapshot(body, compileThinkingSelection(selection, role as any)), body)

@@ -75,19 +75,15 @@ test('v35 TokenDance import adds the new exact identity once and preserves the e
   assert.equal(tokenDanceLibraryAddition(next, registry), null);
 });
 
-test('v35 retired Ark identity remains visible and disabled without replacing a saved selection', () => {
+test('v35 retired Ark identity shows its saved notice without replacing a saved selection', () => {
   const modelId = 'deepseek-v4-flash-260425';
   const models = savedModels('ark', modelId);
   const current = { libraryModelId: 'saved-model', connectionId: 'existing-connection', accessProvider: 'ark', modelId };
   const changes = [];
   render(React.createElement(WorkspaceModelPicker, { models, role: 'main', path: 'svg', current, onChange: value => changes.push(value) }));
+  assert.match(screen.getByRole('status').textContent, /原型号已不可用，请重新选择/);
   fireEvent.click(screen.getByRole('button', { name: '主模型', exact: true }));
-  const card = screen.getByRole('article');
-  assert.doesNotMatch(card.querySelector('.model-spec-sources a').getAttribute('aria-label'), /核实日期|2026-09-21/);
-  assert.match(card.querySelector('.tw-catalog-unavailable').title, /2026-09-21/);
-  assert.equal(card.querySelector('.model-option-note, .thinking-status'), null);
-  assert.equal(within(card).getByRole('button', { name: /^选择 / }).disabled, true);
-  fireEvent.click(card);
+  assert.equal(screen.queryByRole('article'), null);
   assert.deepEqual(changes, []);
   assert.equal(models.library.models[0].modelId, modelId);
 });

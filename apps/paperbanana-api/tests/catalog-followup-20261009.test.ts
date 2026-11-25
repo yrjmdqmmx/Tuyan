@@ -93,8 +93,8 @@ test('TokenDance MiMo retirement uses the channel cutoff without replacing saved
   r.legacy.configureRuntimeFetch(async()=>{calls++;throw Error('must not call upstream')})
   t.mock.method(Date,'now',()=>Date.parse('2026-10-21T02:00:00Z'))
   for(const id of ['mimo-v2.5','mimo-v2.5-pro']){
-   const row=catalog.tokendance.models.find((m:any)=>m.id===id);assert.equal(row.expirationAt,'2026-10-21T10:00:00+08:00')
-   await assert.rejects(r.legacy.callTextModel('tokendance',id,'fixture-key','system','prompt'),/停用|到期/)
+   const row=catalog.tokendance.models.find((m:any)=>m.id===id);assert.equal(row,undefined)
+   await assert.rejects(r.legacy.callTextModel('tokendance',id,'fixture-key','system','prompt'),{businessCode:'MODEL_UNAVAILABLE',requestState:'not_sent'})
   }
   assert.equal(calls,0)
  }finally{await r.close()}

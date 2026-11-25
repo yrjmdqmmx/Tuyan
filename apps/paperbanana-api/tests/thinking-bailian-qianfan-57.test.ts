@@ -65,10 +65,12 @@ test('Vanchin V3 has no control; unresolved exact IDs retain their evidence boun
   const request = { model: 'vanchin/deepseek-v3', max_tokens: 256, temperature: 0.3 }
   assert.deepEqual(applyThinkingSnapshot(request, compileThinkingSelection({ ...identity(request.model), options: {} }, 'main')), request)
   assert.throws(() => compileThinkingSelection({ ...identity(request.model), options: { mode: true } }, 'main'), localFailure)
-  for (const modelId of ['deepseek-v3', 'qwen3-coder-flash', 'qwen3-max-2025-09-23']) assert.equal(thinkingProfile('bailian', modelId, 'main', 'bailian-openai-chat').status, 'unconfirmed')
+  assert.equal(thinkingProfile('bailian', 'qwen3-max-2025-09-23', 'main', 'bailian-openai-chat'), undefined)
+  assert.equal(thinkingProfile('qianfan', 'ernie-x1.1', 'main', 'openai-chat-completions'), undefined)
+  for (const modelId of ['deepseek-v3', 'qwen3-coder-flash']) assert.equal(thinkingProfile('bailian', modelId, 'main', 'bailian-openai-chat').status, 'unconfirmed')
   // Qwen3.5-27B and ERNIE-5.1 were subsequently verified; their exact
   // controls and transport are covered by thinking-qianfan-console-23.test.ts.
-  for (const modelId of ['deepseek-v4-pro-0813', 'deepseek-v4.1-flash', 'ernie-x1.1']) {
+  for (const modelId of ['deepseek-v4-pro-0813', 'deepseek-v4.1-flash']) {
     assert.equal(thinkingProfile('qianfan', modelId, 'main', 'openai-chat-completions').status, 'unconfirmed')
     assert.throws(() => compileThinkingSelection({ provider: 'qianfan', modelId, protocol: 'openai-chat-completions', options: { budget: 16384 } }, 'main'), localFailure)
   }

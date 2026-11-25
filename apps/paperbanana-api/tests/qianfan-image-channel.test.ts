@@ -15,6 +15,7 @@ function png(width = 256, height = 256): NonNullable<ImageChannelInput['source']
 const source = png()
 const output = 'downloaded-png-base64'
 const input: ImageChannelInput = { provider: 'qianfan', model: 'qwen-image', apiKey: 'fixture-secret', prompt: 'Scientific figure', aspectRatio: '1:1', resolution: '1K', size: { size: '1024x1024', width: 1024, height: 1024 } }
+const muse = { ...input, model: 'musesteamer-air-image' }
 const edit: ImageChannelInput = { ...input, model: 'qwen-image-edit', source }
 const ref = { objectKey: 'fixture/reference.png', purpose: 'style' as const }
 function fixture(respond: (url: string, init: RequestInit) => Response | Promise<Response> = () => Response.json({ id: 'as-fixture', data: [{ url: 'https://asset.invalid/result.png' }] })) {
@@ -35,7 +36,7 @@ function fixture(respond: (url: string, init: RequestInit) => Response | Promise
 const notSent = (error: any) => error.localInputFailure === true && error.requestState === 'not_sent'
 const unknown = (error: any) => error.terminal === true && error.uncertain === true && error.recoveryAction === 'stop'
 
-test('three ordinary models have exact JSON request contracts, with single and multiple edit images', () => {
+test('historical Qianfan wire formats retain exact JSON request contracts, with single and multiple edit images', () => {
   for (const model of ['musesteamer-air-image', 'qwen-image', 'qwen-image-edit']) {
     const request = buildQianfanImageRequest({ ...input, model, source: model === 'qwen-image-edit' ? source : null })
     const endpoint = model === 'musesteamer-air-image' ? 'musesteamer/images/generations' : model === 'qwen-image' ? 'images/generations' : 'images/edits'
@@ -55,8 +56,20 @@ test('whitelist, operation, region, prompt and refinement constraints fail befor
     { ...edit, edit: { mask: source, inputs: { version: 1, mask: { objectKey: 'mask.png' } } } },
     { ...edit, edit: { inputs: { version: 1, structured: { object: 'a', attributes: 'b', relationship: 'c', preserve: 'd' } } } },
   ]
-  for (const value of bad) { const f = fixture(); await assert.rejects(callQianfanImageChannel(value, f.io), notSent); assert.equal(f.calls.length, 0); assert.equal(f.checkpoints.length, 0) }
+  for (const value of bad) {
+    assert.throws(() => buildQianfanImageRequest(value), notSent)
+    const f = fixture()
+    await assert.rejects(callQianfanImageChannel(value, f.io), notSent)
+    assert.equal(f.calls.length, 0)
+    assert.equal(f.checkpoints.length, 0)
+  }
   assert.doesNotThrow(() => buildQianfanImageRequest({ ...input, prompt: '😀'.repeat(800) }))
+  for (const retired of [input, edit]) {
+    const f = fixture()
+    await assert.rejects(callQianfanImageChannel(retired, f.io), {businessCode:'MODEL_UNAVAILABLE', requestState:'not_sent'})
+    assert.equal(f.calls.length, 0)
+    assert.equal(f.checkpoints.length, 0)
+  }
 })
 
 test('dimensions reject server fallback and preserve supported resolved pixel sizes', () => {
@@ -78,7 +91,7 @@ test('source byte, canonical PNG, pixel and aspect limits are enforced on every 
 
 test('submission checkpoints before POST and separates usage, public price and unverified costs', async () => {
   const f = fixture(() => Response.json({ id: 'as-original', usage: { total_tokens: 23, image_count: 1, unsafe: input.apiKey }, cost: 99, data: [{ url: 'http://qianfan-img-gen.bj.bcebos.com/result.png?authorization=signed-fixture' }] }))
-  assert.equal(await callQianfanImageChannel(input, f.io), output)
+  assert.equal(await callQianfanImageChannel(muse, f.io), output)
   assert.equal(f.calls.length, 1); assert.equal(f.calls[0].attempts, 1); assert.equal(f.calls[0].init.redirect, 'error')
   assert.equal(new Headers(f.calls[0].init.headers).get('Authorization'), `Bearer ${input.apiKey}`)
   assert.equal(new Headers(f.calls[0].init.headers).get('Content-Type'), 'application/json')
@@ -86,7 +99,7 @@ test('submission checkpoints before POST and separates usage, public price and u
   assert.equal(f.saved()?.taskId, undefined, 'diagnostic id must not imply queryable task')
   assert.deepEqual(f.downloads, ['https://qianfan-img-gen.bj.bcebos.com/result.png?authorization=signed-fixture'])
   assert.deepEqual(f.records[0].usage, { total_tokens: 23, image_count: 1 })
-  assert.equal(f.records[0].requestId, 'as-original'); assert.equal(f.records[0].publicPrice.amount, 0.25)
+  assert.equal(f.records[0].requestId, 'as-original'); assert.equal(f.records[0].publicPrice.amount, 0.05)
   for (const field of ['estimatedCost', 'reportedCost', 'invoiceCost']) assert.equal(f.records[0][field], null)
   assert.ok(!JSON.stringify(f.records).includes(input.apiKey)); assert.ok(!JSON.stringify(f.records).includes(input.prompt)); assert.ok(!JSON.stringify(f.records).includes('signed-fixture'))
 })
@@ -100,8 +113,8 @@ test('lost response, malformed success and ambiguous status never repeat the POS
   ]
   for (const respond of responses) {
     const f = fixture(respond)
-    await assert.rejects(callQianfanImageChannel(input, f.io), error => { assert.ok(!String(error).includes(input.apiKey)); return unknown(error) })
-    await assert.rejects(callQianfanImageChannel(input, f.io), unknown)
+    await assert.rejects(callQianfanImageChannel(muse, f.io), error => { assert.ok(!String(error).includes(input.apiKey)); return unknown(error) })
+    await assert.rejects(callQianfanImageChannel(muse, f.io), unknown)
     assert.equal(f.calls.length, 1); assert.equal(f.downloads.length, 0)
   }
 })
@@ -109,9 +122,9 @@ test('lost response, malformed success and ambiguous status never repeat the POS
 test('explicit failures are durable, terminal and never treated as zero cost', async () => {
   for (const respond of [() => new Response('', { status: 429 }), () => Response.json({ code: 'invalid_argument', message: input.apiKey }), () => Response.json({ data: [{ task_status: 'FAILED' }] })]) {
     const f = fixture(respond)
-    await assert.rejects(callQianfanImageChannel(input, f.io), (error: any) => error.terminal && !error.uncertain)
+    await assert.rejects(callQianfanImageChannel(muse, f.io), (error: any) => error.terminal && !error.uncertain)
     assert.equal(f.saved()?.failed, true)
-    await assert.rejects(callQianfanImageChannel(input, f.io), (error: any) => error.terminal)
+    await assert.rejects(callQianfanImageChannel(muse, f.io), (error: any) => error.terminal)
     assert.equal(f.calls.length, 1); assert.equal(f.records.length, 0)
   }
 })
@@ -119,26 +132,27 @@ test('explicit failures are durable, terminal and never treated as zero cost', a
 test('saved result recovery needs no secret or source and only downloads without submitting', async () => {
   const f = fixture(); let downloadAttempts = 0
   f.io.download = async url => { f.downloads.push(url); if (++downloadAttempts === 1) throw new Error('asset unavailable'); return output }
+  f.set({ provider:'qianfan', model:edit.model, result:{url:'https://asset.invalid/result.png'} })
   await assert.rejects(callQianfanImageChannel(edit, f.io), (error: any) => error.recoveryAction === 'resume' && error.pollOnly && !error.uncertain)
   assert.equal(f.saved()?.result?.url, 'https://asset.invalid/result.png')
   assert.equal(await callQianfanImageChannel({ ...edit, apiKey: '', source: null, prompt: '' }, f.io), output)
-  assert.equal(f.calls.length, 1); assert.equal(f.downloads.length, 2)
+  assert.equal(f.calls.length, 0); assert.equal(f.downloads.length, 2)
   assert.ok(!JSON.stringify(f.saved()).includes(input.apiKey))
 })
 
 test('durability failures and mismatched previous operations fail closed', async () => {
   const f = fixture(); f.io.checkpoint = async () => { throw new Error('storage unavailable') }
-  await assert.rejects(callQianfanImageChannel(input, f.io)); assert.equal(f.calls.length, 0)
+  await assert.rejects(callQianfanImageChannel(muse, f.io)); assert.equal(f.calls.length, 0)
   const missing = fixture(); delete missing.io.pending
-  await assert.rejects(callQianfanImageChannel(input, missing.io), notSent); assert.equal(missing.calls.length, 0)
-  for (const previous of [{ provider: 'qianfan', model: 'other' }, { provider: 'other', model: input.model }, { provider: 'qianfan', model: input.model, state: { phase: 'submitting' } }]) {
+  await assert.rejects(callQianfanImageChannel(muse, missing.io), notSent); assert.equal(missing.calls.length, 0)
+  for (const previous of [{ provider: 'qianfan', model: 'other' }, { provider: 'other', model: muse.model }, { provider: 'qianfan', model: muse.model, state: { phase: 'submitting' } }]) {
     const g = fixture(); g.set(previous)
-    await assert.rejects(callQianfanImageChannel(input, g.io), (error: any) => error.terminal)
+    await assert.rejects(callQianfanImageChannel(muse, g.io), (error: any) => error.terminal)
     assert.equal(g.calls.length, 0)
   }
   const resultSave = fixture(); const save = resultSave.io.checkpoint!
   resultSave.io.checkpoint = async value => { if (value.result) throw new Error('lost persistence'); await save(value) }
-  await assert.rejects(callQianfanImageChannel(input, resultSave.io), unknown)
-  await assert.rejects(callQianfanImageChannel(input, resultSave.io), unknown)
+  await assert.rejects(callQianfanImageChannel(muse, resultSave.io), unknown)
+  await assert.rejects(callQianfanImageChannel(muse, resultSave.io), unknown)
   assert.equal(resultSave.calls.length, 1); assert.equal(resultSave.downloads.length, 0)
 })

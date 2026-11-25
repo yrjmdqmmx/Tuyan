@@ -21,7 +21,11 @@ test('R25 I5 each exact Bailian identity has a captured notice and literal date;
 test('R25 I5 captured readable titles and the exact unfetchable allow-list are auditable',()=>{
  assert.equal(titles.captures.length,7);assert.equal(titles.unfetchable.length,14)
  for(const r of [...titles.captures,...titles.unfetchable]){assert.equal(r.checkedAt,'2026-11-10');assert.equal(r.httpStatus,200);assert.match(r.sha256,/^[a-f0-9]{64}$/);assert.match(r.fetchStartUTC,/\+00:00$/);assert.match(r.fetchTimeAsiaShanghai,/\+08:00$/)}
- for(const r of titles.captures)assert.ok(!/ · 文档 \d+$/.test(sourceTitle(r.url)),r.url)
+ for(const r of titles.captures){
+  const published=data.sources.includes(r.url)||Object.values(data.notices).some(n=>n.sourceUrl===r.url)
+  const title=published?sourceTitle(r.url):r.displayTitle
+  assert.ok(title && !/ · 文档 \d+$/.test(title),r.url)
+ }
  for(const r of titles.unfetchable){assert.ok(r.reason);assert.deepEqual(titleIssues({url:r.url,label:'官方文档 · 站点 · 文档 123456'}),[])}
  for(const label of ['官方文档 · 腾讯云 · 文档 130051','官方文档 · 腾讯云 · 模型文档 130051','官方文档 · Example · 123456','官方文档 · Example · A1b2c3d4','官方文档 · 百炼 · Kimi K3 (Bailian hosted)','官方文档 · Example · Page（overview）'])assert.ok(titleIssues({url:'https://example.test/unlisted',label}).length,label)
  for(const label of ['核实日期','上下文窗口核实日期','最大输出核实日期']){assert.ok(dialogIssues(label+' 2026-11-10').includes('date label missing colon'));assert.deepEqual(dialogIssues(label+'：2026-11-10'),label==='核实日期'?[]:['separate or repeated verification date'])}

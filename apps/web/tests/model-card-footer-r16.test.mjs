@@ -28,17 +28,15 @@ function assertSource(card) {
   assert.match(label.textContent, /^(官方文档|渠道资料|下线公告) · $/)
   assert.equal(card.querySelector('.model-spec-sources[title], .model-spec-sources [title]'), null)
   assert.equal(link.getAttribute('aria-label'), link.textContent)
-  for (const node of [link, domain]) {
-    assert.equal(computed(node).whiteSpace, 'nowrap')
-    assert.equal(computed(node).overflowWrap, 'normal')
-    assert.equal(computed(node).wordBreak, 'normal')
-  }
+  assert.equal(computed(link).whiteSpace, 'nowrap')
+  assert.equal(computed(link).overflowWrap, 'normal')
+  assert.equal(computed(link).wordBreak, 'normal')
   assert.equal(computed(link).minWidth, 'auto', 'the link must not collapse beside actions')
   assert.equal(computed(link).maxWidth, '100%')
   assert.equal(computed(link.querySelector('svg')).flexShrink, '0')
   assert.equal(computed(label).flexShrink, '0')
-  assert.equal(computed(domain).overflow, 'hidden')
-  assert.equal(computed(domain).textOverflow, 'ellipsis')
+  assert.equal(computed(domain).whiteSpace, 'normal')
+  assert.equal(computed(domain).overflowWrap, 'anywhere')
 }
 
 function assertFooter(card) {

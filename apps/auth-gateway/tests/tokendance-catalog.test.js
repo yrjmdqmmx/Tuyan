@@ -41,7 +41,7 @@ for (const mode of ['empty','timeout','snapshot']) test(`R17 Gateway full ${mode
     assert.equal(response.status,200);
     assert.deepEqual(response.body,JSON.parse(JSON.stringify(data)));
     const models=response.body.providers.tokendance.models;
-    assert.equal(models.length,74,'historical identities and defaults retained in relay');
+    assert.equal(models.length, 72,'historical identities and defaults retained in relay');
     for(const id of absentIds)assert.equal(models.find(m=>m.id===id).catalogPresence.status,'absent',id);
     const visible=models.filter(m=>!modelMissingFromCatalog(response.body,'tokendance',m)&&!modelRetiredFromCatalog(m));
     assert.equal(visible.length,65);

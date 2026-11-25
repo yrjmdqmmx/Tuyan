@@ -8,8 +8,8 @@ export function applyEvidenceR24(data, review = evidence) {
   }
   for (const [key, model] of Object.entries(review.models)) {
     const row = data.rows[key]
-    if (!row) throw Error('Missing reviewed model: ' + key)
-    const detail = data.details[key] ||= {}
+    if (!row && !data.removed?.[key]) throw Error('Missing reviewed model: ' + key)
+    const detail = row && (data.details[key] ||= {})
     for (const [field, fact] of Object.entries(model.fields)) {
       const index = data.fields.indexOf(field)
       const page = review.captures.find(page => page.url === fact.sourceUrl)
@@ -20,11 +20,13 @@ export function applyEvidenceR24(data, review = evidence) {
         && values.every(value => fact.quote.toLowerCase().includes(String(value).toLowerCase()) || words[value] && fact.quote.includes(words[value]))
       const unknown = fact.state === 'unknown' && fact.value === null && fact.sourceUrl === null && fact.provenance === null
       if (index < 0 || !supported && !unknown) throw Error('Invalid reviewed fact: ' + key + '/' + field)
+      if (!row) continue
       row[index] = intern(data.facts, [fact.value, fact.state, fact.provenance, fact.sourceUrl ? intern(data.sources, fact.sourceUrl) : null])
       ;(detail.fieldVerifiedAt ||= {})[field] = review.verifiedAt
       ;(detail.fieldSources ||= {})[field] = fact.sourceUrl
       if (fact.state === 'unknown') detail.suppressFallback = [...new Set([...(detail.suppressFallback || []), field])]
     }
+    if (!row) continue
     if (model.sourceUrl) row[5] = intern(data.sources, model.sourceUrl)
     if (model.excludedSources) detail.excludedSources = model.excludedSources
     if (model.note) detail.note = model.note

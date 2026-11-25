@@ -1,3 +1,4 @@
+const removed = require('../../../config/removed-models.json')
 const r24 = require('../../../test-support/fixtures/model-card-r24.json')
 const {sourceTitle,visibleSourceTitle}=require('../miniprogram/utils/card-presentation.js')
 const test = require('node:test')
@@ -28,6 +29,7 @@ test('R12 compiled Mini URLs and labels match full Web objects for 74 captured p
     ...['qwen3.5-plus', 'qwen3.5-plus-2026-02-15', 'qwen3.5-plus-2026-04-20'].map(id => ['bailian', id, 'https://help.aliyun.com/zh/model-studio/qwen3-5-plus', '官方文档'])]
   assert.equal(cases.length, 80)
   for (const [channel, id, url, label] of cases) {
+    if (removed[channel + '/' + id]) continue
     const model = full.providers[channel].models.find(m => m.id === id)
     const card = web(channel, model), small = auditedModelSpecs(channel, id)
     assert.equal(card.sources[0], url); assert.equal(small.sourceUrl, url)
@@ -60,8 +62,8 @@ test('R12C projection keeps every rendered fact, qualifier, note and source; onl
   const data = unpackModelCatalog(JSON.parse(source.match(/unpackModelCatalog\((.*)\)\n/)[1]))
   const identities = Object.entries(STATIC_MODEL_REGISTRY).flatMap(([channel, provider]) => provider.models.map(model => channel + '/' + model.id))
   const flagged = identities.filter((_, i) => data.rows[i][4] === -2).sort()
-  const verified = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r12-tokendance-rendered.json'))).rows.filter(row => row.rendersModel).map(row => 'tokendance/' + row.modelId).sort()
-  assert.deepEqual(flagged, verified); assert.equal(flagged.length, 67)
+  const verified = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r12-tokendance-rendered.json'))).rows.filter(row => row.rendersModel && !removed['tokendance/' + row.modelId]).map(row => 'tokendance/' + row.modelId).sort()
+  assert.deepEqual(flagged, verified); assert.equal(flagged.length, 65)
   const templatedUrls = new Set(verified.map(key => 'https://tokendance.space/models/' + key.slice('tokendance/'.length)))
   assert.ok(data.sources.every(url => !templatedUrls.has(url)))
   assert.ok(Object.values(data.details).every(detail => !detail.sourceLinks && !detail.sourceUrls))
@@ -78,6 +80,7 @@ test('R13 compiled picker shows all seven vendor replacements and no catalog car
   assert.equal(repaired.length, 7)
   for (const { channel, modelId, finalUrl } of repaired) {
     const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)
+    if (removed[channel + '/' + modelId]) { assert.equal(entry, undefined); continue }
     const small = auditedModelSpecs(channel, modelId)
     const label = modelId === 'xai:grok-imagine@image-quality' ? '下线公告' : '原厂规格'
     assert.equal(small.sourceUrl, finalUrl); assert.equal(small.sourceLabel, label)
@@ -92,7 +95,7 @@ test('R13 compiled picker shows all seven vendor replacements and no catalog car
     for (const source of presented.specSources) assert.ok(!deadUrls.has(source.url), channel + '/' + model.id)
     assert.ok(!deadUrls.has(auditedModelSpecs(channel, model.id).sourceUrl))
   }
-  assert.equal(cards, 1033)
+  assert.equal(cards, 968)
 })
 
 test('R13B pre-phase-2 static notice priorities and all 34 visible notices remain reproducible', async () => {
@@ -126,6 +129,7 @@ test('R13B compiled picker resolves full-model source priorities and retains not
     const { channel, modelId, url, label } = row
     const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)
     if (!entry) { assert.ok(require('../../../config/removed-models.json')[channel + '/' + modelId]); continue }
+    if (removed[channel + '/' + modelId]) { assert.equal(entry, undefined); continue }
     const small = auditedModelSpecs(channel, modelId)
     const patches=[...(r31Patches.rows[channel+'/'+modelId]||[]),...(pmReview.rows[channel+'/'+modelId]||[])], expected=(path,fallback)=>patches.find(p=>p.path===path)?.after??fallback
     assert.equal(small.sourceUrl, expected('mini/audit/sourceUrl',url)); assert.equal(small.sourceLabel, expected('mini/audit/sourceLabel',label))
@@ -144,6 +148,6 @@ test('R13B compiled picker resolves full-model source priorities and retains not
       }
     }
   }
-  assert.equal(notices, 20)
+  assert.equal(notices, 11)
   assert.deepEqual(appendedNotices.sort(), ['bailian/qwen3.5-plus', 'bailian/qwen3.5-plus-2026-02-15', 'bailian/qwen3.5-plus-2026-04-20', 'tokendance/qwen3.5-plus', 'tokendance/qwen3.5-plus'].sort())
 })

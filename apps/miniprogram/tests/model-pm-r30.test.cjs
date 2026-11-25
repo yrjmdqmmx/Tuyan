@@ -1,6 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs')
 const {loadComponent}=require('./helpers/component.cjs')
-test('R30 all 1033 compiled Mini cards and source dialogs use plain statuses, published/absent numeric values and model-page primaries',async()=>{
+test('R30 all 968 compiled Mini cards and source dialogs use plain statuses, published/absent numeric values and model-page primaries',async()=>{
  const {imageInputPresentations}=await import('../../../test-support/image-input-r27.mjs')
  const {assertPMDecisions,forbiddenBody}=await import('../../../test-support/pm-decisions-r30.mjs')
  const rows=await imageInputPresentations();assertPMDecisions(rows)

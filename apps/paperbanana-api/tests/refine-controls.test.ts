@@ -29,9 +29,9 @@ test('model controls distinguish image slots, mask combinations, native structur
   assert.match(refineInputIssue(refineControlsFor('runware','alibaba:qwen-image-edit@2511'),{version:1,references:[ref,ref,ref]}),/2 张/)
 })
 
-for (const [provider,model] of [['fal','bria/fibo-edit-1.5/edit'],['replicate','qwen/qwen-image-edit-plus'],['runware','alibaba:qwen-image-edit@2511'],['tokenhub','hy-image-v3']]) test(`${provider} sends source and auxiliary bytes to final image model and freezes metadata`,async(t)=>{
-  // Exercise the original HyImage 3.0 wire and recovery contract before its cutoff.
-  if (provider==='tokenhub') t.mock.method(Date, 'now', () => Date.parse('2026-10-31T12:00:00Z'))
+for (const [provider,model] of [['fal','bria/fibo-edit-1.5/edit'],['replicate','qwen/qwen-image-edit-plus'],['runware','alibaba:qwen-image-edit@2511'],['tokenhub','hy-image-v3.5-preview']]) test(`${provider} sends source and auxiliary bytes to final image model and freezes metadata`,async(t)=>{
+  // Exercise an active synchronous TokenHub route after the HyImage 3.0 retirement.
+  if (provider==='tokenhub') t.mock.method(Date, 'now', () => Date.parse('2026-11-25T10:00:00+08:00'))
   const f=await createRefineRuntime({tokenDance:true})
   try {
     const source=await upload(f), ref=await upload(f,await sharp(f.image).negate().png().toBuffer())
@@ -44,7 +44,7 @@ for (const [provider,model] of [['fal','bria/fibo-edit-1.5/edit'],['replicate','
     assert.equal(done.refineInputMetadata.referenceCount,1)
     assert.match(done.refineInputs.references[0].objectKey,new RegExp('^'+done.id+'/'))
     const call=firstSubmission(f,provider)!, sent=JSON.parse(String(call.options.body))
-    const images=provider==='runware'?sent[0].inputs.referenceImages:provider==='tokenhub'?sent.images:provider==='replicate'?sent.input.image:sent.image_urls
+    const images=provider==='runware'?sent[0].inputs.referenceImages:provider==='tokenhub'?sent.messages[0].content.filter((part:any)=>part.type==='image_url').map((part:any)=>part.image_url.url):provider==='replicate'?sent.input.image:sent.image_urls
     assert.equal(images.length,2)
     assert.notEqual(images[0],images[1]);assert.match(JSON.stringify(sent),/只参考配色/)
     for (const [i,key] of images.entries()) {
@@ -54,7 +54,7 @@ for (const [provider,model] of [['fal','bria/fibo-edit-1.5/edit'],['replicate','
     assert.equal(done.providerCalls.length,1)
     assert.equal(done.providerCalls[0].invoiceCost,null)
     if (provider==='runware') assert.equal(done.providerCalls[0].reportedCost.amount,.012)
-    if (provider==='tokenhub') {assert.equal(done.providerCalls[0].usage.total_tokens,4000);assert.equal(done.providerCalls[0].reportedCost,null);assert.equal(sent.revise,false)}
+    if (provider==='tokenhub') {assert.equal(done.providerCalls[0].usage.total_tokens,12345);assert.equal(done.providerCalls[0].reportedCost,null);assert.equal(sent.messages[0].role,'user')}
     assert.equal(JSON.stringify(done).includes('private-fixture-key'),false)
   } finally {await f.close()}
 })
@@ -109,14 +109,28 @@ test('refining an owned historical image freezes its orientation-corrected pixel
   } finally {await f.close()}
 })
 
-for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-image-edit@2511','lost-submit',true],['tokenhub','hy-image-v3','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','download',true],['tokenhub','hy-image-v3','download',true],['sensenova','sensenova-u1.5-lite','lost-submit',false],['sensenova','sensenova-u1.5-lite','download',true],['qianfan','qwen-image-edit','lost-submit',false],['qianfan','qwen-image-edit','download',true],['sensenova','sensenova-u1.5-fast','lost-submit',false],['sensenova','sensenova-u1.5-fast','download',true]] as const) test(`${provider}${model==='sensenova-u1.5-fast'?'/'+model:''} ${scenario}: recovery never repeats billed submission`,async(t)=>{
-  // Exercise the original HyImage 3.0 wire and recovery contract before its cutoff.
-  if (provider==='tokenhub') t.mock.method(Date, 'now', () => Date.parse('2026-10-31T12:00:00Z'))
+test('a saved Qianfan image-edit workflow is rejected before creating a paid execution',async t=>{
+  t.mock.method(Date, 'now', () => Date.parse('2026-11-25T10:00:00+08:00'))
+  const f=await createRefineRuntime()
+  try {
+    const source=await upload(f,f.image)
+    const result=await f.post(request('qianfan','qwen-image-edit',source.objectKey))
+    assert.equal(result.data.businessCode,'MODEL_UNAVAILABLE')
+    assert.equal(result.data.code,400)
+    assert.match(result.data.error,/原型号已不可用，请重新选择/)
+    assert.equal(f.providerCalls.length,0)
+    assert.equal(await f.db.collection('paperbanana_provider_executions').countDocuments({}),0)
+  } finally {await f.close()}
+})
+
+for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-image-edit@2511','lost-submit',true],['tokenhub','hy-image-v3.5-preview','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','download',true],['tokenhub','hy-image-v3.5-preview','download',true],['sensenova','sensenova-u1.5-lite','lost-submit',false],['sensenova','sensenova-u1.5-lite','download',true],['sensenova','sensenova-u1.5-fast','lost-submit',false],['sensenova','sensenova-u1.5-fast','download',true]] as const) test(`${provider}${model==='sensenova-u1.5-fast'?'/'+model:''} ${scenario}: recovery never repeats billed submission`,async(t)=>{
+  // Exercise an active synchronous TokenHub route after the HyImage 3.0 retirement.
+  if (provider==='tokenhub') t.mock.method(Date, 'now', () => Date.parse('2026-11-25T10:00:00+08:00'))
   // SenseNova Fast uses the same callOfficialImageChannel synchronous checkpoint,
   // download and billing path as the physically removed Step 2x fixture.
   const f=await createRefineRuntime({tokenDance:true})
   try {
-    const source=await upload(f,['sensenova','qianfan'].includes(provider)?await sharp({create:{width:1024,height:1024,channels:3,background:'#b1c5ae'}}).png().toBuffer():f.image)
+    const source=await upload(f,provider==='sensenova'?await sharp({create:{width:1024,height:1024,channels:3,background:'#b1c5ae'}}).png().toBuffer():f.image)
     if(model==='sensenova-u1.5-fast') {
       assertRemoved('stepfun','step-2x-large')
       const rejected=await f.post(request('stepfun','step-2x-large',source.objectKey))

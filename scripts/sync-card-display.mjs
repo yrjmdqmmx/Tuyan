@@ -145,7 +145,7 @@ const miniAudit = createRequire(import.meta.url)('../apps/miniprogram/miniprogra
 collectUrls(miniAudit)
 // Reuse Mini's already-shipped primary URLs. Verify this compact projection
 // against the captured page status; a future source-policy change must fail here.
-for (const page of capture.pages) assert.equal(miniAudit.sources[miniAudit.rows['tokendance/' + page.id][5]] === 'https://tokendance.space/models/' + page.id, page.verified, page.id)
+for (const page of capture.pages.filter(page => !miniAudit.removed['tokendance/' + page.id])) assert.equal(miniAudit.sources[miniAudit.rows['tokendance/' + page.id][5]] === 'https://tokendance.space/models/' + page.id, page.verified, page.id)
 const miniPages = `const catalog = require('./static-model-catalog.js').STATIC_MODEL_REGISTRY;
 const audit = require('./model-audit-data.js');
 const tokenDancePages = Object.fromEntries(catalog.tokendance.models.map(({id}) => [id, {verified: audit.sources[audit.rows['tokendance/' + id][5]] === 'https://tokendance.space/models/' + id}]));

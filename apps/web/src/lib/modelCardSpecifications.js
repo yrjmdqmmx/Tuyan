@@ -69,6 +69,7 @@ export function modelCardSpecifications(provider, model, registry) {
   const sources = modelCardSources({ channel: provider, model, audit, fields,
     lifecycle: lifecycle || (retired ? { ...retired, state: 'retired' } : null), checks: MODEL_AUDIT_DATA.sourceChecks })
   return {
+    ...(model.routingNotice && {routingNotice:model.routingNotice}),
     fields, conflicts, sourceModel,
     input: text(fields.inputModalities), output: text(fields.outputModalities), context, maxOutput,
     inputFact: fields.inputModalities, outputFact: fields.outputModalities,

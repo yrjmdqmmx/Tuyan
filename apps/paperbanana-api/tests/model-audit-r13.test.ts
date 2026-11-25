@@ -10,6 +10,10 @@ test('R13 shared Core/API sources exclude known dead links and retain seven chan
   const repaired = read('apps/web/tests/fixtures/r12-final-link-check-20261109.json').filter((row: any) => row.originalStatus === 404)
   assert.equal(repaired.length, 7)
   for (const { channel, modelId, finalUrl } of repaired) {
+    if (MODEL_AUDIT_DATA.removed[channel + '/' + modelId]) {
+      assert.equal(MODEL_AUDIT_DATA.rows[channel + '/' + modelId], undefined)
+      continue
+    }
     const audit = auditedModelSpecs(channel, modelId)
     assert.ok(!dead.has(audit.sourceUrl))
     assert.equal(audit.sourceLinks[0].url, finalUrl)
@@ -32,6 +36,10 @@ test('R13B Core audit sources resolve notice labels for full/static consumers wi
   const registry = unpackRegistry(read('apps/web/tests/fixtures/r11-registry-head.json'))
   assert.equal(cases.length, 25)
   for (const { channel, modelId, url } of cases) {
+    if (MODEL_AUDIT_DATA.removed[channel + '/' + modelId]) {
+      assert.equal(MODEL_AUDIT_DATA.rows[channel + '/' + modelId], undefined)
+      continue
+    }
     const audit = auditedModelSpecs(channel, modelId)
     for (const model of [registry.providers[channel].models.find((m: any) => m.id === modelId), STATIC_MODEL_REGISTRY[channel].models.find((m: any) => m.id === modelId)]) {
       if (!model) { assert.ok(MODEL_AUDIT_DATA.removed[channel + '/' + modelId]); continue }

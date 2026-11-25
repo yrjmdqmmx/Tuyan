@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url'
 import { STATIC_MODEL_REGISTRY, STATIC_MODEL_REGISTRY_VERSION } from '../apps/web/src/lib/staticModelCatalog.js'
 import { miniModelCatalog } from '../scripts/lib/mini-model-catalog.mjs'
 import { historicalModels, laterDisabled } from '../test-support/model-catalog-history.mjs'
+import { catalogBeforeNovember24 } from '../test-support/retirement-projections.mjs'
 import removed from '../config/removed-models.json' with {type:'json'}
 import versions from '../config/model-version-audit.json' with {type:'json'}
 import tokenDance from '../config/tokendance/catalog.json' with {type:'json'}
@@ -186,16 +187,17 @@ test('regional, realtime, edit-only and reference-count boundaries remain channe
 
 test('September refresh keeps all previous provider defaults and exact retired identities', () => {
   const review = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog-review-20260921.json'), 'utf8'))
+  const historical = catalogBeforeNovember24(STATIC_MODEL_REGISTRY)
   for (const [provider, defaults] of Object.entries(review.baselineDefaults)) assert.deepEqual(STATIC_MODEL_REGISTRY[provider].defaults, defaults, provider)
   assert.equal(review.added.length, 20)
   assert.equal(review.retired.length, 6)
   for (const item of review.retired) {
-    const model = STATIC_MODEL_REGISTRY[item.provider].models.find(m => m.id === item.id)
+    const model = historical[item.provider].models.find(m => m.id === item.id)
     assert.equal(model.selectable, false)
     assert.ok(model.disabledReason)
   }
   for (const item of review.added) {
-    const model = STATIC_MODEL_REGISTRY[item.provider].models.find(m => m.id === item.id)
+    const model = historical[item.provider].models.find(m => m.id === item.id)
     assert.deepEqual(model.roles, item.roles)
     assert.equal(model.verified, false)
     assert.equal(model.verificationState, 'catalog')
