@@ -1,0 +1,21 @@
+[Unit]
+Description=Tuyan identity provider egress for Hangzhou
+Requires=wg-quick@pbsg0.service
+After=wg-quick@pbsg0.service network-online.target
+
+[Service]
+Type=simple
+User=proxy
+Group=proxy
+RuntimeDirectory=tuyan-identity-proxy
+ExecStartPre=/usr/sbin/squid -k parse -f /etc/squid/tuyan-identity.conf
+ExecStart=/usr/sbin/squid -N -f /etc/squid/tuyan-identity.conf
+Restart=on-failure
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+RestrictAddressFamilies=AF_INET AF_UNIX AF_NETLINK
+
+[Install]
+WantedBy=multi-user.target

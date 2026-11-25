@@ -25,6 +25,8 @@ ADMISSION_KEYS = set(ADMISSION_BOUNDS)
 AGENT_HOST_MOUNT = '/var/lib/tuyan-observation/agent:/run/tuyan-ops-host:ro'
 AGENT_HOST_FILE = '/run/tuyan-ops-host/hz-latest.json'
 
+HK_ROUTE_KEYS = {'PAPERBANANA_HK_PROXY_URL', 'PAPERBANANA_PROVIDER_HK_HOSTS'}
+
 def validate_agent_tokens(value):
     try:
         if not isinstance(value, str) or len(value) > 4096 or re.search(r'[\n\r\x00$`\\]', value): raise ValueError()
@@ -56,7 +58,7 @@ IDENTITY_PATTERNS = {
  'GITHUB_CLIENT_ID': r'[A-Za-z0-9]{10,100}', 'GITHUB_CLIENT_SECRET': r'[A-Za-z0-9_-]{20,256}',
  'GOOGLE_CLIENT_ID': r'[0-9]+-[A-Za-z0-9_-]+\.apps\.googleusercontent\.com',
  'GOOGLE_CLIENT_SECRET': r'[A-Za-z0-9_-]{20,256}',
- 'AUTH_IDENTITY_PROXY_URL': r'http://10\.78\.0\.1:3129',
+ 'AUTH_IDENTITY_PROXY_URL': r'http://(?:10\.78\.0\.1|10\.77\.0\.2):3129',
  'AUTH_SMS_ENABLED': r'false', 'AUTH_SMS_DELIVERY_ENABLED': r'false', 'WECHAT_OAUTH_ENABLED': r'false',
 }
 
@@ -102,9 +104,11 @@ def patch_env(text, changes):
         key = line.split('=', 1)[0]
         if key in changes:
             if key in seen: raise ValueError('duplicate environment key')
-            seen.add(key); line = key + '=' + changes[key]
+            seen.add(key)
+            if changes[key] is None: continue
+            line = key + '=' + changes[key]
         lines.append(line)
-    lines.extend(k + '=' + v for k, v in changes.items() if k not in seen)
+    lines.extend(k + '=' + v for k, v in changes.items() if k not in seen and v is not None)
     return '\n'.join(lines) + '\n'
 
 def validate(m):
@@ -116,7 +120,15 @@ def validate(m):
     for name, change in m['services'].items():
         if set(change) - {'image', 'env'}: raise ValueError('unknown change')
         if 'image' in change and not re.fullmatch(r'(?:[a-z0-9./:_-]+@)?sha256:[a-f0-9]{64}', change['image']): raise ValueError('image must be immutable')
-        for key, value in change.get('env', {}).items():
+        env = change.get('env', {})
+        if HK_ROUTE_KEYS.intersection(env):
+            if name != 'core' or not all(key in env and env[key] is None for key in HK_ROUTE_KEYS):
+                raise ValueError('remove both Hong Kong route settings together on Core')
+        for key, value in env.items():
+            if key in HK_ROUTE_KEYS: continue
+            if key == 'TOKENDANCE_CALLBACK_URL':
+                if name != 'core' or value != 'https://tuyansci.cn/': raise ValueError('invalid production TokenDance callback')
+                continue
             if key.startswith('TUYAN_OPS_'):
                 if name != 'cn-gateway': raise ValueError('operations agent is limited to the CN Gateway')
                 if key == 'TUYAN_OPS_AGENT_ENABLED' and value in {'true','false'}: continue
@@ -170,6 +182,10 @@ def main(m, apply=False, keep=False):
     fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
     try:
         before = {name: inspect(info[0]) for name,info in SERVICES.items()}
+        if HK_ROUTE_KEYS.intersection(m['services'].get('core', {}).get('env', {})):
+            current = dict(entry.split('=', 1) for entry in before['core']['Config']['Env'])
+            if current.get('PAPERBANANA_PROVIDER_EGRESS_MODE') != 'sg-required' or current.get('PAPERBANANA_SG_PROXY_URL', '').rstrip('/') != 'http://10.77.0.2:3128':
+                raise ValueError('Singapore model egress must be configured before removing Hong Kong')
         for name, image in m['expected_images'].items():
             if before[name]['Image'] != image: raise ValueError('production changed; inspect again')
         bench_env = dict(v.split('=',1) for v in before['benchmark']['Config']['Env'])

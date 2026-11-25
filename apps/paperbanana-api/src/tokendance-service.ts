@@ -23,7 +23,7 @@ export function tokenDanceCipher(secret: string) {
 const publicSession = (session: any) => Object.fromEntries(['id', 'amount', 'status', 'payment_url', 'alipay_url', 'expired_at', 'created_at', 'paid_at'].filter(k => session[k] !== undefined).map(k => [k, session[k]]))
 const idPattern = /^[A-Za-z0-9_-]{1,160}$/
 
-export function createTokenDanceService({ db, fetcher = fetch, secret = '', callbackUrl = TOKENDANCE_APP_URL, managementKey = '', applicationId = '01M22GYKP6XTME912AJ18BK2S9', now = () => Date.now() }: {
+export function createTokenDanceService({ db, fetcher = fetch, secret = '', callbackUrl = 'https://tuyansci.cn/', managementKey = '', applicationId = '01M22GYKP6XTME912AJ18BK2S9', now = () => Date.now() }: {
   db: Db; fetcher?: typeof fetch; secret?: string; callbackUrl?: string; managementKey?: string; applicationId?: string; now?: () => number
 }) {
   const cipher = secret ? tokenDanceCipher(secret) : null
@@ -31,7 +31,7 @@ export function createTokenDanceService({ db, fetcher = fetch, secret = '', call
   const flows = db.collection<any>('paperbanana_tokendance_flows')
   const payments = db.collection<any>('paperbanana_tokendance_payments')
   const callback = new URL(callbackUrl)
-  if (callback.origin !== new URL(TOKENDANCE_APP_URL).origin && !['localhost', '127.0.0.1'].includes(callback.hostname)) throw new Error('观猹 TokenDance callback must be first party or explicit local test URL')
+  if (callback.origin !== 'https://tuyansci.cn' && callback.origin !== new URL(TOKENDANCE_APP_URL).origin && !['localhost', '127.0.0.1'].includes(callback.hostname)) throw new Error('观猹 TokenDance callback must be first party or explicit local test URL')
   if (callback.hash || callback.username || callback.password) throw new Error('Invalid TokenDance callback URL')
   const request = async (path: string, key: string, body?: unknown) => tokenDanceJson(await tokenDanceResponse(fetcher, path, key, body, AbortSignal.timeout(30_000)))
   const enabled = () => { if (!cipher) throw new TokenDanceError(503, '观猹 TokenDance 连接服务尚未配置。') }

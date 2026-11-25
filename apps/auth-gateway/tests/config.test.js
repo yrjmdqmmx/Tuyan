@@ -98,6 +98,7 @@ test('default origins include exact WeChat runtime and developer tool origins', 
   assert.deepEqual(config.frontendOrigins, [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
+    'https://tuyansci.cn',
     'https://www.paperbanana.asia',
     'https://paperbanana.asia',
     'https://servicewechat.com',
@@ -126,8 +127,8 @@ test('email security defaults are fail-safe and use fixed HTTPS account pages', 
   assert.deepEqual(config.authEmail, {
     deliveryEnabled: false,
     requireVerification: false,
-    verificationCallbackUrl: 'https://www.paperbanana.asia/account/email-verified.html',
-    resetPasswordUrl: 'https://www.paperbanana.asia/account/reset-password.html',
+    verificationCallbackUrl: 'https://tuyansci.cn/account/email-verified.html',
+    resetPasswordUrl: 'https://tuyansci.cn/account/reset-password.html',
     windowSeconds: 900,
     windowMax: 3,
     dailyMax: 10,
@@ -216,5 +217,5 @@ test('new gateway can use exact Hangzhou account origin while old gateway stays 
   for (const origin of ['https://tuyansci.cn.evil.example', 'https://evil.tuyansci.cn', 'https://tuyansci.cn:444', 'http://tuyansci.cn']) {
     assert.throws(() => loadGatewayConfig(validEnv({ AUTH_PASSWORD_RESET_URL: origin + '/account/reset-password.html' })));
   }
-  assert.equal(loadGatewayConfig(validEnv()).authEmail.resetPasswordUrl, 'https://www.paperbanana.asia/account/reset-password.html');
+  assert.equal(loadGatewayConfig(validEnv()).authEmail.resetPasswordUrl, 'https://tuyansci.cn/account/reset-password.html');
 });

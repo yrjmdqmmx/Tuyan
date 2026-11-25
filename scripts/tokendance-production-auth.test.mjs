@@ -54,8 +54,8 @@ test('production login keeps upstream credentials encrypted and exposes only a f
   assert.match(result.headers.get('set-cookie'), /HttpOnly; SameSite=Lax/);
   assert.doesNotMatch(cookie, /fixture-upstream|paperbanana/);
   assert.doesNotMatch(JSON.stringify([...db.rows.values()]), /fixture-upstream|fixture-password/);
-  assert.equal(calls[0].url, 'https://api.paperbanana.asia/api/auth/sign-in/email');
-  assert.equal(calls[0].options.headers.Origin, 'https://www.paperbanana.asia');
+  assert.equal(calls[0].url, 'https://tuyansci.cn/api/auth/sign-in/email');
+  assert.equal(calls[0].options.headers.Origin, 'https://tuyansci.cn');
   assert.equal(calls[0].options.redirect, 'error');
   const res = await bridge.webHandler(request('get-session', { method: 'GET', cookie }));
   assert.equal((await res.json()).user.id, 'real-user-id');
@@ -80,8 +80,8 @@ test('production registration and reset preserve canonical callback destinations
   const calls = [];
   const { bridge } = await fixture({ fetcher: async (url, options) => { calls.push({ url, payload: JSON.parse(options.body) }); return Response.json({ code: 'RATE_LIMITED', message: 'retry' }, { status: 429, headers: { 'X-Retry-After': '60' } }); } });
   for (const [route, body] of [
-    ['sign-up/email', { callbackURL: 'https://www.paperbanana.asia/account/email-verified.html' }],
-    ['request-password-reset', { redirectTo: 'https://www.paperbanana.asia/account/reset-password.html' }],
+    ['sign-up/email', { callbackURL: 'https://tuyansci.cn/account/email-verified.html' }],
+    ['request-password-reset', { redirectTo: 'https://tuyansci.cn/account/reset-password.html' }],
   ]) {
     const result = await bridge.webHandler(request(route, { body }));
     assert.equal(result.status, 429); assert.equal(result.headers.get('x-retry-after'), '60');

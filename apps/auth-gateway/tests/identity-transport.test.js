@@ -15,7 +15,8 @@ test('identity transport pins destination and proxy, disables redirects, and nev
     assert.throws(() => transport.fetch(url), /ENDPOINT_DENIED/);
   }
   assert.equal(requests.length, 1); await transport.close(); assert.equal(closed, 1);
-  for (const value of ['http://10.78.0.1:3128','https://proxy.test','http://user:pass@10.78.0.1:3129']) assert.throws(() => loadIdentityProxy({AUTH_IDENTITY_PROXY_URL:value}), /PROXY_INVALID/);
+  assert.equal(loadIdentityProxy({ AUTH_IDENTITY_PROXY_URL: 'http://10.77.0.2:3129' }), 'http://10.77.0.2:3129');
+  for (const value of ['http://10.77.0.2:3128','http://10.78.0.1:3128','https://proxy.test','http://user:pass@10.78.0.1:3129']) assert.throws(() => loadIdentityProxy({AUTH_IDENTITY_PROXY_URL:value}), /PROXY_INVALID/);
 });
 
 test('local identity tests retain direct transport without constructing a proxy', async () => {

@@ -5,20 +5,11 @@ export const INPUT_LIMITS = Object.freeze({
   maxCriticRounds: 5,
 })
 
-const OFFICIAL_API_BASE = 'https://api.paperbanana.asia'
-const NEW_WEB_ORIGIN = 'https://tuyansci.cn'
-const OFFICIAL_API_ORIGINS = new Set([OFFICIAL_API_BASE, NEW_WEB_ORIGIN])
+const OFFICIAL_API_BASE = 'https://tuyansci.cn'
+const OFFICIAL_API_ORIGINS = new Set([OFFICIAL_API_BASE, 'https://api.paperbanana.asia'])
 const TERMINAL_JOB_STATUSES = new Set(['succeeded', 'failed', 'cancelled'])
 
-export function officialApiBase(origin = '') {
-  try {
-    const parsed = new URL(origin)
-    if (parsed.origin === NEW_WEB_ORIGIN) return NEW_WEB_ORIGIN
-    const host = parsed.hostname.toLowerCase()
-    if (host === 'paperbanana.asia' || host === 'www.paperbanana.asia') return OFFICIAL_API_BASE
-  } catch {
-    // Production builds still fall back to the pinned official endpoint.
-  }
+export function officialApiBase() {
   return OFFICIAL_API_BASE
 }
 
@@ -35,7 +26,6 @@ export function shouldPollJob(job) {
   return !TERMINAL_JOB_STATUSES.has(String(job?.status || '').toLowerCase())
 }
 
-export function accountPageUrl(page, origin = globalThis.location?.origin) {
-  const base = origin === NEW_WEB_ORIGIN ? NEW_WEB_ORIGIN : 'https://www.paperbanana.asia'
-  return new URL(`/account/${page}`, base).toString()
+export function accountPageUrl(page) {
+  return new URL(`/account/${page}`, OFFICIAL_API_BASE).toString()
 }

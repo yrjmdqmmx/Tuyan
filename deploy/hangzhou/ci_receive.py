@@ -161,7 +161,7 @@ def _deploy(project,stream):
   if set(m)!={'sha','images'} or m['sha']!=h['sha'] or set(m['images'])!=set(c['images']):raise ValueError('manifest mismatch')
   for name,image in m['images'].items():
    if not re.fullmatch('ghcr.io/yrjmdqmmx/'+c['images'][name]+r'@sha256:[a-f0-9]{64}',image):raise ValueError('unapproved image')
-  # Only registry bytes use this separate SSH tunnel. Existing model proxies are untouched.
+  # Registry transport is selected per project, separately from model routing.
   from registry_import import import_images
   registry_sources=dict(m['images'])
   m['images']=import_images(registry_sources,h['token'],h['username'])

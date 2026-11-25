@@ -196,12 +196,12 @@ export default function App() {
   const [showGenerationSettings, setShowGenerationSettings] = useState(false);
   const [generationFocusSetting, setGenerationFocusSetting] = useState('');
   const [inputOptimizationCredentialProvider, setInputOptimizationCredentialProvider] = useState('');
-  const [apiBase, setApiBase] = useState(() => API_BASE_DEFAULT || officialApiBase(globalThis.location?.origin));
+  const [apiBase, setApiBase] = useState(() => API_BASE_DEFAULT || officialApiBase());
   const apiBaseNormalized = useMemo(() => {
     try {
       return validateApiBase(apiBase, CUSTOM_API_BASE_ENABLED);
     } catch {
-      return officialApiBase(globalThis.location?.origin);
+      return officialApiBase();
     }
   }, [apiBase]);
   const [restoredRouting] = useState(() => loadRoutingSelection(providerDefaultRoutes(DEFAULT_WEB_PROVIDER, null, PROVIDERS), loadUniversalDrafts()));
@@ -1735,7 +1735,7 @@ export default function App() {
 
   return (
     <main className={`app-shell${activeTab === 'account' ? ' account-view' : ''}`}>
-      {LOCAL_CONSUMPTION_TEST && <section className="tokendance-panel" aria-label={t("本地消费测试")}><strong>{t("已连接正式图研账号服务 · 观猹 TokenDance 消费预览")}</strong><p>{t("使用你已有的图研账号登录，再连接观猹 TokenDance。生成、精修和优化输入会使用真实观猹 TokenDance 余额。")}</p><small>{t("本次预览的任务、图片和渠道授权保存在本机，线上历史记录可在")}<a href="https://www.paperbanana.asia/" target="_blank" rel="noreferrer">{t("正式图研")}</a>{t("查看。初始为 1 张候选图、0 轮评审。")}</small></section>}
+      {LOCAL_CONSUMPTION_TEST && <section className="tokendance-panel" aria-label={t("本地消费测试")}><strong>{t("已连接正式图研账号服务 · 观猹 TokenDance 消费预览")}</strong><p>{t("使用你已有的图研账号登录，再连接观猹 TokenDance。生成、精修和优化输入会使用真实观猹 TokenDance 余额。")}</p><small>{t("本次预览的任务、图片和渠道授权保存在本机，线上历史记录可在")}<a href="https://tuyansci.cn/" target="_blank" rel="noreferrer">{t("正式图研")}</a>{t("查看。初始为 1 张候选图、0 轮评审。")}</small></section>}
       <WorkbenchHeader currentUser={currentUser} onGuide={() => selectTab('guide')} onAdmin={isAdmin ? () => selectTab('admin') : undefined} onContact={() => setShowContactDialog(true)} onFeedback={openFeedbackDialog}
         onMiniProgram={() => setShowMiniProgramDialog(true)} onAgentConnection={() => setShowAgentConnection(true)}
         onSignOut={handleSignOut} onSignIn={() => setShowAuthPanel(true)} onAccount={openAccount} />

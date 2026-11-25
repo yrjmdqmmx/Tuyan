@@ -10,8 +10,8 @@
 </p>
 
 <p align="center">
-  <a href="https://www.paperbanana.asia/">在线工作台</a> ·
-  <a href="https://www.paperbanana.asia/leaderboard/">Tuyan Benchmark</a> ·
+  <a href="https://tuyansci.cn/">在线工作台</a> ·
+  <a href="https://tuyansci.cn/leaderboard/">Tuyan Benchmark</a> ·
   <a href="apps/miniprogram/">微信小程序</a> ·
   <a href="https://github.com/yrjmdqmmx/Tuyan-Skill">Agent Skill</a> ·
   <a href="https://github.com/yrjmdqmmx/Tuyan-MCP">匿名 MCP</a>
@@ -77,19 +77,19 @@ Agent 工作流默认把 `figure-spec.json`、实际提示词、参考来源、�
 
 ## Tuyan Benchmark 排行榜
 
-[Tuyan Benchmark](https://www.paperbanana.asia/leaderboard/) 面向真实科研图示任务公开题集、评分标准、审核机制和逐模型证据。截至 2026-10-09，公开榜单包含 46 个合格模型、固定 9 题（6 个生成题、3 个编辑题），采用十维等权评分，失败记 0，并提供双盲审核与争议仲裁；最新模型数量与排名以在线榜单为准。
+[Tuyan Benchmark](https://tuyansci.cn/leaderboard/) 面向真实科研图示任务公开题集、评分标准、审核机制和逐模型证据。截至 2026-10-09，公开榜单包含 46 个合格模型、固定 9 题（6 个生成题、3 个编辑题），采用十维等权评分，失败记 0，并提供双盲审核与争议仲裁；最新模型数量与排名以在线榜单为准。
 
 ### 排行榜与维度榜
 
 排行榜支持模型搜索、筛选与帕累托视图，并提供十维 Top10 和综合总矩阵。各维度覆盖科研忠实度、结构拓扑、文字符号、数值图表、指令遵从、信息层级、信息密度、发表级美观、编辑目标命中和非目标保持。
 
-[![图研 Tuyan Benchmark 排行榜与维度榜](docs/readme/benchmark-overview-2026-10-09.png)](https://www.paperbanana.asia/leaderboard/)
+[![图研 Tuyan Benchmark 排行榜与维度榜](docs/readme/benchmark-overview-2026-10-09.png)](https://tuyansci.cn/leaderboard/)
 
 ### 具体题目与模型证据
 
 每个模型页面公开固定题目的生成结果、尝试摘要、分维度结果、审核依据、完整要求、负向约束与文件 SHA-256。编辑题还会并列展示 before / after。
 
-[![复杂科研方法流程题与模型证据](docs/readme/benchmark-case-method-flow-2026-10-09.png)](https://www.paperbanana.asia/leaderboard/models/qwen-image-3.0-pro%3Acodex_scientific_v2%3Acodex-scientific-2026-09-v1)
+[![复杂科研方法流程题与模型证据](docs/readme/benchmark-case-method-flow-2026-10-09.png)](https://tuyansci.cn/leaderboard/models/qwen-image-3.0-pro%3Acodex_scientific_v2%3Acodex-scientific-2026-09-v1)
 
 ## 安装 Agent Skill 与 MCP
 
@@ -233,7 +233,7 @@ node --test apps/miniprogram/tests/*.test.cjs
 
 - `.github/workflows/ci.yml` 在 `main`、功能分支与 PR 上验证客户端、共享包、后端和 Worker；普通 CI 不发布生产服务。
 - `.github/workflows/deploy-hangzhou.yml` 只跟随 `codex/hangzhou-production` 的符合路径条件的推送，测试通过后发布杭州。后续开发统一合入 `main`；获得发布授权后，再从已验收的 `main` 同步发布分支。本次主分支合并不改变部署触发器。
-- 业务、数据库和私有 OSS 使用杭州部署；香港与新加坡保留受控模型出口及文档约定的恢复用途。历史 HK / Pages 工作流不是日常发布入口，不应因主分支合并而手动启用。
+- 业务、数据库和私有 OSS 使用杭州部署；模型请求按渠道使用杭州直连或新加坡受控出口。历史 HK / Pages 工作流不是日常发布入口，不应因主分支合并而手动启用。
 - Sealos / Sealaf 已退役，不能作为回滚目标。当前入口：[架构与实机证据](docs/operations/current-architecture.md)、[杭州部署](deploy/hangzhou/README.md)、[新加坡出口](deploy/sg-egress/README.md)。
 
 ## 贡献约定
