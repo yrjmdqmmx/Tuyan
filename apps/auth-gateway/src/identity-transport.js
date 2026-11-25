@@ -10,7 +10,7 @@ const ENDPOINTS = new Set([
 export function loadIdentityProxy(env = {}) {
   const value = String(env.AUTH_IDENTITY_PROXY_URL || '').trim();
   // Dedicated WireGuard listener: it cannot relay model API requests.
-  if (value && value !== 'http://10.78.0.1:3129') throw Error('AUTH_IDENTITY_PROXY_INVALID');
+  if (value && !['http://10.77.0.2:3129', 'http://10.78.0.1:3129'].includes(value)) throw Error('AUTH_IDENTITY_PROXY_INVALID');
   return value;
 }
 

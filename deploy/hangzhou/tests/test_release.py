@@ -6,6 +6,17 @@ def manifest():
  return {'version':1,'id':'storage-test-20261018','expected_images':{k:'sha256:'+'a'*64 for k in r.SERVICES},'services':{'core':{'env':{'OSS_REGION':'oss-cn-hangzhou'}}}}
 
 class SafetyTests(unittest.TestCase):
+ def test_retire_hong_kong_model_route(self):
+  changes = dict.fromkeys(r.HK_ROUTE_KEYS)
+  m = manifest()
+  m['services'] = {'core': {'env': changes}}
+  r.validate(m)
+  original = 'PAPERBANANA_SG_PROXY_URL=test\nPAPERBANANA_HK_PROXY_URL=old\nPAPERBANANA_PROVIDER_HK_HOSTS=old\n'
+  self.assertEqual(r.patch_env(original, changes), 'PAPERBANANA_SG_PROXY_URL=test\n')
+  for service, patch in [('gateway', changes), ('core', {'PAPERBANANA_HK_PROXY_URL': None}), ('core', dict.fromkeys(changes, ''))]:
+   m['services'] = {service: {'env': patch}}
+   with self.assertRaises(ValueError): r.validate(m)
+
  def test_agent_read_config_is_cn_only_bounded_and_preserves_other_settings(self):
   records=json.dumps([{'id':'grokbot','sha256':'a'*64,'scopes':['overview:read','health:read'],'expiresAt':'2027-01-01T00:00:00.000Z'}],separators=(',',':'))
   settings={'TUYAN_OPS_AGENT_ENABLED':'true','TUYAN_OPS_AGENT_TOKENS':records,'TUYAN_OPS_HOST_SNAPSHOT_FILE':r.AGENT_HOST_FILE,'PAPERBANANA_OPERATIONS_TOKEN':'b'*64}

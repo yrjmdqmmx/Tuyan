@@ -83,7 +83,7 @@ test('SVG result edit restores original inputs and editable source into SVG gene
  await act(async()=>{resolveJob(Response.json({code:0,job:oldJob}));});
  await screen.findByText('待修改的SVG源码.txt');
  assert.ok(screen.getByText('历史任务数据.json'));assert.ok(screen.getByText('original-input.png'));
- assert.equal(uploadBodies.length,0);const stored=await listBrowserMaterials(JSON.stringify(['https://api.paperbanana.asia','old-user']));assert.ok(await(await browserFile(JSON.stringify(['https://api.paperbanana.asia','old-user']),stored.find(f=>f.filename==='待修改的SVG源码.txt'))).text().then(t=>t.includes('ORIGINAL SVG LABEL')));assert.ok(screen.getAllByText('已保存到浏览器 · 待读取').length);
+ assert.equal(uploadBodies.length,0);const stored=await listBrowserMaterials(JSON.stringify(['https://tuyansci.cn','old-user']));assert.ok(await(await browserFile(JSON.stringify(['https://tuyansci.cn','old-user']),stored.find(f=>f.filename==='待修改的SVG源码.txt'))).text().then(t=>t.includes('ORIGINAL SVG LABEL')));assert.ok(screen.getAllByText('已保存到浏览器 · 待读取').length);
  assert.equal(screen.getByLabelText(/论文方法内容/).value,'PRIVATE OLD USER METHODS');
  fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));
  assert.equal(screen.getByLabelText('导出格式').value,'svg');assert.equal(screen.getByLabelText('检索设置').value,'manual');
@@ -93,11 +93,11 @@ test('SVG result edit restores original inputs and editable source into SVG gene
 })
 
 test('saved task restores canonical originals, journal version and read records without changing retrieval',async()=>{
- setup();const local=await saveBrowserMaterial(JSON.stringify(['https://api.paperbanana.asia','old-user']),new File(['original PPTX bytes'],'saved-research.pptx'));
+ setup();const local=await saveBrowserMaterial(JSON.stringify(['https://tuyansci.cn','old-user']),new File(['original PPTX bytes'],'saved-research.pptx'));
  const f={...local,id:'saved-original',clientFileId:local.id,status:'uploaded'};
  const journalSelection={...defaultJournalSelection('frontiers-ai'),version:'2026-10-13.v1',stage:'production',widthMm:180};
  const saved={...oldJob,journalSelection,journalProfile:journalSnapshot(journalSelection),pipelineMode:'demo_full',generationPath:'model-v1',materialFiles:[f],materialReads:[{type:'read',materialId:f.id,recordId:'reading-1',operation:{op:'render',pages:[2]},status:'partial',warnings:['字体替换已记录']}],retrievalSetting:'random'}
- render(React.createElement(App));await waitFor(()=>assert.ok(screen.getAllByText('old@example.test').length));fireEvent.click(within(screen.getByRole('navigation',{name:'主导航'})).getByRole('button',{name:'任务记录'}));fireEvent.click(await screen.findByRole('button',{name:'恢复图型与完整输入'}));await waitFor(()=>assert.ok(resolveJob));await act(async()=>{resolveJob(Response.json({code:0,job:saved}));});await screen.findByText('saved-research.pptx');assert.ok(screen.queryByText('文件与读取详情')===null,'Expected no matching DOM element');assert.equal(await(await browserFile(JSON.stringify(['https://api.paperbanana.asia','old-user']),f)).text(),'original PPTX bytes');assert.ok(screen.getAllByText(/部分读取/).length);fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));assert.equal(screen.getByLabelText('检索设置').value,'random');assert.equal(screen.getByRole('radio',{name:/完整生成/}).checked,true);assert.ok(!actions.includes('getMaterial'))
+ render(React.createElement(App));await waitFor(()=>assert.ok(screen.getAllByText('old@example.test').length));fireEvent.click(within(screen.getByRole('navigation',{name:'主导航'})).getByRole('button',{name:'任务记录'}));fireEvent.click(await screen.findByRole('button',{name:'恢复图型与完整输入'}));await waitFor(()=>assert.ok(resolveJob));await act(async()=>{resolveJob(Response.json({code:0,job:saved}));});await screen.findByText('saved-research.pptx');assert.ok(screen.queryByText('文件与读取详情')===null,'Expected no matching DOM element');assert.equal(await(await browserFile(JSON.stringify(['https://tuyansci.cn','old-user']),f)).text(),'original PPTX bytes');assert.ok(screen.getAllByText(/部分读取/).length);fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));assert.equal(screen.getByLabelText('检索设置').value,'random');assert.equal(screen.getByRole('radio',{name:/完整生成/}).checked,true);assert.ok(!actions.includes('getMaterial'))
  assert.ok(screen.getByRole('button',{name:/Frontiers in Artificial Intelligence.*录用后制作.*180 mm.*2026-10-13.v1/}));
  assert.deepEqual(JSON.parse(window.localStorage.getItem(JOURNAL_SETTINGS_KEY)),journalSelection);
 })
@@ -176,7 +176,7 @@ test('refining a task reuses its figure and journal; replacing the source discar
 
 test('restored refinement browser original carries the saved source task, figure and rule version without another confirmation',async()=>{
  setup();globalThis.Image=class{naturalWidth=120;naturalHeight=80;set src(v){queueMicrotask(()=>this.onload?.())}};
- const scope=JSON.stringify(['https://api.paperbanana.asia','old-user']);
+ const scope=JSON.stringify(['https://tuyansci.cn','old-user']);
  const source=await saveBrowserMaterial(scope,new File(['saved bytes'],'saved-original.png',{type:'image/png'}));
  const selection={...defaultJournalSelection('plos-one'),contentType:'data'};
  const saved={...oldJob,refineMode:true,sourceContentType:'data',outputFormat:'png',generationContext:{figureTypeId:'bar'},journalSelection:selection,taskSourceMaterial:{...source,id:'server-source',clientFileId:source.id}};

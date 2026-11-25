@@ -121,7 +121,7 @@ export default function AccountSettingsDialog({ apiBase, email, userId, onClose,
           <a href="/privacy-policy.html" target="_blank" rel="noreferrer">隐私政策</a>
           <a href="/terms-of-service.html" target="_blank" rel="noreferrer">服务条款</a>
         </div>
-        {productionPreview ? <p role="status">当前使用正式图研账号。请在<a href="https://www.paperbanana.asia/" target="_blank" rel="noreferrer">正式图研站点</a>管理账号与隐私；本地预览的任务和图片保存在本机。</p> : <>
+        {productionPreview ? <p role="status">当前使用正式图研账号。请在<a href="https://tuyansci.cn/" target="_blank" rel="noreferrer">正式图研站点</a>管理账号与隐私；本地预览的任务和图片保存在本机。</p> : <>
         {lifecycle?.state !== 'active' ? <p role="status">{accountLifecycleMessage(lifecycle)}</p> : null}
         {usePhoneCode && !phoneProof && <PhoneCodeForm controller={phone} purpose="delete" onVerified={proof=>setPhoneProof({...proof,expiresAt:Date.now()+300000})}/>}
         <form className="account-delete-panel" onSubmit={submit}>

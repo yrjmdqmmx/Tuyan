@@ -6,7 +6,7 @@ state_dir="/var/lib/paperbanana-monitor"
 status_file="$state_dir/status"
 offset_file="$state_dir/nginx.offset"
 access_log="/var/log/nginx/paperbanana-api.access.log"
-cert_file="/etc/letsencrypt/live/api.paperbanana.asia/cert.pem"
+cert_file="/etc/letsencrypt/live/tuyansci.cn/cert.pem"
 backup_dir="/opt/paperbanana/backups"
 monitor_env="/opt/paperbanana/secrets/monitor.env"
 failures=()
@@ -36,9 +36,9 @@ check_json_endpoint() {
   fi
 }
 
-check_json_endpoint "API health" "https://api.paperbanana.asia/health" \
+check_json_endpoint "API health" "https://tuyansci.cn/health" \
   '.ok == true and .runtime == "gateway" and .backend.ok == true'
-check_json_endpoint "API readiness" "https://api.paperbanana.asia/ready" \
+check_json_endpoint "API readiness" "https://tuyansci.cn/ready" \
   '.ok == true and .runtime == "gateway" and .backend.ok == true and .backend.data.ready == true and
    (.backend.data.dependencies.providerEgress == "ready" or .backend.data.dependencies.providerEgress == "degraded")'
 

@@ -11,7 +11,7 @@ import AuthPanel from '../src/components/AuthPanel.jsx';
 test('local account bridge displays existing Watcha binding and an explicit official-site management link without creating OAuth transactions',async()=>{
  const original=globalThis.fetch;const calls=[];globalThis.fetch=async(url,options)=>{calls.push(options?.method||'GET');return Response.json({available:true,linked:true,managedExternally:true,managementUrl:'https://www.paperbanana.asia/',hasPassword:true});};
  function Fixture(){const c=useWatcha('', 'existing',true,()=>{});return React.createElement(WatchaIdentityPanel,{controller:c,user:{id:'existing'}});}
- try{render(React.createElement(Fixture));await waitFor(()=>assert.ok(screen.getByRole('link',{name:'管理观猹绑定'})));assert.equal(screen.getByRole('link',{name:'管理观猹绑定'}).getAttribute('href'),'https://www.paperbanana.asia/');assert.equal(screen.queryByRole('button',{name:'解绑观猹'})===null,true);assert.ok(calls.every(method=>method==='GET'));}finally{cleanup();globalThis.fetch=original;}
+ try{render(React.createElement(Fixture));await waitFor(()=>assert.ok(screen.getByRole('link',{name:'管理观猹绑定'})));assert.equal(screen.getByRole('link',{name:'管理观猹绑定'}).getAttribute('href'),'https://tuyansci.cn/');assert.equal(screen.queryByRole('button',{name:'解绑观猹'})===null,true);assert.ok(calls.every(method=>method==='GET'));}finally{cleanup();globalThis.fetch=original;}
 });
 
 test('status failures keep a visible retry and preserve the pending signup form', async () => {
@@ -79,12 +79,12 @@ test('disabled login is hidden and unverified existing users can verify before b
   } finally { cleanup(); }
 });
 
-test('new-domain disabled Watcha keeps email login and the original-site fallback visible', () => {
+test('new-domain disabled Watcha offers email login without linking back to the retired site', () => {
   const originalLocation = globalThis.location;
   try {
     Object.defineProperty(globalThis, 'location', { configurable: true, value: { origin: 'https://tuyansci.cn' } });
     render(React.createElement(AuthPanel, { watcha: { status: { available: false, pending: null } } }));
-    assert.equal(screen.getByRole('link', { name: '前往原站使用观猹登录' }).href, 'https://www.paperbanana.asia/');
+    assert.equal(screen.queryByRole('link', { name: '前往原站使用观猹登录' }), null);
     assert.ok(screen.getByLabelText('邮箱'));
     assert.ok(screen.getByLabelText('密码'));
     assert.equal(document.body.textContent.includes('尚待开通'), false);

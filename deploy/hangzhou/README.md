@@ -61,19 +61,19 @@ GitHub Actions、实际镜像、线上版本与零模型验收结果见 [2026-10
 
 ### 镜像传输与失败状态
 
-杭州直拉 GHCR 实测过慢，镜像字节使用独立 SSH SOCKS 通道经香港获取，再由杭州 Skopeo/OCI 缓存导入 Docker。此通道不使用也不改动模型 Squid 配置。专用密钥只留杭州宿主，香港公钥限定源地址 `10.78.0.2`，仅允许 `ghcr.io:443` / `pkg-containers.githubusercontent.com:443`；禁止 shell、PTY 及其他目的地。通道只在导入时监听杭州 loopback，退出即关闭，不在香港缓存镜像。
-
-宿主需安装 `skopeo`，配置 root-only `/opt/paperbanana/operations/hangzhou/registry-tunnel/` 中的专用密钥及固定 HK known_hosts；`registry_import.py` 和接收器由运维安装，CI 发布包不能安装或改写它们。OCI 缓存 `/var/cache/hangzhou-ci-oci` 属于本流程；保留回退镜像，后续按磁盘使用情况维护，禁止对共享主机执行全局 prune。
+图研从杭州直接使用 Skopeo 拉取四个固定 digest 的 GHCR 镜像，显式移除继承的代理变量。OpenAcad 使用原有的独立镜像通道。宿主上的 `registry_import.py` 与接收器需由运维安装；网页发布包无法替换它们。保留 OCI 缓存与现有回退镜像。
 
 校验固定来源 digest、OCI 配置 blob SHA256、Linux amd64、Docker 实际运行配置与所有解压层摘要，返回宿主不可变 image ID。Docker containerd 后端的 image ID 可以是 manifest digest，因此不把它误认为配置 blob digest。公开回执同时记录来源 digest 和实际运行 image ID。
 
 发布日志管道明确启用 Bash `pipefail`，SSH/接收器失败必须让 CI 失败；绿色状态还必须有服务器健康回执与对应公开 `version.json`，不能仅凭日志保存成功判定上线。
 
-## 双域名前端（2026-10-19）
+## 图研公开入口与旧域名
 
-用户确认同时保留 `tuyansci.cn` 与 `www.paperbanana.asia`。杭州健康发布完成后，同一流水线的 `pages` job 从同一 Git SHA 构建旧域名前端并发布 GitHub Pages，使用原有 `https://api.paperbanana.asia` API/Auth 地址；不迁移登录 Cookie 或改写 OAuth 回调。两边 `version.json` 的 revision 必须一致，target 分别为 Hangzhou / GitHub Pages。
+杭州托管 `tuyansci.cn` 的网页、账号和公开 MCP。杭州发布后的 Pages 步骤只发布 `deploy/legacy-redirect/site`，旧网页链接保留路径、查询串和 fragment 跳至新站。旧 API 的 MCP 客户端需更新服务器地址；浏览器跳转不能代替 MCP 迁移。
 
-GitHub Pages 环境仅新增精确发布分支 `codex/hangzhou-production` 的部署许可。历史独立 `Deploy GitHub Pages` 工作流仍停用，避免旧 main 覆盖新版。Pages 失败须单独报告，不能把杭州成功等同于双域名成功。
+邮箱凭据和发信域名仍使用杭州现有配置。原香港邮件配置、诊断及整站 Pages 工作流保存在 `deploy/retired-workflows/`。杭州 CI 的受限密钥只执行 status/deploy；邮件配置由获准的杭州管理员处理，不能用旧香港密钥或旧环境覆盖杭州网关。
+
+图研 Core 在 `sg-required` 模式下由杭州处理国内及已配置的直连主机，其余受控海外主机使用杭州直连新加坡的 WireGuard。退役香港模型出口时通过发布清单在同一事务内将 Core 的 `PAPERBANANA_HK_PROXY_URL` 和 `PAPERBANANA_PROVIDER_HK_HOSTS` 同时设为 JSON `null`，发布器会移除这两个变量。清单保留当前直接访问主机清单。GitHub、Google 登录使用单独的 3129 端口；新加坡监听配置及 systemd 单元位于 `deploy/regional-egress/`。本地 SSH 管理可经杭州进入新加坡，使用已固定的新加坡主机密钥。
 
 ## 国内静态资源传输
 

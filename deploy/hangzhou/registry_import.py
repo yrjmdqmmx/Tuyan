@@ -1,4 +1,4 @@
-"""Import pinned GHCR images over a registry-only SSH tunnel; never proxies models."""
+"""Import pinned GHCR images for the Hangzhou release receiver."""
 import base64, contextlib, fcntl, hashlib, json, os, pathlib, re, socket, subprocess, tempfile, time
 KEYDIR=pathlib.Path('/opt/paperbanana/operations/hangzhou/registry-tunnel')
 CACHE=pathlib.Path('/var/cache/hangzhou-ci-oci')
@@ -53,11 +53,18 @@ def validate_imported(actual,config):
   raise ValueError('imported image runtime or layer identity mismatch')
  return actual['Id']
 
+def registry_transport(images):
+ # Tuyan pulls directly on Hangzhou. Other projects retain their own transport.
+ if images and all(re.fullmatch(r'ghcr.io/yrjmdqmmx/tuyan-hz-(?:core|gateway|benchmark|plot)@sha256:[a-f0-9]{64}', source) for source in images.values()):
+  direct = {key: value for key, value in os.environ.items() if key.lower() not in {'http_proxy','https_proxy','all_proxy','no_proxy'}}
+  return contextlib.nullcontext(direct)
+ return tunnel()
+
 def import_images(images,token,username):
  CACHE.mkdir(mode=0o700,parents=True,exist_ok=True)
  with open(LOCK,'a') as lock:
   fcntl.flock(lock,fcntl.LOCK_EX)
-  with tempfile.TemporaryDirectory(prefix='hz-registry-',dir='/run') as td,tunnel() as env:
+  with tempfile.TemporaryDirectory(prefix='hz-registry-',dir='/run') as td,registry_transport(images) as env:
    auth=pathlib.Path(td)/'auth.json';auth.write_text(json.dumps({'auths':{'ghcr.io':{'auth':base64.b64encode((username+':'+token).encode()).decode()}}}));auth.chmod(0o600)
    out={}
    for name,source in images.items():
