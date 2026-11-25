@@ -57,20 +57,22 @@ def registry_transport(images):
  # Tuyan pulls directly on Hangzhou. Other projects retain their own transport.
  if images and all(re.fullmatch(r'ghcr.io/yrjmdqmmx/tuyan-hz-(?:core|gateway|benchmark|plot)@sha256:[a-f0-9]{64}', source) for source in images.values()):
   direct = {key: value for key, value in os.environ.items() if key.lower() not in {'http_proxy','https_proxy','all_proxy','no_proxy'}}
-  return contextlib.nullcontext(direct)
- return tunnel()
+  # The Core application layer alone exceeds 280 MiB on the direct link.
+  return contextlib.nullcontext(direct), 7200
+ return tunnel(), 900
 
 def import_images(images,token,username):
  CACHE.mkdir(mode=0o700,parents=True,exist_ok=True)
  with open(LOCK,'a') as lock:
   fcntl.flock(lock,fcntl.LOCK_EX)
-  with tempfile.TemporaryDirectory(prefix='hz-registry-',dir='/run') as td,registry_transport(images) as env:
+  transport, pull_timeout = registry_transport(images)
+  with tempfile.TemporaryDirectory(prefix='hz-registry-',dir='/run') as td,transport as env:
    auth=pathlib.Path(td)/'auth.json';auth.write_text(json.dumps({'auths':{'ghcr.io':{'auth':base64.b64encode((username+':'+token).encode()).decode()}}}));auth.chmod(0o600)
    out={}
    for name,source in images.items():
     if not re.fullmatch(r'ghcr.io/yrjmdqmmx/(?:tuyan-hz-(?:core|gateway|benchmark|plot)|openacad-hz-worker)@sha256:[a-f0-9]{64}',source):raise ValueError('unapproved registry source')
     tag=source.split('@sha256:')[1];local='ghcr.io/yrjmdqmmx/'+source.split('/')[2].split('@')[0]+':hz-import-'+tag
-    cmd(['skopeo','--override-arch','amd64','--override-os','linux','copy','--src-authfile',str(auth),'docker://'+source,'oci:'+str(CACHE)+':'+tag],env=env,timeout=900)
+    cmd(['skopeo','--override-arch','amd64','--override-os','linux','copy','--src-authfile',str(auth),'docker://'+source,'oci:'+str(CACHE)+':'+tag],env=env,timeout=pull_timeout)
     expected=config_digest(CACHE,tag)
     found=subprocess.run(['docker','image','inspect',local],capture_output=True)
     if found.returncode:

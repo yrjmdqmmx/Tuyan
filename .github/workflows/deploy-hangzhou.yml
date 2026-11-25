@@ -145,7 +145,7 @@ jobs:
     needs: [verify, images]
     runs-on: ubuntu-latest
     # The verified Web archive and direct GHCR imports share this job deadline.
-    timeout-minutes: 75
+    timeout-minutes: 210
     environment: hangzhou-production
     permissions:
       contents: read

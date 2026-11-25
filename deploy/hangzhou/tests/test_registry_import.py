@@ -4,10 +4,14 @@ from unittest import mock
 class RegistryImportTests(unittest.TestCase):
  def test_tuyan_pulls_directly_without_inheriting_proxy_or_changing_other_projects(self):
   with mock.patch.dict(r.os.environ, {'HTTPS_PROXY':'http://unused','no_proxy':'example.org'}), mock.patch.object(r, 'tunnel') as tunnel:
-   with r.registry_transport({'core':'ghcr.io/yrjmdqmmx/tuyan-hz-core@sha256:'+'a'*64}) as env:
+   transport, timeout = r.registry_transport({'core':'ghcr.io/yrjmdqmmx/tuyan-hz-core@sha256:'+'a'*64})
+   self.assertEqual(timeout, 7200)
+   with transport as env:
     self.assertFalse(any(k.lower() in {'http_proxy','https_proxy','all_proxy','no_proxy'} for k in env))
    tunnel.assert_not_called()
-   self.assertIs(r.registry_transport({'worker':'ghcr.io/yrjmdqmmx/openacad-hz-worker@sha256:'+'a'*64}), tunnel.return_value)
+   transport, timeout = r.registry_transport({'worker':'ghcr.io/yrjmdqmmx/openacad-hz-worker@sha256:'+'a'*64})
+   self.assertIs(transport, tunnel.return_value)
+   self.assertEqual(timeout, 900)
 
  def fixture(self,root,arch='amd64'):
   def save(value):
