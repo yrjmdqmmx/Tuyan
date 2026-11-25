@@ -1,6 +1,11 @@
 // Loading this page must never consume a verification token. Mail clients can
 // load HTML and execute JavaScript while previewing or checking a link.
 export function mountEmailConfirmation({ document, location, history, fetch, timeout = () => AbortSignal.timeout(15000) }) {
+  if (['https://www.paperbanana.asia', 'https://paperbanana.asia'].includes(location.origin)) {
+    const link = new URL(location.href);
+    location.replace('https://tuyansci.cn/account/email-verify.html' + link.search + link.hash);
+    return;
+  }
   let token = new URLSearchParams(location.hash.slice(1)).get('token');
   history.replaceState(null, '', location.pathname);
   const valid = typeof token === 'string' && /^[A-Za-z0-9_-]{43}$/.test(token);
@@ -18,7 +23,7 @@ export function mountEmailConfirmation({ document, location, history, fetch, tim
     button.textContent = '正在验证…';
     message.textContent = '';
     try {
-      const response = await fetch(`${location.origin === 'https://tuyansci.cn' ? 'https://tuyansci.cn' : 'https://api.paperbanana.asia'}/api/auth/verify-email`, {
+      const response = await fetch('https://tuyansci.cn/api/auth/verify-email', {
         method: 'POST', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer',
         headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }), signal: timeout(),
       });

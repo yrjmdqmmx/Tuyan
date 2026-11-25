@@ -81,8 +81,8 @@ export async function createAuthRuntime(
   const emailConfig = {
     deliveryEnabled: false,
     requireVerification: false,
-    verificationCallbackUrl: 'https://www.paperbanana.asia/account/email-verified.html',
-    resetPasswordUrl: 'https://www.paperbanana.asia/account/reset-password.html',
+    verificationCallbackUrl: 'https://tuyansci.cn/account/email-verified.html',
+    resetPasswordUrl: 'https://tuyansci.cn/account/reset-password.html',
     windowSeconds: 900,
     windowMax: 3,
     dailyMax: 10,

@@ -63,8 +63,8 @@ test('production health monitor covers application, data, backup, TLS and 5xx si
   const timer = read('systemd/paperbanana-health-monitor.timer');
   const installer = read('scripts/install-health-monitor.sh');
 
-  assert.match(monitor, /https:\/\/api\.paperbanana\.asia\/health/);
-  assert.match(monitor, /https:\/\/api\.paperbanana\.asia\/ready/);
+  assert.match(monitor, /https:\/\/tuyansci\.cn\/health/);
+  assert.match(monitor, /https:\/\/tuyansci\.cn\/ready/);
   assert.match(monitor, /\.backend\.data\.ready == true/);
   assert.doesNotMatch(monitor, /sealoshzh|sealos\.run/);
   assert.match(monitor, /countDocuments/);
@@ -503,7 +503,7 @@ test('repository templates contain placeholders, never concrete credentials', ()
 
 test('legacy production workflows cannot auto-deploy from a main push', () => {
   const workflows = [
-    '../../.github/workflows/deploy-pages.yml',
+    '../../.github/workflows/deploy-legacy-redirect.yml',
     '../../.github/workflows/build-auth-gateway.yml',
     '../../.github/workflows/build-plot-worker.yml',
     '../../.github/workflows/build-benchmark-worker.yml',
@@ -515,8 +515,9 @@ test('legacy production workflows cannot auto-deploy from a main push', () => {
   assert.doesNotMatch(workflows[1], /kubectl\s+set\s+image/);
   assert.doesNotMatch(workflows[2], /kubectl\s+set\s+image/);
   assert.doesNotMatch(workflows[3], /kubectl\s+set\s+image/);
-  assert.match(workflows[0], /VITE_API_BASE:\s*https:\/\/api\.paperbanana\.asia/);
-  assert.match(workflows[0], /VITE_AUTH_BASE:\s*https:\/\/api\.paperbanana\.asia/);
+  assert.match(workflows[0], /path: deploy\/legacy-redirect\/site/);
+  assert.doesNotMatch(workflows[0], /VITE_(API|AUTH)_BASE|apps\/web\/dist/);
+  assert.equal(existsSync(new URL('../../../.github/workflows/deploy-pages.yml', import.meta.url)), false);
 });
 
 test('retired platform cannot become a build or deployment dependency', () => {
@@ -540,13 +541,14 @@ test('Core operations documentation links the current overseas allowlist and dis
   assert.doesNotMatch(coreReadme, /does not yet classify the Ark origin/);
 });
 
-test('shipping Web client defaults to the Aliyun production edge', () => {
+test('shipping Web client defaults to the Hangzhou production origin', () => {
   const clientFiles = [
     '../../apps/web/.env.example',
   ].map(read);
 
   for (const file of clientFiles) {
-    assert.match(file, /https:\/\/api\.paperbanana\.asia/);
+    assert.match(file, /^VITE_API_BASE=https:\/\/tuyansci\.cn$/m);
+    assert.match(file, /^VITE_AUTH_BASE=https:\/\/tuyansci\.cn$/m);
     assert.doesNotMatch(file, /yifbnnzrwmxn\.sealoshzh\.site/);
   }
 });

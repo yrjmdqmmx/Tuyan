@@ -464,11 +464,20 @@ test('deterministic reference validation never hides an earlier uncertain provid
 })
 
 
-test('dual-site callbacks preserve stable attribution, legacy fallback, PKCE and manual-code mode', async () => {
+test('production callback can move independently of registered TokenDance attribution', () => {
+  for (const callbackUrl of ['https://tuyansci.cn/', TOKENDANCE_APP_URL]) {
+    assert.doesNotThrow(() => createTokenDanceService({ db: memoryDb() as any, callbackUrl }))
+  }
+  for (const callbackUrl of ['https://tuyansci.cn.evil.test/', 'https://tuyansci.cn:444/', 'http://tuyansci.cn/']) {
+    assert.throws(() => createTokenDanceService({ db: memoryDb() as any, callbackUrl }), /callback/)
+  }
+})
+
+test('dual-site callbacks preserve stable attribution, canonical fallback, PKCE and manual-code mode', async () => {
   for (const origin of [undefined, 'https://tuyansci.cn', 'https://www.paperbanana.asia', 'https://paperbanana.asia']) {
     const f = fixture(), result = await f.request('tokenDanceAuthorize', { platform: 'web', ...(origin ? { callbackOrigin: origin } : {}) })
     const url = new URL(result.authorizationUrl), target = new URL(url.searchParams.get('callback_url')!)
-    assert.equal(target.origin, origin === 'https://tuyansci.cn' ? origin : 'https://www.paperbanana.asia')
+    assert.equal(target.origin, !origin || origin === 'https://tuyansci.cn' ? 'https://tuyansci.cn' : 'https://www.paperbanana.asia')
     assert.equal(target.searchParams.get('tokendance_callback'), '1')
     assert.equal(target.searchParams.get('state'), result.state)
     assert.equal(url.searchParams.get('app_url'), TOKENDANCE_APP_URL)

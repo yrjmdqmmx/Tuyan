@@ -1,7 +1,6 @@
 import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'node:crypto';
 
-const upstream = 'https://api.paperbanana.asia';
-const firstPartyOrigin = 'https://www.paperbanana.asia';
+const upstream = 'https://tuyansci.cn';
 const cookieName = 'tuyan_preview_session';
 const lifetimeMs = 7 * 86400_000;
 const paths = new Set(['sign-in/email', 'sign-up/email', 'sign-out', 'send-verification-email', 'request-password-reset', 'verification-status']);
@@ -66,7 +65,7 @@ export async function createProductionAuthBridge({ db, secret, apiBase, frontend
     return next;
   }
   async function call(path, { method = 'GET', body, jar = {} } = {}) {
-    const headers = { Origin: firstPartyOrigin, 'User-Agent': 'Tuyan-TokenDance-Local-Preview' };
+    const headers = { Origin: upstream, 'User-Agent': 'Tuyan-TokenDance-Local-Preview' };
     const cookie = Object.entries(jar).map(([name, value]) => name + '=' + value).join('; ');
     if (cookie) headers.Cookie = cookie;
     if (body !== undefined) headers['Content-Type'] = 'application/json';

@@ -8,6 +8,7 @@ import { loadSmsConfig } from './sms.js';
 const DEFAULT_ORIGINS = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
+  'https://tuyansci.cn',
   'https://www.paperbanana.asia',
   'https://paperbanana.asia',
   'https://servicewechat.com',
@@ -63,12 +64,12 @@ export function loadGatewayConfig(env = process.env) {
   const verificationCallbackUrl = validAccountHttpsUrl(
     'AUTH_VERIFICATION_CALLBACK_URL',
     stringValue(env.AUTH_VERIFICATION_CALLBACK_URL)
-      || 'https://www.paperbanana.asia/account/email-verified.html',
+      || 'https://tuyansci.cn/account/email-verified.html',
   );
   const resetPasswordUrl = validAccountHttpsUrl(
     'AUTH_PASSWORD_RESET_URL',
     stringValue(env.AUTH_PASSWORD_RESET_URL)
-      || 'https://www.paperbanana.asia/account/reset-password.html',
+      || 'https://tuyansci.cn/account/reset-password.html',
   );
   const directMail = emailDeliveryEnabled
     ? {

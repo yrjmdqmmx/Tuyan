@@ -18,8 +18,8 @@ import { test } from 'node:test';
 
 const deployRoot = fileURLToPath(new URL('../', import.meta.url));
 const setter = join(deployRoot, 'scripts', 'set-account-email-config.sh');
-const workflow = fileURLToPath(new URL('../../../.github/workflows/configure-account-email.yml', import.meta.url));
-const diagnosticWorkflow = fileURLToPath(new URL('../../../.github/workflows/diagnose-account-email.yml', import.meta.url));
+const workflow = fileURLToPath(new URL('../../retired-workflows/configure-account-email.yml', import.meta.url));
+const diagnosticWorkflow = fileURLToPath(new URL('../../retired-workflows/diagnose-account-email.yml', import.meta.url));
 
 function makeFixture() {
   const root = realpathSync(mkdtempSync(join(tmpdir(), 'paperbanana-account-email-')));
@@ -125,7 +125,13 @@ test('account email setter rejects malformed credentials without changing gatewa
   }
 });
 
-test('manual production workflow transports credentials without printing them and restarts only auth-gateway', () => {
+test('retired HK email workflows cannot be dispatched against the frozen gateway', () => {
+  for (const file of ['configure-account-email.yml', 'diagnose-account-email.yml']) {
+    assert.equal(existsSync(new URL('../../../.github/workflows/' + file, import.meta.url)), false);
+  }
+});
+
+test('archived manual production workflow transports credentials without printing them and restarts only auth-gateway', () => {
   assert.equal(existsSync(workflow), true, 'manual account email workflow must exist');
   const source = readFileSync(workflow, 'utf8');
   assert.match(source, /workflow_dispatch:/);
@@ -144,7 +150,7 @@ test('manual production workflow transports credentials without printing them an
   assert.doesNotMatch(source, /set -x|echo .*ACCESS_KEY|cat .*directmail/i);
 });
 
-test('production account diagnostics expose safe email state and redacted deletion failures', () => {
+test('archived production account diagnostics expose safe email state and redacted deletion failures', () => {
   assert.equal(existsSync(diagnosticWorkflow), true, 'read-only account email diagnostic workflow must exist');
   const source = readFileSync(diagnosticWorkflow, 'utf8');
   assert.match(source, /workflow_dispatch:/);

@@ -9,8 +9,9 @@ import {
 } from './runtimePolicy.js'
 
 test('production API base is pinned to the official origin', () => {
-  assert.equal(officialApiBase('https://paperbanana.asia'), 'https://api.paperbanana.asia')
+  assert.equal(officialApiBase('https://paperbanana.asia'), 'https://tuyansci.cn')
   assert.equal(validateApiBase('https://api.paperbanana.asia', false), 'https://api.paperbanana.asia')
+  assert.equal(validateApiBase('', false), 'https://tuyansci.cn')
   assert.throws(() => validateApiBase('https://attacker.example', false), /official/i)
   assert.equal(validateApiBase('http://localhost:8787/', true), 'http://localhost:8787')
 })
@@ -34,11 +35,11 @@ test('input limits are bounded for cost protection', () => {
 
 test('Hangzhou website uses its same-origin API without accepting lookalike hosts', () => {
   assert.equal(officialApiBase('https://tuyansci.cn'), 'https://tuyansci.cn')
-  assert.equal(officialApiBase('https://tuyansci.cn.evil.example'), 'https://api.paperbanana.asia')
+  assert.equal(officialApiBase('https://tuyansci.cn.evil.example'), 'https://tuyansci.cn')
   assert.equal(validateApiBase('https://tuyansci.cn/', false), 'https://tuyansci.cn')
   for (const url of ['http://tuyansci.cn', 'https://tuyansci.cn:444', 'https://tuyansci.cn.evil.example', 'https://user@tuyansci.cn', 'https://tuyansci.cn/path', 'https://tuyansci.cn?url=evil']) {
     assert.throws(() => validateApiBase(url, false), /official/)
   }
   assert.equal(accountPageUrl('reset-password.html', 'https://tuyansci.cn'), 'https://tuyansci.cn/account/reset-password.html')
-  assert.equal(accountPageUrl('reset-password.html', 'https://www.paperbanana.asia'), 'https://www.paperbanana.asia/account/reset-password.html')
+  assert.equal(accountPageUrl('reset-password.html', 'https://www.paperbanana.asia'), 'https://tuyansci.cn/account/reset-password.html')
 })

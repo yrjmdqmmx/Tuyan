@@ -78,12 +78,18 @@ test('missing/invalid fragments never submit; expiry and service failures cannot
 });
 
 
-test('email confirmation submits to the new same-origin gateway and preserves the legacy gateway', async () => {
+test('email confirmation transfers old links before submitting to the new gateway', async () => {
   for (const origin of ['https://tuyansci.cn', 'https://www.paperbanana.asia']) {
     let target;
     const f = fixture(async url => { target = url; return Response.json({ ok: true, code: 'EMAIL_VERIFIED' }); }, `#token=${token}`, origin);
+    if (origin !== 'https://tuyansci.cn') {
+      assert.equal(f.destination(), `https://tuyansci.cn/account/email-verify.html#token=${token}`);
+      assert.equal(target, undefined);
+      f.dom.window.close();
+      continue;
+    }
     f.submit(); await settle();
-    assert.equal(new URL(target).origin, origin === 'https://tuyansci.cn' ? origin : 'https://api.paperbanana.asia');
+    assert.equal(new URL(target).origin, 'https://tuyansci.cn');
     assert.equal(f.destination(), `${origin}/account/email-verified.html`);
     f.dom.window.close();
   }
