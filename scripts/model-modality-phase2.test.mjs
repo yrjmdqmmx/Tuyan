@@ -24,7 +24,7 @@ test('phase 2 evidence covers every requested identity and treats seven unavaila
   for (const [key, row] of Object.entries(evidence.links)) {
     assert.equal(row.availability, 'unverified', key)
     assert.ok(row.attempts.length > 0)
-    assert.equal(snapshot.removed[key], undefined)
+    if (snapshot.removed[key]) assert.ok(snapshot.removed[key].stopDate && !snapshot.rows[key], key)
     for (const attempt of row.attempts) {
       assert.ok(attempt.quote.trim())
       assert.equal(attempt.checkedAt.slice(0, 10), evidence.verifiedAt)

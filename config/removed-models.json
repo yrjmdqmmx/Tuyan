@@ -732,5 +732,520 @@
     "replacementApiId": null,
     "sourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
     "displayName": "GLM-4.5V"
+  },
+  "minimax/MiniMax-M2.5": {
+    "stopDate": "2026-11-18",
+    "replacementApiId": null,
+    "sourceUrl": "https://platform.minimax.io/docs/faq/models",
+    "displayName": "MiniMax M2.5",
+    "replacementDisplayName": null,
+    "developer": "minimax"
+  },
+  "minimax/MiniMax-M2.5-highspeed": {
+    "stopDate": "2026-11-18",
+    "replacementApiId": null,
+    "sourceUrl": "https://platform.minimax.io/docs/faq/models",
+    "displayName": "MiniMax M2.5-highspeed",
+    "replacementDisplayName": null,
+    "developer": "minimax"
+  },
+  "minimax/MiniMax-M2.7": {
+    "stopDate": "2026-11-18",
+    "replacementApiId": null,
+    "sourceUrl": "https://platform.minimax.io/docs/faq/models",
+    "displayName": "MiniMax M2.7",
+    "replacementDisplayName": null,
+    "developer": "minimax"
+  },
+  "minimax/MiniMax-M2.7-highspeed": {
+    "stopDate": "2026-11-18",
+    "replacementApiId": null,
+    "sourceUrl": "https://platform.minimax.io/docs/faq/models",
+    "displayName": "MiniMax M2.7-highspeed",
+    "replacementDisplayName": null,
+    "developer": "minimax"
+  },
+  "siliconflow/MiniMaxAI/MiniMax-M2.5": {
+    "stopDate": "2026-09-11",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/cn/release-notes/overview",
+    "displayName": "MiniMax-M2.5",
+    "replacementDisplayName": null
+  },
+  "siliconflow/Pro/MiniMaxAI/MiniMax-M2.5": {
+    "stopDate": "2026-09-11",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/cn/release-notes/overview",
+    "displayName": "MiniMax-M2.5",
+    "replacementDisplayName": null
+  },
+  "siliconflow/Qwen/Qwen3.5-397B-A17B": {
+    "stopDate": "2026-09-11",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/cn/release-notes/overview",
+    "displayName": "Qwen3.5-397B-A17B",
+    "replacementDisplayName": null
+  },
+  "siliconflow/baidu/ERNIE-Image-Turbo": {
+    "stopDate": "2026-09-30",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/cn/release-notes/overview",
+    "displayName": "ERNIE-Image-Turbo",
+    "replacementDisplayName": null
+  },
+  "siliconflow/nex-agi/Nex-N2-Pro": {
+    "stopDate": "2026-09-11",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.siliconflow.cn/cn/release-notes/overview",
+    "displayName": "Nex-N2-Pro",
+    "replacementDisplayName": null
+  },
+  "xai/grok-imagine-image-quality": {
+    "stopDate": "2026-11-02",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
+    "displayName": "Grok-imagine-image-quality",
+    "replacementDisplayName": null,
+    "developer": "spacexai"
+  },
+  "bailian/qwen-image": {
+    "stopDate": "2026-10-10T00:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://www.alibabacloud.com/zh/notice/model_studio_notice_of_retirement_for_selected_legacy_models_7d9?_p_lc=1",
+    "displayName": "Qwen-image",
+    "replacementDisplayName": null,
+    "developer": "alibaba"
+  },
+  "bailian/qwen3-max": {
+    "stopDate": "2026-10-10T00:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1",
+    "displayName": "Qwen3-max",
+    "replacementDisplayName": null,
+    "developer": "alibaba"
+  },
+  "bailian/qwen3-max-2025-09-23": {
+    "stopDate": "2026-10-10T00:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1",
+    "displayName": "Qwen3-max-2025-09-23",
+    "replacementDisplayName": null,
+    "developer": "alibaba"
+  },
+  "bailian/qwen3-max-2026-01-23": {
+    "stopDate": "2026-10-10T00:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1",
+    "displayName": "Qwen3-max-2026-01-23",
+    "replacementDisplayName": null,
+    "developer": "alibaba"
+  },
+  "bailian/qwen3-max-preview": {
+    "stopDate": "2026-10-10T00:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1",
+    "displayName": "Qwen3-max-preview",
+    "replacementDisplayName": null,
+    "developer": "alibaba"
+  },
+  "bailian/qwen-turbo": {
+    "stopDate": "2026-10-10T00:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1",
+    "displayName": "Qwen-turbo",
+    "replacementDisplayName": null,
+    "developer": "alibaba"
+  },
+  "bailian/qwen3-coder-next": {
+    "stopDate": "2026-10-10T00:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://www.alibabacloud.com/zh/notice/model_studio_notice_on_the_postponed_retirement_of_selected_legacy_models_7d0?_p_lc=1",
+    "displayName": "Qwen3-coder-next",
+    "replacementDisplayName": null,
+    "developer": "alibaba"
+  },
+  "ark/deepseek-v4-flash-260425": {
+    "stopDate": "2026-09-21T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "DeepSeek-V4-Flash-260425",
+    "replacementDisplayName": null,
+    "developer": "deepseek"
+  },
+  "ark/deepseek-v4-pro-260425": {
+    "stopDate": "2026-11-24T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "DeepSeek-V4-Pro-260425",
+    "replacementDisplayName": null,
+    "developer": "deepseek"
+  },
+  "ark/doubao-seed-2-0-code-preview-260215": {
+    "stopDate": "2026-11-24T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "Doubao Seed 2.0 Code Preview · 260215",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-seed-2-0-lite-260215": {
+    "stopDate": "2026-10-22T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "Doubao Seed 2.0 Lite · 260215",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-seed-2-0-mini-260215": {
+    "stopDate": "2026-10-22T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "Doubao Seed 2.0 Mini · 260215",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-seed-1-8-251228": {
+    "stopDate": "2026-09-21T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "doubao-seed-1-8-251228",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-seed-1-6-250615": {
+    "stopDate": "2026-09-21T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "doubao-seed-1-6-250615",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-seed-1-6-251015": {
+    "stopDate": "2026-09-21T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "doubao-seed-1-6-251015",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-seed-1-6-flash-250615": {
+    "stopDate": "2026-09-21T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "doubao-seed-1-6-flash-250615",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-seed-1-6-flash-250828": {
+    "stopDate": "2026-09-21T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "doubao-seed-1-6-flash-250828",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-seed-1-6-vision-250815": {
+    "stopDate": "2026-09-21T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "doubao-seed-1-6-vision-250815",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-1-5-lite-32k-250115": {
+    "stopDate": "2026-09-21T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "doubao-1-5-lite-32k-250115",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-1-5-pro-32k-250115": {
+    "stopDate": "2026-09-21T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "doubao-1-5-pro-32k-250115",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-1-5-vision-pro-32k-250115": {
+    "stopDate": "2026-09-21T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "doubao-1-5-vision-pro-32k-250115",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-seedream-5-0-260128": {
+    "stopDate": "2026-11-24T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "Doubao Seedream 5.0 · 260128",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-seedream-4-5-251128": {
+    "stopDate": "2026-11-24T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "Doubao Seedream 4.5 · 251128",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-seedream-4-0-250828": {
+    "stopDate": "2026-11-24T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "Doubao Seedream 4.0 · 250828",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/doubao-seed-code-preview-251028": {
+    "stopDate": "2026-09-21T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "doubao-seed-code-preview-251028",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "ark/glm-4-7-251222": {
+    "stopDate": "2026-09-21T14:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "displayName": "GLM-4-7-251222",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "mistral/zai-glm-5-2": {
+    "stopDate": "2026-10-31",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.mistral.ai/getting-started/models/",
+    "displayName": "zai-glm-5-2",
+    "replacementDisplayName": null
+  },
+  "mistral/labs-leanstral-1-5": {
+    "stopDate": "2026-09-30",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.mistral.ai/getting-started/models/",
+    "displayName": "labs-leanstral-1-5",
+    "replacementDisplayName": null,
+    "developer": "mistral"
+  },
+  "together/deepseek-ai/DeepSeek-V4-Flash-0731": {
+    "stopDate": "2026-10-22",
+    "replacementApiId": null,
+    "sourceUrl": "https://docs.together.ai/docs/deprecations",
+    "displayName": "DeepSeek-V4-Flash-0731",
+    "replacementDisplayName": null
+  },
+  "tokendance/mimo-v2.5": {
+    "stopDate": "2026-10-21T10:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://tokendance.space/docs/changelog.md",
+    "displayName": "MiMo-V2.5",
+    "replacementDisplayName": null,
+    "developer": "xiaomi"
+  },
+  "tokendance/mimo-v2.5-pro": {
+    "stopDate": "2026-10-21T10:00:00+08:00",
+    "replacementApiId": null,
+    "sourceUrl": "https://tokendance.space/docs/changelog.md",
+    "displayName": "MiMo-V2.5-Pro",
+    "replacementDisplayName": null,
+    "developer": "xiaomi"
+  },
+  "runware/xai:grok-imagine@image-quality": {
+    "stopDate": "2026-11-02",
+    "replacementApiId": null,
+    "sourceUrl": "https://runware.ai/docs/changelog",
+    "displayName": "Grok Imagine Image Quality",
+    "replacementDisplayName": null,
+    "developer": "spacexai"
+  },
+  "runware/google:4@1": {
+    "stopDate": "2026-10-02",
+    "replacementApiId": null,
+    "sourceUrl": "https://runware.ai/docs/changelog",
+    "displayName": "Nano Banana",
+    "replacementDisplayName": null
+  },
+  "runware/openai:1@1": {
+    "stopDate": "2026-10-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://runware.ai/docs/changelog",
+    "displayName": "GPT Image 1",
+    "replacementDisplayName": null,
+    "developer": "openai"
+  },
+  "tokenhub/glm-5v-turbo": {
+    "stopDate": "2026-10-30",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+    "displayName": "GLM-5V-Turbo",
+    "replacementDisplayName": null,
+    "developer": "zhipu"
+  },
+  "tokenhub/minimax-m2.7": {
+    "stopDate": "2026-11-17",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+    "displayName": "MiniMax-M2.7",
+    "replacementDisplayName": null,
+    "developer": "minimax"
+  },
+  "tokenhub/hy-image-v3": {
+    "stopDate": "2026-11-12",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+    "displayName": "HyImage 3.0",
+    "replacementDisplayName": null
+  },
+  "tokenhub/seedream-image-v5.0-lite": {
+    "stopDate": "2026-11-24",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+    "displayName": "Seedream-image-v5.0-lite",
+    "replacementDisplayName": null,
+    "developer": "bytedance"
+  },
+  "qianfan/deepseek-v4-flash": {
+    "stopDate": "2026-09-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "DeepSeek-V4-Flash",
+    "replacementDisplayName": null
+  },
+  "qianfan/deepseek-v3.2": {
+    "stopDate": "2026-09-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "DeepSeek-V3.2",
+    "replacementDisplayName": null
+  },
+  "qianfan/deepseek-v3.2-think": {
+    "stopDate": "2026-09-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "DeepSeek-V3.2-Think",
+    "replacementDisplayName": null
+  },
+  "qianfan/glm-5": {
+    "stopDate": "2026-09-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "GLM-5",
+    "replacementDisplayName": null
+  },
+  "qianfan/kimi-k2.6": {
+    "stopDate": "2026-09-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "Kimi-K2.6",
+    "replacementDisplayName": null
+  },
+  "qianfan/ernie-x1.1": {
+    "stopDate": "2026-09-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "ERNIE-X1.1",
+    "replacementDisplayName": null
+  },
+  "qianfan/ernie-x1.1-preview": {
+    "stopDate": "2026-09-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "ERNIE-X1.1-Preview",
+    "replacementDisplayName": null
+  },
+  "qianfan/qwen-image": {
+    "stopDate": "2026-11-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "Qwen Image",
+    "replacementDisplayName": null
+  },
+  "qianfan/qwen-image-edit": {
+    "stopDate": "2026-11-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "Qwen Image Edit",
+    "replacementDisplayName": null
+  },
+  "qianfan/deepseek-ocr": {
+    "stopDate": "2026-11-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "DeepSeek-OCR",
+    "replacementDisplayName": null
+  },
+  "qianfan/ernie-4.5-turbo-128k": {
+    "stopDate": "2026-10-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "ERNIE 4.5 Turbo 128K",
+    "replacementDisplayName": null
+  },
+  "qianfan/ernie-4.5-turbo-20260402": {
+    "stopDate": "2026-10-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "ERNIE 4.5 Turbo 20260402",
+    "replacementDisplayName": null
+  },
+  "qianfan/ernie-4.5-turbo-32k": {
+    "stopDate": "2026-10-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "ERNIE 4.5 Turbo 32K",
+    "replacementDisplayName": null
+  },
+  "qianfan/ernie-4.5-turbo-vl": {
+    "stopDate": "2026-10-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "ERNIE 4.5 Turbo VL",
+    "replacementDisplayName": null
+  },
+  "qianfan/ernie-4.5-turbo-vl-32k": {
+    "stopDate": "2026-10-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "ERNIE 4.5 Turbo VL 32K",
+    "replacementDisplayName": null
+  },
+  "qianfan/ernie-5.0": {
+    "stopDate": "2026-10-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "ERNIE 5.0",
+    "replacementDisplayName": null
+  },
+  "qianfan/ernie-5.0-thinking-latest": {
+    "stopDate": "2026-10-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "ERNIE 5.0 Thinking Latest",
+    "replacementDisplayName": null
+  },
+  "qianfan/ernie-5.0-thinking-preview": {
+    "stopDate": "2026-10-29",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "ERNIE 5.0 Thinking Preview",
+    "replacementDisplayName": null
+  },
+  "qianfan/internvl3-38b": {
+    "stopDate": "2026-11-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "InternVL3-38B",
+    "replacementDisplayName": null
+  },
+  "qianfan/qianfan-ocr": {
+    "stopDate": "2026-11-23",
+    "replacementApiId": null,
+    "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+    "displayName": "Qianfan-OCR",
+    "replacementDisplayName": null
   }
 }

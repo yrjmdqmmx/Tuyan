@@ -690,6 +690,34 @@
             "text"
           ]
         }
+      },
+      {
+        "id": "glm-5.3-flashx-legal",
+        "label": "GLM-5.3-FlashX-Legal",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "仅支持思考模式；图研可提交文本和图片。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
       }
     ],
     "siliconflow": [
@@ -728,53 +756,6 @@
           "officialSourceUrl": "https://www.siliconflow.cn/models",
           "regions": [
             "cn"
-          ]
-        }
-      },
-      {
-        "id": "baidu/ERNIE-Image-Turbo",
-        "label": "baidu/ERNIE-Image-Turbo",
-        "roles": [
-          "image"
-        ],
-        "protocol": "provider-images",
-        "availabilityNotes": "硅基流动中国站；账号需完成实名。中国站 Images API；当前渠道文档只足以确认 1024x1024 请求，不继承原厂或其他托管渠道的分辨率范围。",
-        "capabilities": {
-          "imageGeneration": true,
-          "imageEditing": false,
-          "referenceImages": false,
-          "imageEditMode": "analyze-redraw",
-          "resolutions": [
-            "1K"
-          ],
-          "refineResolutions": [
-            "1K"
-          ],
-          "aspectRatios": [
-            "1:1"
-          ],
-          "refineAspectRatios": [
-            "1:1"
-          ],
-          "outputFormats": [
-            "png"
-          ],
-          "maxReferenceImages": 0,
-          "providerMaxReferenceImages": 0
-        },
-        "metadata": {
-          "vendor": "baidu",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://www.siliconflow.cn/models",
-          "regions": [
-            "cn"
-          ],
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "image"
           ]
         }
       },
@@ -1753,119 +1734,6 @@
           "regions": [
             "cn"
           ]
-        }
-      },
-      {
-        "id": "nex-agi/Nex-N2-Pro",
-        "label": "nex-agi/Nex-N2-Pro",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-09-11 结束；到期前保留选择。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://www.siliconflow.cn/models",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn"
-          ],
-          "expirationDate": "2026-09-11",
-          "vendor": "nex-agi"
-        }
-      },
-      {
-        "id": "MiniMaxAI/MiniMax-M2.5",
-        "label": "MiniMaxAI/MiniMax-M2.5",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-09-11 结束；到期前保留选择。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://www.siliconflow.cn/models",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn"
-          ],
-          "expirationDate": "2026-09-11",
-          "vendor": "MiniMaxAI"
-        }
-      },
-      {
-        "id": "Pro/MiniMaxAI/MiniMax-M2.5",
-        "label": "Pro/MiniMaxAI/MiniMax-M2.5",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-09-11 结束；到期前保留选择。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://www.siliconflow.cn/models",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn"
-          ],
-          "expirationDate": "2026-09-11",
-          "vendor": "MiniMax"
-        }
-      },
-      {
-        "id": "Qwen/Qwen3.5-397B-A17B",
-        "label": "Qwen/Qwen3.5-397B-A17B",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-09-11 结束；到期前保留选择。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3
-        },
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://www.siliconflow.cn/models",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn"
-          ],
-          "expirationDate": "2026-09-11",
-          "vendor": "Qwen"
         }
       },
       {
@@ -3435,42 +3303,6 @@
             "us-west-2"
           ],
           "vendor": "xAI"
-        }
-      },
-      {
-        "id": "grok-imagine-image-quality",
-        "label": "grok-imagine-image-quality",
-        "roles": [
-          "image"
-        ],
-        "protocol": "provider-images",
-        "availabilityNotes": "官方公告 2026-11-02 退役并改路由；图研到期禁用，保留配置，不自动换型号。公告未给出时区，采用保守 UTC 零点停止发送。",
-        "capabilities": {
-          "imageGeneration": true,
-          "imageEditing": true,
-          "referenceImages": true,
-          "maxReferenceImages": 1,
-          "imageEditMode": "direct-edit",
-          "outputFormats": [
-            "png"
-          ],
-          "providerMaxReferenceImages": 3
-        },
-        "metadata": {
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "legacy",
-          "officialSourceUrl": "https://docs.x.ai/docs/models/grok-imagine-image-quality",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "image"
-          ],
-          "vendor": "xAI",
-          "expirationDate": "2026-11-02",
-          "lifecycleSourceUrl": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2"
         }
       },
       {
@@ -6648,206 +6480,6 @@
         }
       },
       {
-        "id": "qwen3-max",
-        "label": "qwen3-max",
-        "roles": [
-          "main"
-        ],
-        "protocol": "bailian-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-10-10 结束；到期前保留选择。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://www.aliyun.com/notice/118344",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "expirationDate": "2026-10-10",
-          "vendor": "Alibaba",
-          "expirationAt": "2026-10-10T00:00:00+08:00"
-        }
-      },
-      {
-        "id": "qwen3-max-2026-01-23",
-        "label": "qwen3-max-2026-01-23",
-        "roles": [
-          "main"
-        ],
-        "protocol": "bailian-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-10-10 结束；到期前保留选择。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://www.aliyun.com/notice/118345",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "expirationDate": "2026-10-10",
-          "vendor": "Alibaba",
-          "expirationAt": "2026-10-10T00:00:00+08:00"
-        }
-      },
-      {
-        "id": "qwen3-max-2025-09-23",
-        "label": "qwen3-max-2025-09-23",
-        "roles": [
-          "main"
-        ],
-        "protocol": "bailian-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-10-10 结束；到期前保留选择。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://www.aliyun.com/notice/118345",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "expirationDate": "2026-10-10",
-          "vendor": "Alibaba",
-          "expirationAt": "2026-10-10T00:00:00+08:00"
-        }
-      },
-      {
-        "id": "qwen3-max-preview",
-        "label": "qwen3-max-preview",
-        "roles": [
-          "main"
-        ],
-        "protocol": "bailian-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-10-10 结束；到期前保留选择。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://www.aliyun.com/notice/118344",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "expirationDate": "2026-10-10",
-          "vendor": "Alibaba",
-          "expirationAt": "2026-10-10T00:00:00+08:00"
-        }
-      },
-      {
-        "id": "qwen-turbo",
-        "label": "qwen-turbo",
-        "roles": [
-          "main"
-        ],
-        "protocol": "bailian-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-10-10 结束；到期前保留选择。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://www.aliyun.com/notice/118177",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "expirationDate": "2026-10-10",
-          "vendor": "Alibaba",
-          "expirationAt": "2026-10-10T00:00:00+08:00"
-        }
-      },
-      {
-        "id": "qwen3-coder-next",
-        "label": "qwen3-coder-next",
-        "roles": [
-          "main"
-        ],
-        "protocol": "bailian-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-10-10 结束；到期前保留选择。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://www.aliyun.com/notice/118345",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "expirationDate": "2026-10-10",
-          "vendor": "Alibaba",
-          "expirationAt": "2026-10-10T00:00:00+08:00"
-        }
-      },
-      {
-        "id": "qwen-image",
-        "label": "qwen-image",
-        "roles": [
-          "image"
-        ],
-        "protocol": "bailian-multimodal-generation",
-        "availabilityNotes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。",
-        "capabilities": {
-          "imageGeneration": true,
-          "imageEditing": false,
-          "referenceImages": false,
-          "maxReferenceImages": 0,
-          "imageEditMode": "analyze-redraw",
-          "outputFormats": [
-            "png"
-          ]
-        },
-        "metadata": {
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-api",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "image"
-          ],
-          "vendor": "Alibaba"
-        }
-      },
-      {
         "id": "deepseek-v4.1-flash",
         "label": "deepseek-v4.1-flash",
         "roles": [
@@ -8409,348 +8041,6 @@
     ],
     "ark": [
       {
-        "id": "doubao-seedream-5-0-260128",
-        "label": "Doubao Seedream 5.0",
-        "roles": [
-          "image"
-        ],
-        "protocol": "ark-images",
-        "availabilityNotes": "北京接入；支持 2K/4K 及自定义尺寸，总像素 3686400..16777216；自动比例交由模型确定。需要对应账号模型权益。",
-        "capabilities": {
-          "referenceImages": true,
-          "imageEditing": true,
-          "resolutions": [
-            "2K",
-            "4K"
-          ],
-          "refineResolutions": [
-            "2K",
-            "4K"
-          ],
-          "aspectRatios": [],
-          "refineAspectRatios": [],
-          "outputFormats": [
-            "png"
-          ],
-          "maxReferenceImages": 1
-        },
-        "metadata": {
-          "vendor": "ByteDance Seedream",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "image"
-          ],
-          "verified": false,
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1824121?lang=zh"
-        }
-      },
-      {
-        "id": "doubao-seedream-4-5-251128",
-        "label": "Doubao Seedream 4.5",
-        "roles": [
-          "image"
-        ],
-        "protocol": "ark-images",
-        "availabilityNotes": "北京接入；支持 2K/4K 及自定义尺寸，总像素 3686400..16777216；自动比例交由模型确定。需要对应账号模型权益。",
-        "capabilities": {
-          "referenceImages": true,
-          "imageEditing": true,
-          "resolutions": [
-            "2K",
-            "4K"
-          ],
-          "refineResolutions": [
-            "2K",
-            "4K"
-          ],
-          "aspectRatios": [],
-          "refineAspectRatios": [],
-          "outputFormats": [
-            "png"
-          ],
-          "maxReferenceImages": 1
-        },
-        "metadata": {
-          "vendor": "ByteDance Seedream",
-          "lifecycle": "legacy",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "image"
-          ],
-          "verified": false,
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1824121?lang=zh"
-        }
-      },
-      {
-        "id": "doubao-seed-1-8-251228",
-        "label": "doubao-seed-1-8-251228",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "ark-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3
-        },
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1330310",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "vendor": "ByteDance",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
-        }
-      },
-      {
-        "id": "doubao-seed-code-preview-251028",
-        "label": "doubao-seed-code-preview-251028",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "ark-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3
-        },
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1330310",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "vendor": "ByteDance",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
-        }
-      },
-      {
-        "id": "doubao-seed-1-6-flash-250828",
-        "label": "doubao-seed-1-6-flash-250828",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "ark-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3
-        },
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1330310",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "vendor": "ByteDance",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
-        }
-      },
-      {
-        "id": "doubao-seed-1-6-vision-250815",
-        "label": "doubao-seed-1-6-vision-250815",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "ark-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3
-        },
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1330310",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "vendor": "ByteDance",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
-        }
-      },
-      {
-        "id": "doubao-seed-1-6-250615",
-        "label": "doubao-seed-1-6-250615",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "ark-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3
-        },
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1330310",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "vendor": "ByteDance",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
-        }
-      },
-      {
-        "id": "doubao-seed-1-6-251015",
-        "label": "doubao-seed-1-6-251015",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "ark-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3
-        },
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1330310",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "vendor": "ByteDance",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
-        }
-      },
-      {
-        "id": "doubao-seed-1-6-flash-250615",
-        "label": "doubao-seed-1-6-flash-250615",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "ark-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3
-        },
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1330310",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "vendor": "ByteDance",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
-        }
-      },
-      {
-        "id": "doubao-1-5-pro-32k-250115",
-        "label": "doubao-1-5-pro-32k-250115",
-        "roles": [
-          "main"
-        ],
-        "protocol": "ark-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1330310",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "vendor": "ByteDance",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
-        }
-      },
-      {
         "id": "doubao-1-5-pro-32k-character-250715",
         "label": "doubao-1-5-pro-32k-character-250715",
         "roles": [
@@ -8776,94 +8066,6 @@
           "vendor": "ByteDance",
           "selectable": false,
           "disabledReason": "角色对话专用模型；当前科研规划流程未适配。",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
-        }
-      },
-      {
-        "id": "doubao-1-5-lite-32k-250115",
-        "label": "doubao-1-5-lite-32k-250115",
-        "roles": [
-          "main"
-        ],
-        "protocol": "ark-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1330310",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "vendor": "ByteDance",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
-        }
-      },
-      {
-        "id": "glm-4-7-251222",
-        "label": "glm-4-7-251222",
-        "roles": [
-          "main"
-        ],
-        "protocol": "ark-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1330310",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "vendor": "ByteDance",
-          "requiresEntitlement": true,
-          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
-        }
-      },
-      {
-        "id": "doubao-1-5-vision-pro-32k-250115",
-        "label": "doubao-1-5-vision-pro-32k-250115",
-        "roles": [
-          "vision"
-        ],
-        "protocol": "ark-openai-chat",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3
-        },
-        "metadata": {
-          "lifecycle": "legacy",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1330310",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-beijing"
-          ],
-          "vendor": "ByteDance",
           "requiresEntitlement": true,
           "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
         }
@@ -10280,33 +9482,6 @@
         }
       },
       {
-        "id": "MiniMax-M2.7",
-        "label": "MiniMax M2.7",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方文档目录；未验证账户权限或真实推理。",
-        "capabilities": {},
-        "metadata": {
-          "vendor": "MiniMax",
-          "lifecycle": "stable",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://platform.minimax.io/docs/api-reference/text-openai-api",
-          "regions": [
-            "global",
-            "cn"
-          ],
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ]
-        }
-      },
-      {
         "id": "image-01",
         "label": "MiniMax Image-01",
         "roles": [
@@ -10343,87 +9518,6 @@
           ],
           "outputModalities": [
             "image"
-          ]
-        }
-      },
-      {
-        "id": "MiniMax-M2.7-highspeed",
-        "label": "MiniMax M2.7-highspeed",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方文档目录；未验证账户权限或真实推理。",
-        "capabilities": {},
-        "metadata": {
-          "vendor": "MiniMax",
-          "lifecycle": "stable",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://platform.minimax.io/docs/api-reference/text-openai-api",
-          "regions": [
-            "global",
-            "cn"
-          ],
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ]
-        }
-      },
-      {
-        "id": "MiniMax-M2.5",
-        "label": "MiniMax M2.5",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方文档目录；未验证账户权限或真实推理。",
-        "capabilities": {},
-        "metadata": {
-          "vendor": "MiniMax",
-          "lifecycle": "stable",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://platform.minimax.io/docs/api-reference/text-openai-api",
-          "regions": [
-            "global",
-            "cn"
-          ],
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ]
-        }
-      },
-      {
-        "id": "MiniMax-M2.5-highspeed",
-        "label": "MiniMax M2.5-highspeed",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方文档目录；未验证账户权限或真实推理。",
-        "capabilities": {},
-        "metadata": {
-          "vendor": "MiniMax",
-          "lifecycle": "stable",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://platform.minimax.io/docs/api-reference/text-openai-api",
-          "regions": [
-            "global",
-            "cn"
-          ],
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
           ]
         }
       },
@@ -10746,29 +9840,6 @@
         }
       },
       {
-        "id": "labs-leanstral-1-5",
-        "label": "labs-leanstral-1-5",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "preview",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.mistral.ai/models/leanstral-1-5",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "vendor": "Mistral AI"
-        }
-      },
-      {
         "id": "mistral-medium-3-5",
         "label": "mistral-medium-3-5",
         "roles": [
@@ -10957,29 +10028,6 @@
           "inputModalities": [
             "text",
             "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "vendor": "Mistral AI"
-        }
-      },
-      {
-        "id": "zai-glm-5-2",
-        "label": "zai-glm-5-2",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "preview",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.mistral.ai/models/zai-glm-5-2",
-          "inputModalities": [
-            "text"
           ],
           "outputModalities": [
             "text"
@@ -11339,29 +10387,6 @@
             "text"
           ],
           "vendor": "openai"
-        }
-      },
-      {
-        "id": "deepseek-ai/DeepSeek-V4-Flash-0731",
-        "label": "DeepSeek-V4-Flash-0731",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。",
-        "capabilities": {},
-        "metadata": {
-          "lifecycle": "stable",
-          "verified": false,
-          "verificationState": "catalog",
-          "officialSourceUrl": "https://docs.together.ai/docs/serverless/models",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "vendor": "deepseek-ai"
         }
       },
       {
@@ -14733,6 +13758,74 @@
           "outputModalities": [
             "image"
           ]
+        }
+      },
+      {
+        "id": "openai/gpt-image-2.6/flare/text-to-image",
+        "label": "GPT Image 2.6 Flare",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "文生图，输出 PNG。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://fal.ai/models/openai/gpt-image-2.6/flare/text-to-image/api",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "openai",
+          "recommended": false
+        }
+      },
+      {
+        "id": "openai/gpt-image-2.6/sunburst/text-to-image",
+        "label": "GPT Image 2.6 Sunburst",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "文生图，输出 PNG。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://fal.ai/models/openai/gpt-image-2.6/sunburst/text-to-image/api",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "openai",
+          "recommended": false
         }
       }
     ],
@@ -19408,43 +18501,6 @@
         }
       },
       {
-        "id": "xai:grok-imagine@image-quality",
-        "label": "Grok Imagine Image Quality",
-        "roles": [
-          "image"
-        ],
-        "protocol": "provider-images",
-        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3,
-          "imageGeneration": true,
-          "imageEditing": true,
-          "imageEditMode": "direct-edit",
-          "outputFormats": [
-            "png"
-          ]
-        },
-        "metadata": {
-          "vendor": "xai",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "image"
-          ],
-          "regions": [
-            "global-endpoint"
-          ],
-          "releasedAt": "2026-05-06"
-        }
-      },
-      {
         "id": "luma:uni@1",
         "label": "UNI-1",
         "roles": [
@@ -21760,43 +20816,6 @@
         }
       },
       {
-        "id": "google:4@1",
-        "label": "Nano Banana",
-        "roles": [
-          "image"
-        ],
-        "protocol": "provider-images",
-        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 8,
-          "imageGeneration": true,
-          "imageEditing": true,
-          "imageEditMode": "direct-edit",
-          "outputFormats": [
-            "png"
-          ]
-        },
-        "metadata": {
-          "vendor": "google",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://runware.ai/docs/models/google-nano-banana",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "image"
-          ],
-          "regions": [
-            "global-endpoint"
-          ],
-          "releasedAt": "2025-08-26"
-        }
-      },
-      {
         "id": "runware:108@20",
         "label": "Qwen-Image-Edit",
         "roles": [
@@ -22556,43 +21575,6 @@
             "global-endpoint"
           ],
           "releasedAt": "2025-03-26"
-        }
-      },
-      {
-        "id": "openai:1@1",
-        "label": "GPT Image 1",
-        "roles": [
-          "image"
-        ],
-        "protocol": "provider-images",
-        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 16,
-          "imageGeneration": true,
-          "imageEditing": true,
-          "imageEditMode": "direct-edit",
-          "outputFormats": [
-            "png"
-          ]
-        },
-        "metadata": {
-          "vendor": "openai",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "image"
-          ],
-          "regions": [
-            "global-endpoint"
-          ],
-          "releasedAt": "2025-03-25"
         }
       },
       {
@@ -23592,42 +22574,6 @@
         }
       },
       {
-        "id": "hy-image-v3",
-        "label": "HyImage 3.0",
-        "roles": [
-          "image"
-        ],
-        "protocol": "provider-images",
-        "availabilityNotes": "已实现专用适配；账户权限、计费与真实输出未验证。",
-        "capabilities": {
-          "imageGeneration": true,
-          "imageEditing": true,
-          "referenceImages": true,
-          "maxReferenceImages": 3,
-          "imageEditMode": "direct-edit",
-          "outputFormats": [
-            "png"
-          ]
-        },
-        "metadata": {
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/135745",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "image"
-          ],
-          "vendor": "tencent",
-          "regions": [
-            "cn-endpoint"
-          ]
-        }
-      },
-      {
         "id": "hy3",
         "label": "Hy3",
         "roles": [
@@ -24218,37 +23164,6 @@
         }
       },
       {
-        "id": "glm-5v-turbo",
-        "label": "GLM-5V-Turbo（2026-10-30下线）",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。官方公布下线日期 2026-10-30，不自动迁移。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3
-        },
-        "metadata": {
-          "vendor": "zhipu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "legacy",
-          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132061",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-endpoint"
-          ]
-        }
-      },
-      {
         "id": "glm-5-turbo",
         "label": "GLM-5-Turbo（2026-10-08下线）",
         "roles": [
@@ -24483,35 +23398,6 @@
           "inputModalities": [
             "text",
             "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "minimax-m2.7",
-        "label": "MiniMax-M2.7",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
-        "capabilities": {
-          "referenceImages": false,
-          "maxReferenceImages": 0
-        },
-        "metadata": {
-          "vendor": "minimax",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132246",
-          "inputModalities": [
-            "text"
           ],
           "outputModalities": [
             "text"
@@ -24804,42 +23690,6 @@
           "imageEditing": true,
           "referenceImages": true,
           "maxReferenceImages": 10,
-          "imageEditMode": "direct-edit",
-          "outputFormats": [
-            "png"
-          ]
-        },
-        "metadata": {
-          "vendor": "bytedance",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/136609",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "image"
-          ],
-          "regions": [
-            "cn-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "seedream-image-v5.0-lite",
-        "label": "seedream-image-v5.0-lite",
-        "roles": [
-          "image"
-        ],
-        "protocol": "provider-images",
-        "availabilityNotes": "专用接口与恢复适配；广州端点，真实服务未验证。",
-        "capabilities": {
-          "imageGeneration": true,
-          "imageEditing": true,
-          "referenceImages": true,
-          "maxReferenceImages": 14,
           "imageEditMode": "direct-edit",
           "outputFormats": [
             "png"
@@ -25672,114 +24522,6 @@
         }
       },
       {
-        "id": "ernie-5.0",
-        "label": "ERNIE 5.0",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3,
-          "providerMaxReferenceImages": 10,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "baidu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "ernie-5.0-thinking-preview",
-        "label": "ERNIE 5.0 Thinking Preview",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3,
-          "providerMaxReferenceImages": 10,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "baidu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "preview",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "ernie-5.0-thinking-latest",
-        "label": "ERNIE 5.0 Thinking Latest",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3,
-          "providerMaxReferenceImages": 10,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "baidu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
         "id": "ernie-5.0-thinking-exp",
         "label": "ERNIE 5.0 Thinking Exp",
         "roles": [
@@ -25804,180 +24546,6 @@
           "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
           "inputModalities": [
             "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "ernie-4.5-turbo-32k",
-        "label": "ERNIE 4.5 Turbo 32K",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": false,
-          "maxReferenceImages": 0,
-          "providerMaxReferenceImages": 0,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "baidu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "ernie-4.5-turbo-128k",
-        "label": "ERNIE 4.5 Turbo 128K",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": false,
-          "maxReferenceImages": 0,
-          "providerMaxReferenceImages": 0,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "baidu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "ernie-4.5-turbo-20260402",
-        "label": "ERNIE 4.5 Turbo 20260402",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": false,
-          "maxReferenceImages": 0,
-          "providerMaxReferenceImages": 0,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "baidu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "ernie-4.5-turbo-vl",
-        "label": "ERNIE 4.5 Turbo VL",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3,
-          "providerMaxReferenceImages": 10,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "baidu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "ernie-4.5-turbo-vl-32k",
-        "label": "ERNIE 4.5 Turbo VL 32K",
-        "roles": [
-          "main",
-          "vision"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3,
-          "providerMaxReferenceImages": 10,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "baidu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text",
-            "image"
           ],
           "outputModalities": [
             "text"
@@ -26126,189 +24694,6 @@
         }
       },
       {
-        "id": "deepseek-v4-flash",
-        "label": "DeepSeek-V4-Flash",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
-        "capabilities": {
-          "referenceImages": false,
-          "maxReferenceImages": 0,
-          "providerMaxReferenceImages": 0,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "deepseek",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "legacy",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ],
-          "expirationDate": "2026-09-29",
-          "expirationAt": "2026-09-28T16:00:00.000Z",
-          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
-        }
-      },
-      {
-        "id": "deepseek-v3.2",
-        "label": "DeepSeek-V3.2",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
-        "capabilities": {
-          "referenceImages": false,
-          "maxReferenceImages": 0,
-          "providerMaxReferenceImages": 0,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "deepseek",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "legacy",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ],
-          "expirationDate": "2026-09-29",
-          "expirationAt": "2026-09-28T16:00:00.000Z",
-          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
-        }
-      },
-      {
-        "id": "internvl3-38b",
-        "label": "InternVL3-38B",
-        "roles": [
-          "vision"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3,
-          "providerMaxReferenceImages": 10,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "shanghai-ai-lab",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "ernie-x1.1-preview",
-        "label": "ERNIE-X1.1-Preview",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
-        "capabilities": {
-          "referenceImages": false,
-          "maxReferenceImages": 0,
-          "providerMaxReferenceImages": 0,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "baidu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "legacy",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ],
-          "expirationDate": "2026-09-29",
-          "expirationAt": "2026-09-28T16:00:00.000Z",
-          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
-        }
-      },
-      {
-        "id": "ernie-x1.1",
-        "label": "ERNIE-X1.1",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
-        "capabilities": {
-          "referenceImages": false,
-          "maxReferenceImages": 0,
-          "providerMaxReferenceImages": 0,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "baidu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "legacy",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ],
-          "expirationDate": "2026-09-29",
-          "expirationAt": "2026-09-28T16:00:00.000Z",
-          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
-        }
-      },
-      {
         "id": "deepseek-flash",
         "label": "DeepSeek-V4.1-flash",
         "roles": [
@@ -26340,43 +24725,6 @@
           "regions": [
             "cn-account-global-endpoint"
           ]
-        }
-      },
-      {
-        "id": "deepseek-v3.2-think",
-        "label": "DeepSeek-V3.2-Think",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
-        "capabilities": {
-          "referenceImages": false,
-          "maxReferenceImages": 0,
-          "providerMaxReferenceImages": 0,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "deepseek",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "legacy",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ],
-          "expirationDate": "2026-09-29",
-          "expirationAt": "2026-09-28T16:00:00.000Z",
-          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
         }
       },
       {
@@ -26662,150 +25010,6 @@
         }
       },
       {
-        "id": "glm-5",
-        "label": "GLM-5",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
-        "capabilities": {
-          "referenceImages": false,
-          "maxReferenceImages": 0,
-          "providerMaxReferenceImages": 0,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "zhipu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "legacy",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ],
-          "expirationDate": "2026-09-29",
-          "expirationAt": "2026-09-28T16:00:00.000Z",
-          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
-        }
-      },
-      {
-        "id": "kimi-k2.6",
-        "label": "Kimi-K2.6",
-        "roles": [
-          "main"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
-        "capabilities": {
-          "referenceImages": false,
-          "maxReferenceImages": 0,
-          "providerMaxReferenceImages": 0,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "moonshot",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "legacy",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ],
-          "expirationDate": "2026-09-29",
-          "expirationAt": "2026-09-28T16:00:00.000Z",
-          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
-        }
-      },
-      {
-        "id": "deepseek-ocr",
-        "label": "DeepSeek-OCR",
-        "roles": [
-          "vision"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 1,
-          "providerMaxReferenceImages": 1,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "deepseek",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "qianfan-ocr",
-        "label": "Qianfan-OCR",
-        "roles": [
-          "vision"
-        ],
-        "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3,
-          "providerMaxReferenceImages": 10,
-          "imageGeneration": false,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": []
-        },
-        "metadata": {
-          "vendor": "baidu",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text",
-            "image"
-          ],
-          "outputModalities": [
-            "text"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
         "id": "musesteamer-air-image",
         "label": "MuseSteamer Air Image",
         "roles": [
@@ -26832,80 +25036,6 @@
           "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
           "inputModalities": [
             "text"
-          ],
-          "outputModalities": [
-            "image"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "qwen-image",
-        "label": "Qwen Image",
-        "roles": [
-          "image"
-        ],
-        "protocol": "qianfan-images",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": false,
-          "maxReferenceImages": 0,
-          "providerMaxReferenceImages": 0,
-          "imageGeneration": true,
-          "imageEditing": false,
-          "imageEditMode": "none",
-          "outputFormats": [
-            "png"
-          ]
-        },
-        "metadata": {
-          "vendor": "alibaba",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text"
-          ],
-          "outputModalities": [
-            "image"
-          ],
-          "regions": [
-            "cn-account-global-endpoint"
-          ]
-        }
-      },
-      {
-        "id": "qwen-image-edit",
-        "label": "Qwen Image Edit",
-        "roles": [
-          "image"
-        ],
-        "protocol": "qianfan-images",
-        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
-        "capabilities": {
-          "referenceImages": true,
-          "maxReferenceImages": 3,
-          "providerMaxReferenceImages": 3,
-          "imageGeneration": false,
-          "imageEditing": true,
-          "imageEditMode": "direct-edit",
-          "outputFormats": [
-            "png"
-          ],
-          "requiresSourceImage": true
-        },
-        "metadata": {
-          "vendor": "alibaba",
-          "verified": false,
-          "verificationState": "catalog",
-          "lifecycle": "stable",
-          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-          "inputModalities": [
-            "text",
-            "image"
           ],
           "outputModalities": [
             "image"
@@ -28431,11 +26561,6 @@
         "selectable": false,
         "disabledReason": "预览阶段已结束，已有配置迁移至 qwen3.8-max。",
         "lifecycle": "legacy"
-      },
-      "qwen-image": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-10-10",
-        "replacementModelId": "qwen-image-2.0"
       }
     },
     "openai": {
@@ -28526,6 +26651,18 @@
         "expirationDate": null,
         "replacementModelId": "gemini-nano-banana-2.1",
         "lifecycleSourceUrl": "https://ai.google.dev/gemini-api/docs/changelog"
+      },
+      "gemini-2.5-pro": {
+        "routingNotice": {
+          "text": "2026-12-01 起，Google 将请求自动转发至 gemini-3.8-flash，按目标型号计费。",
+          "sourceUrl": "https://ai.google.dev/gemini-api/docs/deprecations"
+        }
+      },
+      "gemini-2.5-flash": {
+        "routingNotice": {
+          "text": "2026-12-01 起，Google 将请求自动转发至 gemini-3.5-flash-lite，按目标型号计费。",
+          "sourceUrl": "https://ai.google.dev/gemini-api/docs/deprecations"
+        }
       }
     },
     "deepseek": {
@@ -28548,48 +26685,7 @@
         "availabilityNotes": "原模型已退役；该历史 API ID 仍被接受，现由 V4.1 Flash 服务。保存的型号不自动改写。"
       }
     },
-    "siliconflow": {
-      "nex-agi/Nex-N2-Pro": {
-        "lifecycle": "legacy",
-        "selectable": false,
-        "disabledReason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
-        "expirationDate": "2026-09-11",
-        "lifecycleSourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
-        "replacementModelId": ""
-      },
-      "Qwen/Qwen3.5-397B-A17B": {
-        "lifecycle": "legacy",
-        "selectable": false,
-        "disabledReason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
-        "expirationDate": "2026-09-11",
-        "lifecycleSourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
-        "replacementModelId": ""
-      },
-      "MiniMaxAI/MiniMax-M2.5": {
-        "lifecycle": "legacy",
-        "selectable": false,
-        "disabledReason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
-        "expirationDate": "2026-09-11",
-        "lifecycleSourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
-        "replacementModelId": ""
-      },
-      "Pro/MiniMaxAI/MiniMax-M2.5": {
-        "lifecycle": "legacy",
-        "selectable": false,
-        "disabledReason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
-        "expirationDate": "2026-09-11",
-        "lifecycleSourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
-        "replacementModelId": ""
-      },
-      "baidu/ERNIE-Image-Turbo": {
-        "lifecycle": "legacy",
-        "selectable": false,
-        "disabledReason": "硅基流动公告此型号于2026-09-30停用；历史ID保留，请手动选择可用型号。",
-        "expirationDate": "2026-09-30",
-        "lifecycleSourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
-        "replacementModelId": ""
-      }
-    },
+    "siliconflow": {},
     "together": {
       "deepseek-ai/DeepSeek-V4-Pro-0813": {
         "lifecycle": "stable",
@@ -28597,23 +26693,12 @@
         "lifecycleSourceUrl": "https://docs.together.ai/docs/serverless/models",
         "replacementModelId": "",
         "availabilityNotes": "2026-10-28 核对 Together 当前 Serverless 目录、专用接口文档与停服公告：此精确 ID 仍在列，未找到其停服公告；已清除误记的到期日期与替代建议。账户权限与真实推理未验证。"
-      },
-      "deepseek-ai/DeepSeek-V4-Flash-0731": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-29",
-        "lifecycleSourceUrl": "https://docs.together.ai/docs/deprecations",
-        "replacementModelId": "deepseek-ai/DeepSeek-V4.1-Flash"
       }
     },
     "tokenhub": {
       "glm-5.1": {
         "expirationDate": "2026-10-08",
         "expirationAt": "2026-10-08T00:00:00+08:00",
-        "lifecycle": "legacy"
-      },
-      "glm-5v-turbo": {
-        "expirationDate": "2026-10-30",
-        "expirationAt": "2026-10-30T00:00:00+08:00",
         "lifecycle": "legacy"
       },
       "glm-5-turbo": {
@@ -28631,57 +26716,21 @@
         "expirationDate": "2026-10-31",
         "expirationAt": "2026-10-31T00:00:00+08:00",
         "lifecycleSourceUrl": "https://intl.cloud.tencent.com/zh/announce/detail/101537"
-      },
-      "minimax-m2.7": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-11-17",
-        "lifecycleSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
-        "availabilityNotes": "2026-10-26 核对官方下线日期 2026-11-17；官方未给具体时刻，沿用现有日期级禁选规则。历史 ID/默认选择保留，真实账户状态未验。"
-      },
-      "hy-image-v3": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-11-12",
-        "lifecycleSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
-        "availabilityNotes": "2026-10-26 核对官方下线日期 2026-11-12；官方未给具体时刻，沿用现有日期级禁选规则。历史 ID/默认选择保留，真实账户状态未验。"
-      },
-      "seedream-image-v5.0-lite": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-11-24",
-        "lifecycleSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
-        "availabilityNotes": "2026-10-26 核对官方下线日期 2026-11-24；官方未给具体时刻，沿用现有日期级禁选规则。历史 ID/默认选择保留，真实账户状态未验。"
       }
     },
     "xiaomi": {},
     "runware": {
-      "xai:grok-imagine@image-quality": {
-        "expirationDate": "2026-11-02",
-        "expirationAt": "2026-11-02T00:00:00Z",
-        "lifecycle": "legacy",
-        "lifecycleSourceUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality"
-      },
       "openai:4@1": {
         "expirationDate": "2026-12-01",
         "expirationAt": "2026-12-01T00:00:00Z",
         "lifecycle": "legacy",
         "lifecycleSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1-5"
       },
-      "google:4@1": {
-        "expirationDate": "2026-10-02",
-        "expirationAt": "2026-10-02T00:00:00Z",
-        "lifecycle": "legacy",
-        "lifecycleSourceUrl": "https://runware.ai/docs/models/google-nano-banana"
-      },
       "openai:1@2": {
         "expirationDate": "2026-12-01",
         "expirationAt": "2026-12-01T00:00:00Z",
         "lifecycle": "legacy",
         "lifecycleSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1-mini"
-      },
-      "openai:1@1": {
-        "expirationDate": "2026-10-23",
-        "expirationAt": "2026-10-23T00:00:00Z",
-        "lifecycle": "legacy",
-        "lifecycleSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1"
       },
       "deepseek:v4@flash": {
         "selectable": false,
@@ -28691,19 +26740,6 @@
       }
     },
     "mistral": {
-      "labs-leanstral-1-5": {
-        "lifecycle": "legacy",
-        "selectable": false,
-        "expirationDate": "2026-09-30",
-        "disabledReason": "官方已于 2026-09-30 退役；历史任务和型号 ID 保留。",
-        "lifecycleSourceUrl": "https://docs.mistral.ai/resources/changelogs"
-      },
-      "zai-glm-5-2": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-10-31",
-        "replacementModelId": "zai-glm-5-3",
-        "lifecycleSourceUrl": "https://docs.mistral.ai/resources/changelogs"
-      },
       "zai-glm-5-3": {
         "lifecycle": "stable",
         "lifecycleSourceUrl": "https://docs.mistral.ai/resources/changelogs"
@@ -28717,184 +26753,14 @@
         "lifecycleSourceUrl": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
       }
     },
-    "tokendance": {
-      "mimo-v2.5": {
-        "expirationDate": "2026-10-21",
-        "expirationAt": "2026-10-21T10:00:00+08:00",
-        "lifecycle": "legacy",
-        "lifecycleSourceUrl": "https://tokendance.space/docs/changelog.md"
-      },
-      "mimo-v2.5-pro": {
-        "expirationDate": "2026-10-21",
-        "expirationAt": "2026-10-21T10:00:00+08:00",
-        "lifecycle": "legacy",
-        "lifecycleSourceUrl": "https://tokendance.space/docs/changelog.md"
-      }
-    },
+    "tokendance": {},
     "ark": {
-      "deepseek-v4-flash-260425": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-21",
-        "expirationAt": "2026-09-21T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
-        "selectable": false,
-        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
-      },
-      "glm-4-7-251222": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-21",
-        "expirationAt": "2026-09-21T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
-        "selectable": false,
-        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
-      },
-      "doubao-seed-code-preview-251028": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-21",
-        "expirationAt": "2026-09-21T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
-        "selectable": false,
-        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
-      },
-      "doubao-seed-1-8-251228": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-21",
-        "expirationAt": "2026-09-21T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
-        "selectable": false,
-        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
-      },
-      "doubao-seed-1-6-vision-250815": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-21",
-        "expirationAt": "2026-09-21T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
-        "selectable": false,
-        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
-      },
-      "doubao-seed-1-6-250615": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-21",
-        "expirationAt": "2026-09-21T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
-        "selectable": false,
-        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
-      },
-      "doubao-seed-1-6-251015": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-21",
-        "expirationAt": "2026-09-21T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
-        "selectable": false,
-        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
-      },
-      "doubao-seed-1-6-flash-250828": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-21",
-        "expirationAt": "2026-09-21T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
-        "selectable": false,
-        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
-      },
-      "doubao-seed-1-6-flash-250615": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-21",
-        "expirationAt": "2026-09-21T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
-        "selectable": false,
-        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
-      },
-      "doubao-1-5-lite-32k-250115": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-21",
-        "expirationAt": "2026-09-21T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
-        "selectable": false,
-        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
-      },
-      "doubao-1-5-vision-pro-32k-250115": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-21",
-        "expirationAt": "2026-09-21T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
-        "selectable": false,
-        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
-      },
-      "doubao-1-5-pro-32k-250115": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-09-21",
-        "expirationAt": "2026-09-21T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
-        "selectable": false,
-        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
-      },
-      "doubao-seed-2-0-lite-260215": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-10-22",
-        "expirationAt": "2026-10-22T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-10-22 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
-      },
-      "doubao-seed-2-0-mini-260215": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-10-22",
-        "expirationAt": "2026-10-22T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-10-22 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
-      },
       "doubao-seed-2-0-pro-260215": {
         "lifecycle": "legacy",
-        "expirationDate": "2026-11-24",
-        "expirationAt": "2026-11-24T14:00:00+08:00",
+        "expirationDate": "2027-01-22",
+        "expirationAt": "2027-01-22T14:00:00+08:00",
         "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
-      },
-      "doubao-seed-2-0-code-preview-260215": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-11-24",
-        "expirationAt": "2026-11-24T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
-      },
-      "doubao-seedream-4-0-250828": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-11-24",
-        "expirationAt": "2026-11-24T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
-      },
-      "doubao-seedream-4-5-251128": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-11-24",
-        "expirationAt": "2026-11-24T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
-      },
-      "doubao-seedream-5-0-260128": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-11-24",
-        "expirationAt": "2026-11-24T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
-      },
-      "deepseek-v4-pro-260425": {
-        "lifecycle": "legacy",
-        "expirationDate": "2026-11-24",
-        "expirationAt": "2026-11-24T14:00:00+08:00",
-        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
+        "availabilityNotes": "方舟公告：服务截止 2027-01-22 14:00（UTC+8）。"
       }
     },
     "fal": {
@@ -29222,7 +27088,7 @@
       "reviewedAt": "2026-09-22",
       "defaults": {
         "main": "hy3",
-        "image": "hy-image-v3",
+        "image": "",
         "vision": "hy-vision-2.0-instruct"
       },
       "keyPlaceholder": "API Key",
@@ -29307,7 +27173,7 @@
       "defaults": {
         "main": "ernie-5.1",
         "image": "musesteamer-air-image",
-        "vision": "ernie-5.0"
+        "vision": ""
       },
       "keyPlaceholder": "千帆普通 API Key（非 Token/Coding Plan）",
       "guideSteps": [

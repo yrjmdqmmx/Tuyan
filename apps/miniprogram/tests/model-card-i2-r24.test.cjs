@@ -14,14 +14,14 @@ test('R24 I2 Mini source rows reuse the accent class and show a wrapping copy hi
  assert.match(css,/\.source-copy-hint\{font-size:10px/)
 })
 
-test('R24 I2 all 1033 compiled Mini cards, copy dialogs and modality dialogs pass strict scans',async t=>{
+test('R24 I2 all 968 compiled Mini cards, copy dialogs and modality dialogs pass strict scans',async t=>{
  const {titleIssues,dialogIssues,reviewBaseline}=await import('../../../test-support/source-titles-r24.mjs')
- const {expectedHumanRows}=await import('../../../test-support/source-links-i3-r24.mjs')
+ const {currentSourceReview,expectedHumanRows}=await import('../../../test-support/source-links-i3-r24.mjs')
  const {assertDialogDates,assertUnknownIconDates}=await import('../../../test-support/dialog-dates-r26.mjs')
  const shared=await import('../../../packages/api/src/card-presentation.mjs')
  let cards=0,rows=0,icons=0
  for(const [provider,entry]of Object.entries(STATIC_MODEL_REGISTRY))for(const model of entry.models) {
-  const card=context.present(model,'','',provider),key=provider+'/'+model.id,old=reviewBaseline.mini.find(c=>c.card===key)
+  const card=context.present(model,'','',provider),key=provider+'/'+model.id,old=currentSourceReview(reviewBaseline.mini,key,'mini')
   assert.equal(card.label,old.name);assert.equal(JSON.stringify(card.specSources.map(s=>s.url)),JSON.stringify(expectedHumanRows(old.rows,key,'mini').map(s=>s.url)))
   assert.equal(new Set(card.specSources.map(s=>s.label)).size,card.specSources.length)
   assert.deepEqual(dialogIssues(card.auditMessage),[],key)
@@ -42,6 +42,6 @@ test('R24 I2 all 1033 compiled Mini cards, copy dialogs and modality dialogs pas
   }
   cards++
  }
- assert.equal(cards,1033);assert.equal(rows,1096);assert.ok(icons>=1033*8)
+ assert.equal(cards,968);assert.equal(rows,1029);assert.ok(icons>=968*8)
  t.diagnostic(JSON.stringify({cards,rows,icons,titleFindings:0,copyFindings:0}))
 })

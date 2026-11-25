@@ -89,6 +89,7 @@ test('R22B all 74 cards require rendered pages and retain seven main vendor fall
     assert.equal(row.status, 200)
     assert.equal(row.url, 'https://tokendance.space/models/' + row.modelId)
     const entry = model('tokendance', row.modelId)
+    if (MODEL_AUDIT_DATA.removed['tokendance/' + row.modelId]) continue
     const link = MODEL_AUDIT_DATA.details['tokendance/' + row.modelId].sourceLinks[0]
     if (row.rendersModel) {
       assert.deepEqual([link.url, link.scope, link.kind, link.checkedAt], [row.url, 'channel', 'model-page', '2026-11-09'])
@@ -175,7 +176,7 @@ test('R12C every full/static card preserves R11 specificity with exact, reasoned
   const actualExceptions = []
   assert.equal(before.staticRows.length, 1064)
   for (const [scope, originals] of [['full', before.rows], ['static', before.staticRows]]) for (const row of originals) {
-    if (batch1.remove.some(item => item.provider === row.channel && item.id === row.modelId)) {
+    if (MODEL_AUDIT_DATA.removed[row.channel + '/' + row.modelId]) {
       assert.ok(MODEL_AUDIT_DATA.removed[row.channel + '/' + row.modelId]);
       continue;
     }
@@ -183,7 +184,7 @@ test('R12C every full/static card preserves R11 specificity with exact, reasoned
       || STATIC_MODEL_REGISTRY[row.channel].models.find(m => m.id === row.modelId)
     const card = modelCardSpecifications(row.channel, entry), finalUrl = card.sources[0], key = scope + '/' + row.channel + '/' + row.modelId
     assert.ok(finalUrl && !isApiSource(finalUrl, MODEL_AUDIT_DATA.sourceChecks), key)
-    const updated = batchNotice(row.channel, row.modelId);
+    const updated = row.channel === 'gemini' && row.modelId === 'gemini-3.1-flash-lite' ? {source:'https://ai.google.dev/gemini-api/docs/deprecations'} : batchNotice(row.channel, row.modelId);
     if (updated) {
       assert.ok(card.sources.includes(updated.source), key + ': sourced retirement may replace a model page');
       continue;
@@ -214,7 +215,7 @@ test('R12C an endpoint replacement prefers same-host model documentation, then v
   }
 })
 test('R12 final changed fixture exactly covers R8 differences using full objects and static-only identities', () => {
-  assert.equal(models.size, 1064); assert.equal(before.rows.length, 1064)
+  assert.equal(models.size, 1067); assert.equal(before.rows.length, 1064)
   assert.deepEqual(expectedR21Changes, changedLinksFromR8())
   assert.ok(final.every(row => !Object.hasOwn(row, 'status')), 'HTTP evidence lives in the separate R12D fixture')
 })
@@ -273,6 +274,10 @@ test('R12D links retain current DOM coverage with the explicit R21 TokenDance pa
   for (const row of linkChecks) {
     const entry = models.get(row.channel + '/' + row.modelId)
     const card = modelCardSpecifications(row.channel, entry)
+    if (MODEL_AUDIT_DATA.removed[row.channel + '/' + row.modelId]) {
+      assert.ok(!STATIC_MODEL_REGISTRY[row.channel].models.some(model => model.id === row.modelId))
+      continue
+    }
     const expected = MODEL_AUDIT_DATA.removed[row.channel + '/' + row.modelId]?.sourceUrl || r21Url(row)
     assertLink(row.channel, entry, expected, modelSourceName(card, expected))
   }

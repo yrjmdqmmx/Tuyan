@@ -62,7 +62,8 @@ test('actual Qianfan text and vision adapters keep field shapes and never expose
 })
 
 test('incomplete and contradictory evidence does not enable adjacent IDs or different roles', () => {
-  for (const id of ['deepseek-v4.1-flash', 'qwen3.5-397b-a17b', 'ernie-5.0-thinking-latest']) {
+  assert.equal(thinkingProfile('qianfan', 'ernie-5.0-thinking-latest', 'main', 'openai-chat-completions'), undefined)
+  for (const id of ['deepseek-v4.1-flash', 'qwen3.5-397b-a17b']) {
     assert.equal(thinkingProfile('qianfan', id, 'main', 'openai-chat-completions').status, 'unconfirmed')
     assert.throws(() => compileThinkingSelection({ ...identity(id), options: { mode: true } }, 'main'), localFailure)
   }

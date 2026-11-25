@@ -49,6 +49,7 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
       <div><dt><ScanText size={14} aria-hidden="true" />{t('上下文窗口')}</dt><dd title={data.contextExact || undefined} className={data.context === '未公布' ? 'model-spec-unknown' : undefined}>{t(data.context)}{vendorOrigin(data.contextScope)}</dd></div>
       <div><dt><TextCursorInput size={14} aria-hidden="true" />{t('最大输出')}</dt><dd title={data.maxOutputExact || undefined} className={data.maxOutput === '未公布' ? 'model-spec-unknown' : undefined}>{t(data.maxOutput)}{vendorOrigin(data.maxOutputScope)}</dd></div>
     </dl>
+    {data.routingNotice && <p className="model-routing-notice">{data.routingNotice.text} <a href={data.routingNotice.sourceUrl} target="_blank" rel="noopener noreferrer">{t('官方文档')}</a></p>}
     {footerActions ? <div className="model-spec-footer">{sources}{footerActions}</div> : sources}
     {showSources && <WorkspaceDialog className="model-evidence-dialog" title={t('模型规格')} onClose={() => setShowSources(false)}>
       <p className="tw-preserve-text">{details}</p>
@@ -69,7 +70,7 @@ export function ModelLifecycleBadge({ lifecycle, provider, modelId }) {
   return <>
     <span className="tw-catalog-tags"><span className="is-unavailable" role="button" tabIndex={0} title={message} aria-label={`将下线：${message}`} onClick={() => setOpen(true)} onKeyDown={event => {
       if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setOpen(true) }
-    }}>将下线</span></span>
+    }}>将下线 {lifecycle.stopDate.slice(0, 10)}</span></span>
     {open && <div onClick={event => event.stopPropagation()}><WorkspaceDialog className="model-evidence-dialog" title="下线公告" onClose={() => setOpen(false)}><p>{message}</p>{sourceUrl && <a className="model-evidence-source" href={sourceUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} aria-hidden="true" /><span>{visibleSourceTitle(sourceUrl)}</span></a>}</WorkspaceDialog></div>}
   </>
 }

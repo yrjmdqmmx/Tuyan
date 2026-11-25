@@ -71,7 +71,7 @@ test('R8 every compiled mini card renders uppercase token units without changing
     }
     count++
   }
-  assert.equal(count, 1033); assert.ok(lowercase > 0)
+  assert.equal(count, 968); assert.ok(lowercase > 0)
   const kimi = auditedModelSpecs('bailian', 'kimi-k3').fields
   assert.deepEqual(kimi.inputModalities.value, ['text', 'image']); assert.deepEqual(kimi.outputModalities.value, ['text'])
   assert.equal(kimi.totalContextTokens.value, 1048576); assert.equal(kimi.maxOutputTokens.value, 1048576)

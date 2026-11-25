@@ -618,43 +618,6 @@
     },
     "expiresAt": "2026-10-08T00:00:00+08:00"
   },
-  "tokenhub/glm-5v-turbo": {
-    "taskType": "chat",
-    "roles": [
-      "main",
-      "vision"
-    ],
-    "maxImages": 3,
-    "minImages": 0,
-    "source": "https://cloud.tencent.com/document/product/1823/132061",
-    "request": {
-      "max_tokens": 8192
-    },
-    "price": {
-      "source": "https://cloud.tencent.com/document/product/1823/130055",
-      "checkedAt": "2026-09-22",
-      "amount": null,
-      "currency": "CNY",
-      "unit": "million tokens",
-      "market": "Guangzhou online postpaid",
-      "accountTariffConfirmed": false,
-      "tiers": [
-        {
-          "condition": "输入≤32K",
-          "input": 5,
-          "output": 22,
-          "cachedInput": 1.2
-        },
-        {
-          "condition": "输入>32K",
-          "input": 7,
-          "output": 26,
-          "cachedInput": 1.8
-        }
-      ]
-    },
-    "expiresAt": "2026-10-30T00:00:00+08:00"
-  },
   "tokenhub/glm-5-turbo": {
     "taskType": "chat",
     "roles": [
@@ -923,35 +886,6 @@
       ]
     }
   },
-  "tokenhub/minimax-m2.7": {
-    "taskType": "chat",
-    "roles": [
-      "main"
-    ],
-    "maxImages": 0,
-    "minImages": 0,
-    "source": "https://cloud.tencent.com/document/product/1823/132246",
-    "request": {
-      "max_tokens": 16384,
-      "reasoning_split": true
-    },
-    "price": {
-      "source": "https://cloud.tencent.com/document/product/1823/130055",
-      "checkedAt": "2026-09-22",
-      "amount": null,
-      "currency": "CNY",
-      "unit": "million tokens",
-      "market": "Guangzhou online postpaid",
-      "accountTariffConfirmed": false,
-      "perMillionTokens": {
-        "currency": "CNY",
-        "market": "Guangzhou",
-        "input": 2.1,
-        "output": 8.4,
-        "cachedInput": 0.42
-      }
-    }
-  },
   "tokenhub/mimo-v2.5-pro": {
     "taskType": "chat",
     "roles": [
@@ -1215,28 +1149,6 @@
         "output>2.61MP": 60000,
         "inputAfterFirstEach": 2000
       }
-    },
-    "maxPromptLength": 600
-  },
-  "tokenhub/seedream-image-v5.0-lite": {
-    "taskType": "seedream",
-    "source": "https://cloud.tencent.com/document/product/1823/136609",
-    "roles": [
-      "image"
-    ],
-    "maxImages": 14,
-    "generation": true,
-    "editing": true,
-    "price": {
-      "source": "https://cloud.tencent.com/document/product/1823/130055",
-      "checkedAt": "2026-09-22",
-      "amount": null,
-      "currency": "CNY",
-      "unit": "million tokens",
-      "market": "Guangzhou online postpaid",
-      "accountTariffConfirmed": false,
-      "perMillionOutputTokens": 10,
-      "tokensPerImage": 22000
     },
     "maxPromptLength": 600
   },

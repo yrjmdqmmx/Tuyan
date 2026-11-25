@@ -18,7 +18,7 @@ export function restoreI12Sources(rows,key,client){rows=restoreI13Sources(rows,k
 export function currentI12Sources(rows,key,client){const patch=pmReview.rows[key]?.find(p=>p.path===(client==='web'?'web/sources':'mini/card/specSources'));if(patch){assert.deepEqual(rows,patch.before,key+' '+client+' baseline');rows=structuredClone(patch.after)}return currentI13Sources(rows,key,client)}
 export function restoreI12Review(review){return Object.fromEntries(Object.entries(restoreI13Review(review)).map(([client,rows])=>[client,rows.map(row=>reverse(row,pmReview.sources[client+'/'+row.card]))]))}
 export function assertPMDecisions(rows, historical = false){
- assert.equal(Object.keys(rows).length,historical ? 1064 : 1033)
+ assert.equal(Object.keys(rows).length,historical ? 1064 : 968)
  const counts={web:0,mini:0,unsupported:0,notApplicable:0},conditional=[]
  for(const [key,row]of Object.entries(rows)){
   const {data}=row.web,limits=[data.context,data.maxOutput],mini=row.mini.card
@@ -36,7 +36,7 @@ export function assertPMDecisions(rows, historical = false){
   }
   for(const icon of [...row.web.inputIcons,...row.web.outputIcons])if(icon.state==='conditional')conditional.push({key,sentence:icon.tooltip})
  }
- assert.deepEqual(counts,{web:historical ? 584 : 562,mini:historical ? 584 : 562,unsupported:0,notApplicable:historical ? 816 : 814})
+ assert.deepEqual(counts,{web:historical ? 584 : 481,mini:historical ? 584 : 481,unsupported:0,notApplicable:historical ? 816 : 796})
  assert.deepEqual(conditional,[{key:'together/Prism-ML/Ternary-Bonsai-27B',sentence:'支持图像输入（需启用视觉组件）'}])
  restoreI12(historical ? rows : beforeRetirements('cards',rows))
  return counts

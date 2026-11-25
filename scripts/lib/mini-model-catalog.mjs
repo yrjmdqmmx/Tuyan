@@ -69,6 +69,12 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
     if (vendorSources.length && Object.values(merged).some(fact => fact.provenance === 'vendor')) details[key] = { ...details[key], vendorSources }
     if (data.details[key]?.modalityMasks) details[key] = { ...details[key], modalityMasks: data.details[key].modalityMasks }
     for (const field of ['fieldVerifiedAt', 'fieldSources', 'lifecycleSourceUrl', 'excludedSources']) if (Object.hasOwn(data.details[key] || {}, field)) details[key] = { ...details[key], [field]: data.details[key][field] }
+    // Catalog-only models may have specifications verified after the shared audit.
+    // Preserve newer field dates when encoding compact rows against its default date.
+    const newerDates = data.rows[key] ? [] : Object.entries(merged).filter(([, fact]) => fact.verifiedAt > data.verifiedAt)
+    if (newerDates.length) details[key] = { ...details[key], fieldVerifiedAt: {
+      ...Object.fromEntries(newerDates.map(([field, fact]) => [field, fact.verifiedAt])), ...details[key]?.fieldVerifiedAt,
+    } }
     // fal field attribution uses the same exact URLs as Web, including secondary
     // vendor citations; a missing primary-URL slot must not erase its title.
     if (channel === 'fal' || noticePrimary) details[key] = { ...details[key], fieldSources: {

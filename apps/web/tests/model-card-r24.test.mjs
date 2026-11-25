@@ -4,6 +4,7 @@ import React from 'react'
 import { render, screen, within, fireEvent, cleanup } from '@testing-library/react'
 import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
 import { modelCardSpecifications } from '../src/lib/modelCardSpecifications.js'
+import { removedModel } from '../src/lib/modelAudit.js'
 import { modelSourceRows } from '../src/lib/modelCardSources.js'
 import { ModelSpecifications } from '../src/components/ModelSpecifications.jsx'
 import { titleSourceRows } from '../../../packages/api/src/card-presentation.mjs'
@@ -12,10 +13,15 @@ import pages from '../../../packages/api/src/card-data/tokendance-pages.json' wi
 import fixture from '../../../test-support/fixtures/model-card-r24.json' with { type: 'json' }
 afterEach(cleanup)
 
-test('R24 Web keeps retirement roles in the three reported cards and their dialogs', () => {
+test('R24 Web keeps retirement roles in the surviving reported cards and their dialogs', () => {
   for (const key of fixture.noticeCards) {
     const slash = key.indexOf('/'), provider = key.slice(0, slash), id = key.slice(slash + 1)
     const model = STATIC_MODEL_REGISTRY[provider].models.find(model => model.id === id)
+    if (key === 'qianfan/qwen-image-edit') {
+      assert.equal(model, undefined)
+      assert.equal(removedModel(provider, id).stopDate, '2026-11-23')
+      continue
+    }
     const rows = modelSourceRows(modelCardSpecifications(provider, model))
     assert.ok(!rows.some(row => row.url === fixture.noticeUrl))
     const expected = fixture.currentNotices[key] && JSON.parse(JSON.stringify(fixture.currentNotices[key]).replaceAll('2027-01-19','2027年01月19日'))
@@ -32,7 +38,7 @@ test('R24 Web keeps retirement roles in the three reported cards and their dialo
   assert.equal(titleSourceRows([{url:fixture.noticeUrl,label:'渠道公告'}])[0].label, '下线公告 · 百炼 · 模型下线公告')
 })
 
-test('R24 Web scans all 1033 cards for retirement labels and the exact seven historical hints', t => {
+test('R24 Web scans all 968 cards for retirement labels and the exact seven historical hints', t => {
   let cards = 0, notices = 0
   const historical = historicalChannelIds(pages)
   for (const [provider, entry] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
@@ -48,7 +54,7 @@ test('R24 Web scans all 1033 cards for retirement labels and the exact seven his
     }
     cards++
   }
-  assert.equal(cards, 1033); assert.ok(notices > 3)
+  assert.equal(cards, 968); assert.ok(notices > 3)
   assert.deepEqual([...historical].sort(), fixture.historicalIds)
   assert.deepEqual([...historicalChannelIds(pages)].sort(), fixture.historicalIds)
   const missing = historicalChannelIds({...pages, ...fixture.syntheticPages})

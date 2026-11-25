@@ -124,11 +124,11 @@ test('service-specific quantization and Prime specs do not leak to unrelated pro
 })
 
 test('channel-only windows keep native modality provenance and do not cross providers',()=>{
-  const model={id:'deepseek-ocr'}
+  const model={id:'deepseek-v4.1-flash-1017'}
   const qianfan=modelCardSpecifications('qianfan',model)
   assert.equal(qianfan.inputScope,'图研既有核实');assert.equal(qianfan.contextScope,'图研既有核实')
-  assert.equal(qianfan.context,'8K tokens')
-  assert.ok(qianfan.sources.includes('https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5'))
+  assert.equal(qianfan.context,'≈ 1M tokens')
+  assert.ok(qianfan.sources.includes('https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j'))
   assert.equal(modelCardSpecifications('custom',model).context,'未公布')
   assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash'}).context,'≈ 66K tokens')
   assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash-2025-09-15'}).context,'未公布')

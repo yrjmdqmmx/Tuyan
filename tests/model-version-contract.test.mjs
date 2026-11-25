@@ -5,6 +5,9 @@ import { createHash } from 'node:crypto'
 import { createRequire } from 'node:module'
 import { STATIC_MODEL_REGISTRY as registry } from '../apps/web/src/lib/staticModelCatalog.js'
 import { historicalModels, laterDisabled } from '../test-support/model-catalog-history.mjs'
+import { catalogBeforeNovember24 } from '../test-support/retirement-projections.mjs'
+import november24Retirements from '../config/channel-audit/retirements-20261124.json' with {type:'json'}
+import removedLedger from '../config/removed-models.json' with {type:'json'}
 import { readExecutionFixture } from '../test-support/execution-capability.mjs'
 import { MODEL_AUDIT_DATA, removedModel } from '../apps/web/src/lib/modelAudit.js'
 import { modelVersionDetail, openRouterModelVersion, presentRegistryModel } from '../apps/web/src/lib/modelPresentation.js'
@@ -12,9 +15,10 @@ const require = createRequire(import.meta.url)
 const mini = require('../apps/miniprogram/miniprogram/utils/model-registry.js')
 const audit = JSON.parse(fs.readFileSync(new URL('../config/model-version-audit.json', import.meta.url)))
 const get = (p,id) => registry[p].models.find(m => m.id === id)
+const november24Removed = new Set(november24Retirements.remove.map(({provider, id}) => provider+'/'+id))
 
 test('all 760 historical identities retain their contracts or have exact reviewed changes', () => {
-  const historical = structuredClone(registry)
+  const historical = catalogBeforeNovember24(structuredClone(registry))
   for (const [provider, ids] of [['openai', ['gpt-6-sol', 'gpt-6-luna']], ['anthropic', ['claude-opus-5-5']]]) {
     for (const id of ids) {
       assert.deepEqual(historical[provider].models.find(model => model.id === id).roles, ['main', 'vision'])
@@ -53,7 +57,7 @@ test('all 760 historical identities retain their contracts or have exact reviewe
     for (const prior of baseline.models) {
       const key = provider+'/'+prior.id
       const model = historical[provider].models.find(m => m.id === prior.id)
-      if (Object.hasOwn(MODEL_AUDIT_DATA.removed, key)) {
+      if (Object.hasOwn(MODEL_AUDIT_DATA.removed, key) && !november24Removed.has(key)) {
         assert.equal(model, undefined, key)
         removed.push(key)
         continue
@@ -163,5 +167,22 @@ test('channel geography remains a sort rule and never appears in picker labels',
   for (const file of ['../apps/web/src/components/ModelPicker.jsx','../apps/miniprogram/miniprogram/components/model-picker/model-picker.ts']) {
     const source=fs.readFileSync(new URL(file,import.meta.url),'utf8')
     assert.doesNotMatch(source,/国内|国外|modelChannelCategoryLabel/)
+  }
+})
+
+test('each November 24 retirement is absent from the live registry and retains its reviewed evidence', () => {
+  assert.equal(november24Retirements.recordedAt, '2026-11-24')
+  assert.equal(november24Retirements.remove.length, 68)
+  assert.equal(november24Removed.size, 68)
+  for (const row of november24Retirements.remove) {
+    const key = row.provider+'/'+row.id
+    assert.equal(get(row.provider, row.id), undefined, key)
+    assert.match(row.source, /^https:\/\//, key)
+    assert.match(row.evidence_read, /^\d{4}-\d{2}-\d{2}$/, key)
+    assert.ok(row.evidence.trim(), key)
+    assert.ok(removedLedger[key], key)
+    assert.equal(removedLedger[key].sourceUrl, row.source, key)
+    assert.equal(removedLedger[key].stopDate, row.time ?? row.date, key)
+    assert.deepEqual(MODEL_AUDIT_DATA.removed[key], removedLedger[key], key)
   }
 })

@@ -21,10 +21,12 @@ test('Together V4.1 Flash integer effort is not a token budget and never becomes
 
 test('Together exact versions retain different enums, defaults and protocol isolation', () => {
   const models: [string, string[], string | null][] = [
-    ['deepseek-ai/DeepSeek-V4-Flash-0731', ['low', 'high', 'max'], null],
     ['Qwen/Qwen3.8-2.4T-A95B', ['low', 'high', 'xhigh'], 'xhigh'],
     ['Qwen/Qwen3.8-Flash', ['low', 'medium', 'xhigh'], null],
   ]
+  const retired = 'deepseek-ai/DeepSeek-V4-Flash-0731'
+  assert.equal(thinkingProfile('together', retired, 'main', 'openai-chat-completions'), undefined)
+  for (const effort of ['low', 'high', 'max']) assert.throws(() => compile(retired, { effort }))
   for (const [model, efforts, defaultValue] of models) {
     assert.equal(thinkingProfile('together', model, 'main', 'openai-chat-completions').controls[0].default, defaultValue)
     for (const effort of efforts) assert.deepEqual(compile(model, { effort }).wire, { reasoning_effort: effort })
@@ -69,7 +71,7 @@ test('Bailian full image schemas expose no independent thinking controls and ret
 
 test('Retired Ark and out-of-scope Batch IDs cannot gain controls from historical documentation', () => {
   for (const modelId of ['deepseek-v4-flash-260425', 'doubao-seed-1-6-250615', 'doubao-1-5-lite-32k-250115', 'glm-4-7-251222']) {
-    assert.equal(thinkingProfile('ark', modelId, 'main', 'ark-openai-chat').statusReason, 'catalog-retired')
+    assert.equal(thinkingProfile('ark', modelId, 'main', 'ark-openai-chat'), undefined)
     assert.throws(() => compileThinkingSelection({ provider: 'ark', modelId, protocol: 'ark-openai-chat', options: { mode: 'disabled' } }, 'main'))
   }
   assert.throws(() => compileThinkingSelection({ provider: 'openrouter', modelId: 'openai/gpt-6-astra:batch', protocol: 'openrouter-chat-completions', options: { effort: 'high' } }, 'main'))

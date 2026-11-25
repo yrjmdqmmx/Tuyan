@@ -9,7 +9,7 @@ let definition, modal
 const context = {Component(value){definition=value}, exports:{}, require:createRequire(filename), wx:{showModal(value){modal=value}}}
 vm.runInNewContext(fs.readFileSync(filename,'utf8')+'\nthis.present=presentModel',context,{filename})
 
-test('R24 Mini preserves retirement labels in all 1033 cards and the three reported copy dialogs', t => {
+test('R24 Mini preserves retirement labels in all 968 cards and the three reported copy dialogs', t => {
   let cards = 0, notices = 0, examples = 0
   const historical = historicalChannelIds(pages)
   for (const [provider, entry] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
@@ -29,7 +29,7 @@ test('R24 Mini preserves retirement labels in all 1033 cards and the three repor
     for (const icon of card.specRows.flatMap(row=>row.icons)) if (icon.tooltip.includes('渠道页无此型号')) {assert.equal(provider,'tokendance'); historical.add(model.id)}
     cards++
   }
-  assert.equal(cards,1033); assert.equal(examples,1); assert.ok(notices>3)
+  assert.equal(cards,968); assert.equal(examples,1); assert.ok(notices>3)
   assert.deepEqual([...historical].sort(),fixture.historicalIds)
   assert.deepEqual([...historicalChannelIds(pages)].sort(),fixture.historicalIds)
   const missing = historicalChannelIds({...pages,...fixture.syntheticPages})

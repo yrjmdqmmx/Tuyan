@@ -308,24 +308,6 @@
         "evidence": ".audit-input/r12/tokendance-all-rendered.json"
       }
     ],
-    "tokendance/mimo-v2.5": [
-      {
-        "url": "https://tokendance.space/models/mimo-v2.5",
-        "scope": "channel",
-        "kind": "model-page",
-        "checkedAt": "2026-11-09",
-        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
-      }
-    ],
-    "tokendance/mimo-v2.5-pro": [
-      {
-        "url": "https://tokendance.space/models/mimo-v2.5-pro",
-        "scope": "channel",
-        "kind": "model-page",
-        "checkedAt": "2026-11-09",
-        "evidence": ".audit-input/r12/tokendance-all-rendered.json"
-      }
-    ],
     "tokendance/qwen3-vl-plus": [
       {
         "url": "https://tokendance.space/models/qwen3-vl-plus",
@@ -957,22 +939,6 @@
         "url": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate#4.0-ultra-generate-001",
         "scope": "vendor",
         "kind": "model-page",
-        "checkedAt": "2026-11-09"
-      }
-    ],
-    "runware/openai:1@1": [
-      {
-        "url": "https://developers.openai.com/api/docs/models/gpt-image-1",
-        "scope": "vendor",
-        "kind": "model-page",
-        "checkedAt": "2026-11-09"
-      }
-    ],
-    "runware/xai:grok-imagine@image-quality": [
-      {
-        "url": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2",
-        "scope": "vendor",
-        "kind": "retirement-notice",
         "checkedAt": "2026-11-09"
       }
     ]

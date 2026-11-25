@@ -16,6 +16,16 @@ export function isLocalInputFailure(error: any) {
     || error?.name === 'ThinkingConfigValidationError' && error?.localInputFailure === true && error?.requestState === 'not_sent'
     || ['TokenDanceError', 'UniversalApiError'].includes(error?.name) && error?.requestState === 'not_sent' && error?.status === 400)
 }
+function zhipuAuthorizationCopy(status: number) {
+  return status === 401
+    ? ['智谱身份验证失败。', '请检查服务商凭据或联系管理员。']
+    : ['当前账户无权使用该模型。', '请联系管理员确认服务商模型权限（含企业权限），或换用其他模型。']
+}
+export function zhipuAuthorizationError(status: 401 | 403) {
+  return Object.assign(new Error(zhipuAuthorizationCopy(status).join('')), {
+    name: 'ZhipuAuthorizationError', status, retryable: false,
+  })
+}
 export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknownCall = false) {
   const status = Number(error?.status || error?.statusCode || 0)
   const local = isLocalInputFailure(error)
@@ -39,7 +49,8 @@ export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknow
     input: ['图片或文字输入不符合当前渠道、模型的要求。', '请减少图片、裁剪过大的图片或缩短文字，也可更换支持该输入的模型。'],
     balance: ['模型渠道余额不足。', '请补充该渠道余额后恢复原任务，已成功的步骤会复用。'],
     quota: ['当前授权的调用额度已用尽。', '请调整授权额度或重新授权；充值钱包不一定改变授权额度。'],
-    permission: ['当前账号或授权无权使用所选模型。', '请检查渠道授权、模型权限及地区限制，必要时重新授权。'],
+    permission: error?.name === 'ZhipuAuthorizationError' ? zhipuAuthorizationCopy(status)
+      : ['当前账号或授权无权使用所选模型。', '请检查渠道授权、模型权限及地区限制，必要时重新授权。'],
     rate_limit: ['模型渠道请求频率受限。', '请按等待时间稍后恢复原任务，避免连续提交。'],
     timeout: ['等待模型响应超时。', '请先核对渠道调用记录；结果未知时不要重复提交，以免重复扣费。'],
     network: ['连接模型渠道失败或连接中断。', '请检查网络或渠道状态；请求结果未知时先核对调用记录。'],

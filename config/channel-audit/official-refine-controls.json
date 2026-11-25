@@ -19,16 +19,6 @@
     "checkedAt": "2026-09-22",
     "source": "https://platform.sensenova.cn/docs"
   },
-  "qianfan/qwen-image-edit": {
-    "version": 1,
-    "maxImages": 3,
-    "sourceCounts": true,
-    "mask": false,
-    "maskWithReferences": false,
-    "structured": null,
-    "checkedAt": "2026-09-22",
-    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
-  },
   "xai/grok-imagine-image": {
     "version": 1,
     "maxImages": 3,
@@ -42,16 +32,6 @@
   "xai/grok-imagine-image-2.0": {
     "version": 1,
     "maxImages": 5,
-    "sourceCounts": true,
-    "mask": false,
-    "maskWithReferences": false,
-    "structured": null,
-    "checkedAt": "2026-09-22",
-    "source": "https://docs.x.ai/developers/rest-api-reference/inference/images"
-  },
-  "xai/grok-imagine-image-quality": {
-    "version": 1,
-    "maxImages": 3,
     "sourceCounts": true,
     "mask": false,
     "maskWithReferences": false,

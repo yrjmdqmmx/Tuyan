@@ -167,20 +167,6 @@
     "checkedAt": "2026-09-22",
     "source": "https://runware.ai/docs/models/ideogram-4-0-remix"
   },
-  "runware/xai:grok-imagine@image-quality": {
-    "version": 1,
-    "maxImages": 3,
-    "minImages": 1,
-    "sourceCounts": true,
-    "mask": false,
-    "maskRequired": false,
-    "maskWithReferences": false,
-    "structured": null,
-    "singleImageInheritsSize": false,
-    "autoAspectRatio": "1:1",
-    "checkedAt": "2026-09-22",
-    "source": "https://runware.ai/docs/models/xai-grok-imagine-image-quality"
-  },
   "runware/luma:uni@1": {
     "version": 1,
     "maxImages": 10,
@@ -783,20 +769,6 @@
     "checkedAt": "2026-09-22",
     "source": "https://runware.ai/docs/models/bytedance-seedream-4-0"
   },
-  "runware/google:4@1": {
-    "version": 1,
-    "maxImages": 8,
-    "minImages": 1,
-    "sourceCounts": true,
-    "mask": false,
-    "maskRequired": false,
-    "maskWithReferences": false,
-    "structured": null,
-    "singleImageInheritsSize": false,
-    "autoAspectRatio": "1:1",
-    "checkedAt": "2026-09-22",
-    "source": "https://runware.ai/docs/models/google-nano-banana"
-  },
   "runware/runware:108@20": {
     "version": 1,
     "maxImages": 1,
@@ -992,20 +964,6 @@
     "autoAspectRatio": null,
     "checkedAt": "2026-09-22",
     "source": "https://runware.ai/docs/models/ideogram-3-0-replace-background"
-  },
-  "runware/openai:1@1": {
-    "version": 1,
-    "maxImages": 16,
-    "minImages": 1,
-    "sourceCounts": true,
-    "mask": true,
-    "maskRequired": false,
-    "maskWithReferences": true,
-    "structured": null,
-    "singleImageInheritsSize": false,
-    "autoAspectRatio": "1:1",
-    "checkedAt": "2026-09-22",
-    "source": "https://runware.ai/docs/models/openai-gpt-image-1"
   },
   "runware/rundiffusion:110@101": {
     "version": 1,

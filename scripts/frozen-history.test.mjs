@@ -43,8 +43,8 @@ test('execution and historical card loaders work without invoking Git', t => {
     import {batchExecutionFixture} from './test-support/retirement-evidence.mjs';
     const fixture = batchExecutionFixture();
     assert.equal(readExecutionFixture().counts.coreModels, 1064);
-    assert.equal(fixture.counts.coreModels, 1033);
-    assert.equal(fixture.counts.staticModels, 1033);
+    assert.equal(fixture.counts.coreModels, 968);
+    assert.equal(fixture.counts.staticModels, 968);
     assert.deepEqual(executionRegistry((await coreProducts()).registry), fixture.core);
     for (const commit of ['8c456709', 'd1fe6ff6']) {
       const card = await loadCard(root, commit);

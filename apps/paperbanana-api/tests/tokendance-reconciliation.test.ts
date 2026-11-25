@@ -43,7 +43,8 @@ test('current 112-row directory yields six DeepSeek model cards and excludes too
     const registry = await runtime.invoke({ action: 'modelRegistry', provider: 'tokendance' })
     assert.deepEqual(deepseek(registry), deepseekIds)
     assert.equal(visible(registry).length, 66)
-    assert.equal(registry.catalogHealth.tokendance.unadaptedCount, 44)
+    for (const id of ['mimo-v2.5', 'mimo-v2.5-pro']) assert.ok(!visible(registry).some((model: any) => model.id === id))
+    assert.equal(registry.catalogHealth.tokendance.unadaptedCount, 46)
     for (const id of ['deepseek-fetch', 'deepseek-search', 'bocha-web-search', 'glm-ocr', 'qwen3.5-ocr', 'qwen-image-2.1-pro', 'seedream-5.0-flash']) {
       assert.equal(registry.providers.tokendance.models.some((m: any) => m.id === id), false, id)
     }
