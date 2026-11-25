@@ -59,7 +59,7 @@ export async function productBundle(contents, commit, readHistorical) {
 
 // Exclude only display projections. All other fields (including unknown future
 // execution flags, nested capabilities, protocols, limits and array order) count.
-const displayFields = new Set(['specifications', 'specificModelSpecifications', 'cardSpecifications', 'auditSpecifications'])
+const displayFields = new Set(['specifications', 'specificModelSpecifications', 'routingNotice', 'cardSpecifications', 'auditSpecifications'])
 export const executionModel = model => JSON.parse(JSON.stringify(Object.fromEntries(Object.entries(model).filter(([key]) => !displayFields.has(key)))))
 export function executionRegistry(registry) {
   return JSON.parse(JSON.stringify(Object.fromEntries(Object.entries(registry.providers || registry).map(([provider, entry]) => [provider, {

@@ -35,7 +35,7 @@ test('Image API contracts preserve generation controls instead of treating them 
   const models: [string, string, string][] = [
     ...['cogview-3-flash', 'cogview-4', 'cogview-4-250304', 'glm-image'].map(id => ['zhipu', id, 'provider-images'] as [string, string, string]),
     ['minimax', 'image-01', 'provider-images'],
-    ...['qwen-image', 'qwen-image-edit', 'musesteamer-air-image'].map(id => ['qianfan', id, 'qianfan-images'] as [string, string, string]),
+    ['qianfan', 'musesteamer-air-image', 'qianfan-images'],
     ...['sd3.5-large', 'sd3.5-large-turbo', 'sd3.5-medium', 'stable-image-core', 'stable-image-ultra'].map(id => ['stability', id, 'provider-images'] as [string, string, string]),
     ...['FLUX.2-dev', 'FLUX.2-flex', 'FLUX.2-max', 'FLUX.2-pro', 'FLUX.1-kontext-max', 'FLUX.1-kontext-pro'].map(id => ['together', 'black-forest-labs/' + id, 'provider-images'] as [string, string, string]),
     ...['qwen-image-2.0-pro-2026-06-22', 'qwen-image-2.0', 'qwen-image-2.0-2026-03-03', 'qwen-image-2.0-pro', 'qwen-image-2.0-pro-2026-03-03', 'qwen-image-2.0-pro-2026-04-22'].map(id => ['bailian', id, 'bailian-multimodal-generation'] as [string, string, string]),

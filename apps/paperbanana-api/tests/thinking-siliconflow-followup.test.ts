@@ -49,9 +49,14 @@ test('SiliconFlow incomplete, conflicting and retired identities remain unconfir
     ['zai-org/GLM-5.3','channel-contract-missing'],
   ]) {
     const p=thinkingProfile('siliconflow',modelId,'main','openai-chat-completions')
-    assert.equal(p.status,'unconfirmed');assert.equal(p.statusReason,reason)
+    if (reason === 'catalog-retired') assert.equal(p,undefined)
+    else {assert.equal(p.status,'unconfirmed');assert.equal(p.statusReason,reason)}
     const compile=(options:any)=>compileThinkingSelection({provider:'siliconflow',modelId,protocol:'openai-chat-completions',options},'main')
-    for(const options of [{mode:true},{mode:'enabled'},{effort:'high'},{budget:32768}]) assert.throws(()=>compile(options),/尚未核实/)
+    for (const options of [{mode:true},{mode:'enabled'},{effort:'high'},{budget:32768}]) {
+      const compileOptions = () => compile(options)
+      if (reason === 'catalog-retired') assert.throws(compileOptions)
+      else assert.throws(compileOptions, /尚未核实/)
+    }
     const body={model:modelId,max_tokens:1000,temperature:0.5}
     assert.deepEqual(applyThinkingSnapshot(body,compile({})),body)
   }

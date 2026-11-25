@@ -45,7 +45,7 @@ test('the pre-phase-2 static baseline still retains every previously supported m
 
 test('every static card retains main supported modalities and all product image-input requirements', () => {
   assert.equal(baseline.commit, 'c7b6a2fc')
-  assert.equal(rows.length, 1033)
+  assert.equal(rows.length, 968)
   for (const { provider, model } of rows) {
     const key = provider + '/' + model.id, before = structuredClone(model)
     const card = modelCardSpecifications(provider, model), caps = model.capabilities || {}
@@ -90,7 +90,7 @@ test('Mini runtime projection agrees with Web for all four fields across the who
   for (const { provider, model } of rows) {
     const card = modelCardSpecifications(provider, model)
     const web = card.fields
-    const noticePrimary = batch.upcoming.some(row => row.provider === provider && row.id === model.id && row.source === card.sources[0])
+    const noticePrimary = card.lifecycle?.sourceUrl === card.sources[0] && Boolean(card.lifecycle)
     const small = mini.auditedModelSpecs(provider, model.id).fields
     for (const field of Object.keys(web)) {
       assert.deepEqual(small[field].value, web[field].value, provider + '/' + model.id + '/' + field)
@@ -154,7 +154,7 @@ test('image-role cards expose known token limits and only pure image models with
     if (card.fields.totalContextTokens.state === 'known' || card.fields.maxOutputTokens.state === 'known') showing++
     else if (card.context === '不适用' && card.maxOutput === '不适用') notApplicable++
   }
-  assert.ok(showing >= 24)
+  assert.equal(showing, 23)
   assert.ok(notApplicable > 0)
   const gemini = modelCardSpecifications('gemini', STATIC_MODEL_REGISTRY.gemini.models.find(m => m.id === 'gemini-nano-banana-2.1'))
   assert.equal(gemini.context, '未公布', 'an input limit is not a total context window')

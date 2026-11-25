@@ -86,9 +86,9 @@ test('Ant Ling saved bindings round-trip after the exact deadline while new ones
   for(const model of before.models) await assert.rejects(store.put('owner',{...retained,models:[...retained.models,{...model,id:'new'}]}),e=>e.businessCode==='MODEL_UNAVAILABLE'&&e.replacement==='Ling-3.1-flash');
 });
 
-for (const [provider, modelId] of [['openai', 'o1'], ['antling', 'Ling-2.6-1T']]) {
+for (const [provider, modelId] of [['openai', 'o1'], ['antling', 'Ling-2.6-1T'], ['ark', 'doubao-seed-1-6-250615'], ['bailian', 'qwen3-max'], ['runware', 'openai:1@1'], ['qianfan', 'ernie-5.0'], ['qianfan', 'qwen-image'], ...['MiniMax-M2.5','MiniMax-M2.5-highspeed','MiniMax-M2.7','MiniMax-M2.7-highspeed'].map(id => ['minimax',id])]) {
   test(`batch 1 gateway retains saved ${provider}/${modelId} and rejects new bindings`, async t => {
-    t.mock.method(Date, 'now', () => Date.parse('2026-11-17T12:00:00+08:00'));
+    t.mock.method(Date, 'now', () => Date.parse('2026-11-24T12:00:00+08:00'));
     const store = createModelLibraryStore({ db: memoryDb(), secret: 'isolated-test-only' });
     const input = { revision: 0, connections: [{ id: 'c', provider, scope: 'browser', label: 'Saved' }], models: [{ id: 'old', connectionId: 'c', modelId }] };
     const first = await store.put('owner', input);

@@ -29,7 +29,7 @@ test('phase 2 compiled Mini retains every table/mask and uses full live projecti
     }
     count++
   }
-  assert.equal(count,1030)
+  assert.equal(count,965)
 })
 
 

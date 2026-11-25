@@ -11,10 +11,10 @@ test('R22B Mini uses only verified TokenDance pages and preserves seven main fal
  assertReviewedLinks(id=>auditedModelSpecs('tokendance',id))
  for(const model of STATIC_MODEL_REGISTRY.tokendance.models){const card=context.present(model,'','','tokendance');assert.equal(card.specSources[0].url,expectedTokenDanceSources(model.id)[0])}
 })
-test('R22B Mini keeps distinct page titles and unique source rows for all 1033 cards',()=>{
+test('R22B Mini keeps distinct page titles and unique source rows for all 968 cards',()=>{
  let count=0
  for(const [channel,provider] of Object.entries(STATIC_MODEL_REGISTRY))for(const model of provider.models){const rows=context.present(model,'','',channel).specSources;assert.equal(new Set(rows.map(r=>r.url)).size,rows.length);assert.equal(new Set(rows.map(r=>r.label)).size,rows.length);count++}
- assert.equal(count,1033)
+ assert.equal(count,968)
  const card=context.present(STATIC_MODEL_REGISTRY.bailian.models.find(m=>m.id==='deepseek-v4.1-flash'),'','','bailian')
  assert.equal(card.specSources[0].label,'渠道资料 · 百炼 · DeepSeek-V4.1-Flash')
  assert.equal(sourceTitle('https://help.aliyun.com/zh/model-studio/models'),'百炼 · 模型列表（中文版）')

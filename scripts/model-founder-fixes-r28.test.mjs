@@ -1,3 +1,4 @@
+import {beforeNovember24} from '../test-support/retirement-projections.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {imageInputPresentations} from '../test-support/image-input-r27.mjs'
@@ -9,8 +10,9 @@ import {applyEvidenceR28} from './lib/model-evidence-r28.mjs'
 import review from '../config/channel-audit/review-r28-20261110.json' with {type:'json'}
 
 test('R28 all 1064 presentations: exact unknown prefix, conditions, field sources, dates and no unrelated changes', async () => {
-  const now = await imageInputPresentations()
-  assertR28Presentations(now)
+  const live = await imageInputPresentations()
+  assertR28Presentations(live)
+  const now = beforeNovember24('cards',live)
   for (const [key, card] of Object.entries(now)) for (const [field, fact] of Object.entries(card.web.data.fields)) {
     for (const property of ['value','state','provenance']) {
       assert.deepEqual(fact[property], r28Baseline[key].web.data.fields[field][property], key + '/' + field + '/' + property)

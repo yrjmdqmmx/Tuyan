@@ -1,3 +1,4 @@
+import removed from '../config/removed-models.json' with {type:'json'}
 // Public, unauthenticated model documentation only. --check is strictly offline.
 // Chrome launch is blocked in this sandbox; evaluate the actual portal ES modules
 // in isolated JSDOM contexts, without CSS/layout, credentials, or arbitrary I/O.
@@ -16,7 +17,7 @@ const ids = STATIC_MODEL_REGISTRY.tokendance.models.map(model => model.id)
 if (process.argv.includes('--check')) {
   const data = JSON.parse(fs.readFileSync(output, 'utf8'))
   assert.equal(data.checkedAt, '2026-11-10')
-  assert.deepEqual(data.pages.map(page => page.id), ids)
+  assert.deepEqual(data.pages.map(page => page.id).filter(id => !removed['tokendance/' + id]), ids)
   for (const page of data.pages) {
     for (const kind of ['html', 'portal', 'rendered']) assert.equal(page[kind].sha256, sha256(page[kind].body), page.id + '/' + kind)
     const real = page.portal.status === 200 && JSON.parse(page.portal.body).slug === page.id && page.rendered.headings.includes(JSON.parse(page.portal.body).name) && !/Model not found/i.test(page.rendered.body)
@@ -24,7 +25,7 @@ if (process.argv.includes('--check')) {
     for (const dependency of page.dependencies || []) assert.equal(dependency.sha256, sha256(dependency.body), dependency.url)
     assert.equal(page.evidenceSha256, sha256([page.html.sha256, page.portal.sha256, page.rendered.sha256].join('\n')))
   }
-  console.log(`TokenDance rendered evidence: ${data.pages.filter(p => p.verified).length}/${ids.length} verified; hashes intact`)
+  console.log(`TokenDance rendered evidence: ${data.pages.filter(p => p.verified).length}/${data.pages.length} verified; hashes intact`)
 } else {
   assert.ok(process.argv.includes('--capture'), 'Use --check offline or --capture for public documentation GETs')
   const { JSDOM, VirtualConsole } = createRequire(path.join(root, 'apps/web/package.json'))('jsdom')

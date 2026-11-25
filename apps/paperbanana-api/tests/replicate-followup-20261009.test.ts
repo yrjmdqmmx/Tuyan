@@ -75,12 +75,12 @@ test('Replicate Flux input limits and edit-only Ideogram identity reject invalid
 })
 
 test('SiliconFlow ERNIE Image retirement preserves the historical ID but prevents new paid requests', async () => {
-  const row = catalog.siliconflow.models.find((m: any) => m.id === 'baidu/ERNIE-Image-Turbo')
-  assert.ok(row); assert.equal(row.selectable, false); assert.equal(row.expirationDate, '2026-09-30')
+  const id = 'baidu/ERNIE-Image-Turbo'
+  assert.equal(catalog.siliconflow.models.some((m: any) => m.id === id), false)
   const r: any = await createRefineRuntime(); let calls = 0
   try {
     r.legacy.configureRuntimeFetch(async () => { calls++; throw Error('must not send') })
-    await assert.rejects(r.legacy.callImageModel('siliconflow', row.id, 'fixture-key', 'scientific figure', '1:1', '', '1K'), /停用|到期|下线/)
+    await assert.rejects(r.legacy.callImageModel('siliconflow', id, 'fixture-key', 'scientific figure', '1:1', '', '1K'), {businessCode: 'MODEL_UNAVAILABLE', requestState: 'not_sent'})
     assert.equal(calls, 0)
   } finally { await r.close() }
 })

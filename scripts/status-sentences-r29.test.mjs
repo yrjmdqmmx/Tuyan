@@ -5,7 +5,7 @@ import {imageInputPresentations} from '../test-support/image-input-r27.mjs'
 import {assertAllSentences, assertSentence, conditions} from '../test-support/status-sentences-r29.mjs'
 import {modalityIconStates} from '../packages/api/src/modality-presentation.mjs'
 const mini = createRequire(import.meta.url)('../apps/miniprogram/miniprogram/utils/card-presentation.js')
-test('R29 I11 all 1033 cards: exactly eight sentences, state patterns, no attribution or dates, Web/Mini parity', async () => {
+test('R29 I11 all 968 cards: exactly eight sentences, state patterns, no attribution or dates, Web/Mini parity', async () => {
   assertAllSentences(await imageInputPresentations())
 })
 test('R29 I11 every reviewed qualifier, direction and non-catalog state is safe and identical in Mini', () => {

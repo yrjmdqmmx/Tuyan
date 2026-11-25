@@ -1,7 +1,7 @@
 const test=require('node:test'), assert=require('node:assert/strict'), fs=require('node:fs')
 const {loadComponent}=require('./helpers/component.cjs')
 const {modalityIconStates}=require('../miniprogram/utils/card-presentation.js')
-test('R27 I8 all 1033 compiled Mini cards use one solid grey non-supported glyph and exact modal distinctions',async()=>{
+test('R27 I8 all 968 compiled Mini cards use one solid grey non-supported glyph and exact modal distinctions',async()=>{
  const {imageInputPresentations,review}=await import('../../../test-support/image-input-r27.mjs')
  const {expectedI11:expectedR28}=await import('../../../test-support/source-title-history-r29.mjs')
  const root=__dirname+'/../miniprogram/components/model-picker/',wxml=fs.readFileSync(root+'model-picker.wxml','utf8'),css=fs.readFileSync(root+'model-picker.wxss','utf8')
@@ -15,10 +15,11 @@ test('R27 I8 all 1033 compiled Mini cards use one solid grey non-supported glyph
  assert.match(css,/\.modality-glyph\{[^}]*background:currentColor/)
  let modal
  const {instance,events}=loadComponent('components/model-picker/model-picker.js',{}, {wx:{showModal:value=>{modal=value}}})
+ const {november24Projection}=await import('../../../test-support/retirement-projections.mjs')
  const now=await imageInputPresentations();let cards=0,decisionA=0
  for(const [key,row] of Object.entries(now)){
   row.mini.card.specRows.slice(0,2).forEach((spec,index)=>spec.icons.forEach((icon,j)=>{
-   const before=expectedR28[key].mini
+   const before=(expectedR28[key] || november24Projection('cards',key).after).mini
    assert.deepEqual(icon,before.card.specRows[index].icons[j],key)
    assert.match(icon.accessibleLabel,/^(支持|此渠道不支持|该模型不支持|官方资料未说明是否支持)(文本|图像|视频|音频)(输入|输出)(（[^（）]+）)?$/)
    assert.match(css,new RegExp('\\.glyph-'+icon.id+'\\{'))
@@ -31,7 +32,7 @@ test('R27 I8 all 1033 compiled Mini cards use one solid grey non-supported glyph
   }
   cards++
  }
- assert.equal(cards,1033);assert.equal(decisionA,15);assert.equal(events.length,0)
+ assert.equal(cards,968);assert.equal(decisionA,15);assert.equal(events.length,0)
  const vendor=modalityIconStates('',{state:'unsupported',provenance:'vendor',sourceUrl:'https://example.com/spec',verifiedAt:'2026-11-09'})
  for(const icon of vendor)assert.equal(icon.tooltip,'该模型不支持' + icon.label + '输入')
  const legacy=modalityIconStates('文本、音频（有限支持）')

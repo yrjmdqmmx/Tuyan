@@ -1,7 +1,9 @@
+import removed from '../config/removed-models.json' with {type:'json'}
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 export const tokenDanceSnapshot = JSON.parse(fs.readFileSync(new URL('../config/channel-audit/tokendance-catalog-snapshot-20261109b.json', import.meta.url)))
-export const tokenDanceBefore = JSON.parse(fs.readFileSync(new URL('../config/channel-audit/tokendance-card-before-r21.json', import.meta.url)))
+const historical = JSON.parse(fs.readFileSync(new URL('../config/channel-audit/tokendance-card-before-r21.json', import.meta.url)))
+export const tokenDanceBefore = {...historical, rows: historical.rows.filter(({id}) => !removed['tokendance/' + id])}
 export function assertTokenDanceFacts(resolve) {
   let known = 0, unknown = 0
   for (const { id } of tokenDanceBefore.rows) {
@@ -25,7 +27,7 @@ export function assertTokenDanceFacts(resolve) {
     }
     capture?.status === 200 ? known++ : unknown++
   }
-  assert.deepEqual({ known, unknown }, { known: 67, unknown: 7 })
+  assert.deepEqual({ known, unknown }, { known: 65, unknown: 7 })
   const qwen = resolve('qwen3.6-plus').fields.inputModalities
   assert.deepEqual(qwen.value, ['text'])
   for (const value of ['image', 'video']) assert.ok(qwen.unsupportedModalities.includes(value))

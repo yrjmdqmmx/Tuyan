@@ -17,7 +17,7 @@ for (const mode of ['empty', 'timeout', 'missing', 'all_invalid'] as const) test
     })
     const registry = await runtime.invoke({ action: 'modelRegistry', provider: 'tokendance' })
     const channel = registry.providers.tokendance
-    assert.equal(channel.models.length, 74, 'channel and every historical identity remain in the wire response')
+    assert.equal(channel.models.length, 72, 'channel and every historical identity remain in the wire response')
     assert.ok(channel.defaults.main)
     for (const model of channel.models) {
       assert.equal(model.selectable, false)

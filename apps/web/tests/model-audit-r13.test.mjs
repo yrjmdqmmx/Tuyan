@@ -50,6 +50,7 @@ test('R13 exactly seven cards render verified vendor links in full/static and no
   assert.deepEqual([...new Set(deadLinks.flatMap(row => row.cards))].sort(), expected.map(([channel, id]) => channel + '/' + id).sort())
   for (const [channel, id, url, label] of expected) {
     const key = channel + '/' + id
+    if (MODEL_AUDIT_DATA.removed[key]) { assert.ok(removedModel(channel, id)); continue }
     const link = MODEL_AUDIT_DATA.details[key].sourceLinks[0]
     assert.deepEqual(link, { url, scope: 'vendor', kind: label === '下线公告' ? 'retirement-notice' : 'model-page', checkedAt: '2026-11-09' })
     assert.equal(MODEL_AUDIT_DATA.sourceChecks[url].status, 200)
@@ -79,7 +80,7 @@ test('R13 exactly seven cards render verified vendor links in full/static and no
 })
 
 test('R13 catalog-wide visible and secondary sources never contain any known dead URL', () => {
-  assert.equal(all.length, 2094)
+  assert.equal(all.length, 2029)
   assert.equal(deadLinks.length, 14)
   assert.equal(new Set(deadLinks.map(row => row.url)).size, 14)
   for (const row of deadLinks) {
@@ -112,6 +113,10 @@ test('R13B every specified notice has 下线公告 in full/static cards and pres
   for (const { channel, modelId, url, fullFirstUrl } of noticeCards) {
     const matches = all.filter(row => row.channel === channel && row.model.id === modelId)
     assert.equal(matches.length, MODEL_AUDIT_DATA.removed[channel + '/' + modelId] ? 1 : 2)
+    if (MODEL_AUDIT_DATA.removed[channel + '/' + modelId]) {
+      assert.ok(removedModel(channel, modelId))
+      continue
+    }
     for (const { model } of matches) {
       const card = modelCardSpecifications(channel, model)
       assert.equal(card.sources[0], MODEL_AUDIT_DATA.removed[channel + '/' + modelId]?.sourceUrl || currentPrimary(channel + '/' + modelId,fullFirstUrl), 'static cards now resolve the same complete specifications as Core')
@@ -151,7 +156,7 @@ test('R13B catalog-wide notice links are labelled 下线公告 regardless of cha
       }
     }
   }
-  assert.equal(visible, 61, 'notice primaries across the historical full registry and the surviving static cards')
+  assert.equal(visible, 111, 'notice primaries across the historical full registry and the surviving static cards')
   const ordinary = modelCardSources({ channel: 'unknown', audit: {}, fields: {}, model: { officialSourceUrl: 'https://example.test/notice/118177' } })
   assert.equal(modelSourceName(ordinary, ordinary.sources[0]), '官方文档')
 })

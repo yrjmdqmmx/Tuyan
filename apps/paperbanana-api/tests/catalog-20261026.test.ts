@@ -54,6 +54,7 @@ test('new retirement metadata retains identities and date-only evidence; effecti
  try{
   r.legacy.configureRuntimeFetch(async()=>{calls++;throw Error('no transport allowed')})
   for(const [p,id,date]of [['openai','gpt-5.1-2025-11-13','2027-04-01'],['tokenhub','minimax-m2.7','2026-11-17'],['tokenhub','hy-image-v3','2026-11-12'],['tokenhub','seedream-image-v5.0-lite','2026-11-24']]){
+   if(p==='tokenhub'){assert.equal(assertRemoved(p,id).stopDate,date);continue}
    const m=catalog[p].models.find((x:any)=>x.id===id);assert.ok(m);assert.equal(m.expirationDate,date);assert.equal(m.expirationAt,undefined)
   }
   Date.now=()=>Date.parse('2026-10-26T12:00:00+08:00')
@@ -65,7 +66,7 @@ test('new retirement metadata retains identities and date-only evidence; effecti
     assert.equal(models.some((m:any)=>m.id===id),false)
     await assert.rejects(r.legacy.callTextModel(p,id,'fixture','system','prompt'),{businessCode:'MODEL_UNAVAILABLE',requestState:'not_sent'})
    } else {
-    assert.equal(models.find((m:any)=>m.id===id).selectable,false)
+    assert.equal(models.some((m:any)=>m.id===id),false)
     await assert.rejects(r.legacy.callTextModel(p,id,'fixture','system','prompt'))
    }
   }

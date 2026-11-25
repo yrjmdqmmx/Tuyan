@@ -66,10 +66,10 @@ test('audited fal removal survives cold failure and stale discovery, and saved r
    assert.equal(publicResult.providers.fal.models.some((m:any)=>m.id===id),false)
    assert.equal(accountResult.providerRegistry.models.some((m:any)=>m.id===id),false)
    const retained=catalog.fal.models.filter((m:any)=>m.id!==id).map((m:any)=>m.id).sort()
-   assert.equal(retained.length,48)
+   assert.equal(retained.length,50)
    assert.deepEqual(publicResult.providers.fal.models.map((m:any)=>m.id).sort(),retained)
    assert.deepEqual(accountResult.providerRegistry.models.map((m:any)=>m.id).sort(),retained)
-   assert.equal(catalog.fal.models.length,49,'the removed exact identity remains in history')
+   assert.equal(catalog.fal.models.length,51,'the removed exact identity remains in history')
    assert.deepEqual(publicResult.providers.fal.defaults,catalog.fal.defaults)
    const count=requests
    await assert.rejects(r.legacy.callImageModel('fal',saved.modelRoutes.image.modelId,'fixture','prompt','1:1'),

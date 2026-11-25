@@ -7,6 +7,7 @@ import {ModelSpecifications} from '../src/components/ModelSpecifications.jsx'
 import {STATIC_MODEL_REGISTRY} from '../src/lib/staticModelCatalog.js'
 import {modalityIconStates} from '../src/lib/modelModalityIcons.js'
 import {iconBaseline, expectedR2Icon} from '../../../test-support/icon-simplify-r27.mjs'
+import {november24Projection} from '../../../test-support/retirement-projections.mjs'
 import {expectedI11 as expectedR28} from '../../../test-support/source-title-history-r29.mjs'
 import {review} from '../../../test-support/image-input-r27.mjs'
 
@@ -15,7 +16,7 @@ const tokens = fs.readFileSync(new URL('../src/styles.css', import.meta.url), 'u
 const ink = tokens.match(/--ink: (#[a-f0-9]{6})/)[1], muted = tokens.match(/--muted: (#[a-f0-9]{6})/)[1]
 const rgb = hex => 'rgb(' + hex.slice(1).match(/../g).map(v => parseInt(v, 16)).join(', ') + ')'
 const noDate = text => text.replace(/（(?:核实日期：)?\d{4}-\d{2}-\d{2}）/g, '')
-test('R27 I8 all 1033 Web cards render identical solid grey unsupported/unknown glyphs, three short labels and exact evidence dialogs', () => {
+test('R27 I8 all 968 Web cards render identical solid grey unsupported/unknown glyphs, three short labels and exact evidence dialogs', () => {
   const style = document.createElement('style')
   style.textContent = css.replaceAll('var(--ink)', ink).replaceAll('var(--muted)', muted)
   document.head.append(style)
@@ -24,8 +25,9 @@ test('R27 I8 all 1033 Web cards render identical solid grey unsupported/unknown 
   try {
     assert.doesNotMatch(css, /modality-strike|modality-question|stroke-dasharray|dashed|\bsup\b|::(?:before|after)/)
     for (const [provider, catalog] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of catalog.models) {
-      const key = provider + '/' + model.id, before = iconBaseline.rows[key].web
-      const expected = [...expectedR28[key].web.inputIcons, ...expectedR28[key].web.outputIcons]
+      const key = provider + '/' + model.id
+      const baseline = expectedR28[key] || november24Projection('cards',key).after
+      const expected = [...baseline.web.inputIcons, ...baseline.web.outputIcons]
       const ui = render(React.createElement(ModelSpecifications, {provider, model}))
       try {
         const nodes = [...ui.container.querySelectorAll('.model-modality-icon')]
@@ -59,7 +61,7 @@ test('R27 I8 all 1033 Web cards render identical solid grey unsupported/unknown 
       } finally { cleanup() }
       cards++
     }
-    assert.equal(cards, 1033); assert.equal(decisionA, 15)
+    assert.equal(cards, 968); assert.equal(decisionA, 15)
     assert.deepEqual([...states].sort(), ['conditional', 'supported', 'unknown', 'unsupported'])
     console.log('R27 I8 Web states: ' + JSON.stringify(counts))
   } finally { style.remove(); cleanup() }

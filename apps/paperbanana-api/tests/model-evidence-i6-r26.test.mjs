@@ -26,6 +26,6 @@ test('R26 I6 Core projects the model-specific 397b retirement citation and exclu
   assert.doesNotMatch(display.auditMessage,/图研之前记录|核实日期|渠道公布/,key)
   cards++
  }
- // The existing phase2 fixture has 1030 live models (model-modality-phase2.test.ts).
- assert.equal(cards,1030)
+ // The existing phase2 fixture has 965 live models (model-modality-phase2.test.ts).
+ assert.equal(cards,965)
 })

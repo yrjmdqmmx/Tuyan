@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+import {resolveImageSize} from '../../../packages/types/src/image-size-contract.js'
 import test from 'node:test'
 import { callExtendedImageChannel, type ImageChannelInput, type ImageChannelTransport } from '../../../packages/api/src/image-channel-adapters.js'
 const png='fixture-image-bytes'
@@ -242,17 +244,23 @@ test('MiniMax binds each region to its endpoint and keeps image-01-live fixed an
 })
 
 test('new native channels require a durable journal; partial TokenHub checkpoints never resubmit',async()=>{
-  for(const [provider,model] of [['tokenhub','hy-image-v3'],['runware','alibaba:qwen-image@2512']]) {
+  for(const [provider,model] of [['tokenhub','hy-image-v3.5-preview'],['runware','alibaba:qwen-image@2512']]) {
     const {io,calls}=fixture(()=>Response.json({}))
     delete io.pending;delete io.checkpoint
     await assert.rejects(callExtendedImageChannel({...defaults,provider,model},io),/持久任务/)
     assert.equal(calls.length,0)
   }
   const {io,calls}=fixture(()=>Response.json({}))
-  let pending:any={provider:'tokenhub',model:'hy-image-v3',taskId:'already-submitted'}
+  let pending:any={provider:'tokenhub',model:'hy-image-v3.5-preview',taskId:'already-submitted'}
   io.pending=async()=>pending;io.checkpoint=async value=>{pending=value}
-  await assert.rejects(callExtendedImageChannel({...defaults,provider:'tokenhub',model:'hy-image-v3'},io),/未重新提交/)
-  assert.equal(calls.length,0);assert.equal(pending.failed,true)
+  const original = structuredClone(pending)
+  for (let attempt = 0; attempt < 2; attempt++) {
+    await assert.rejects(callExtendedImageChannel({...defaults,provider:'tokenhub',model:'hy-image-v3.5-preview'},io), {
+      terminal:true, requestState:'unknown', uncertain:true, recoveryAction:'stop',
+    })
+  }
+  assert.equal(calls.length,0)
+  assert.deepEqual(pending,original)
 })
 
 test('Runware generation has native task fields and polls through rate limits without re-submission',async()=>{
@@ -319,4 +327,29 @@ test('fal completed with an explicit error is terminal, not a successful result 
  await assert.rejects(callExtendedImageChannel(asyncInput('fal'),f.io),(e:any)=>e.terminal===true)
  await assert.rejects(callExtendedImageChannel(asyncInput('fal'),f.io),(e:any)=>e.terminal===true)
  assert.equal(f.calls.filter(x=>x.init.method==='POST').length,1)
+})
+
+test('fal GPT Image 2.6 submits legal pixel sizes for UI tiers and returns images[0].url', async () => {
+  const contracts = JSON.parse(readFileSync(new URL('../../../config/image-size-contracts.json', import.meta.url), 'utf8'))
+  for (const variant of ['flare','sunburst']) {
+    const model = `openai/gpt-image-2.6/${variant}/text-to-image`
+    const route = contracts.routes['fal/'+model]
+    const profile = contracts.profiles[route.generation]
+    assert.equal(route.editing, null)
+    assert.throws(() => resolveImageSize(profile,'4:1','4K'))
+    for (const [aspectRatio,resolution] of [['auto','1K'],['3:1','4K'],['9:16','2K'],['16:9','4K'],['1:3','1K']]) {
+      const size = resolveImageSize(profile,aspectRatio,resolution)
+      const {calls,io} = fixture((url,init) => init.method === 'POST' ? Response.json({request_id:'fixture'})
+        : Response.json(url.endsWith('/status') ? {status:'COMPLETED'} : {images:[{url:'https://asset.invalid/output.png'}]}))
+      assert.equal(await callExtendedImageChannel({...defaults, provider:'fal',model,aspectRatio,resolution,size},io),png)
+      assert.equal(calls[0].url,'https://queue.fal.run/'+model)
+      const body = JSON.parse(String(calls[0].init.body))
+      const {width,height} = body.image_size
+      assert.deepEqual([width,height],[size.width,size.height])
+      assert.ok(width%16===0 && height%16===0 && Math.max(width,height)<=3840)
+      assert.ok(Math.max(width,height)<=3*Math.min(width,height) && width*height>=655360 && width*height<=8294400)
+      assert.equal(body.output_format,'png')
+      assert.equal(calls.at(-1)?.url,'https://asset.invalid/output.png')
+    }
+  }
 })

@@ -627,28 +627,6 @@
       }
     },
     {
-      "provider": "xai",
-      "modelId": "grok-imagine-image-quality",
-      "protocol": "provider-images",
-      "specifications": {
-        "version": 1,
-        "checkedAt": "2026-10-09",
-        "sourceUrls": [
-          "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2"
-        ],
-        "officialInputModalities": [
-          "text",
-          "image"
-        ],
-        "officialOutputModalities": [
-          "image"
-        ],
-        "notes": [
-          "2026-11-02 原模型退役，渠道将旧 ID 转到 grok-imagine-image-2.0 的 low quality；图研不静默改写 ID。"
-        ]
-      }
-    },
-    {
       "provider": "runware",
       "modelId": "recraft:v4.1@flash",
       "protocol": "provider-images",
@@ -2527,7 +2505,7 @@
           "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
           "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
           "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。",
-          "Google 当前将 2.5 API 限于过去活跃使用过该系列的用户；官方明确尚未弃用。不自动替换历史选择或默认模型。"
+          "Google 当前将 2.5 API 限于过去活跃使用过该系列的用户；不自动替换历史选择或默认模型。"
         ]
       }
     },
@@ -2641,7 +2619,7 @@
           "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
           "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
           "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。",
-          "Google 当前将 2.5 API 限于过去活跃使用过该系列的用户；官方明确尚未弃用。不自动替换历史选择或默认模型。"
+          "Google 当前将 2.5 API 限于过去活跃使用过该系列的用户；不自动替换历史选择或默认模型。"
         ]
       }
     },
@@ -4066,6 +4044,69 @@
               "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
             ]
           }
+        ]
+      }
+    },
+    {
+      "provider": "zhipu",
+      "modelId": "glm-5.3-flashx-legal",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-11-24",
+        "sourceUrls": [
+          "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "reasoning": "supported",
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 128000,
+        "contextWindowApproximate": true,
+        "maxOutputApproximate": true,
+        "notes": [
+          "官方另列视频、文件输入；当前智谱适配器接收文本和图片。"
+        ]
+      }
+    },
+    {
+      "provider": "fal",
+      "modelId": "openai/gpt-image-2.6/flare/text-to-image",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-11-24",
+        "sourceUrls": [
+          "https://fal.ai/models/openai/gpt-image-2.6/flare/text-to-image/api"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ]
+      }
+    },
+    {
+      "provider": "fal",
+      "modelId": "openai/gpt-image-2.6/sunburst/text-to-image",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-11-24",
+        "sourceUrls": [
+          "https://fal.ai/models/openai/gpt-image-2.6/sunburst/text-to-image/api"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "image"
         ]
       }
     }

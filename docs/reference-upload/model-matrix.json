@@ -203,6 +203,32 @@
     },
     {
       "provider": "zhipu",
+      "model": "glm-5.3-flashx-legal",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "zhipu",
       "model": "glm-5v-turbo",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
@@ -1850,30 +1876,6 @@
     {
       "provider": "xai",
       "model": "grok-imagine-image",
-      "workflow": "refine",
-      "protocol": "provider-images",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 4194304,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png"
-        ],
-        "status": "unconfirmed",
-        "source": "",
-        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "xai",
-      "model": "grok-imagine-image-quality",
       "workflow": "refine",
       "protocol": "provider-images",
       "policy": {
@@ -5440,85 +5442,7 @@
     },
     {
       "provider": "ark",
-      "model": "doubao-seed-2-0-code-preview-260215",
-      "workflow": "generation",
-      "protocol": "ark-openai-chat",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "unconfirmed",
-        "source": "",
-        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "ark",
-      "model": "doubao-seed-2-0-lite-260215",
-      "workflow": "generation",
-      "protocol": "ark-openai-chat",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "unconfirmed",
-        "source": "",
-        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "ark",
       "model": "doubao-seed-2-0-lite-260428",
-      "workflow": "generation",
-      "protocol": "ark-openai-chat",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "unconfirmed",
-        "source": "",
-        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "ark",
-      "model": "doubao-seed-2-0-mini-260215",
       "workflow": "generation",
       "protocol": "ark-openai-chat",
       "policy": {
@@ -5596,30 +5520,6 @@
     },
     {
       "provider": "ark",
-      "model": "doubao-seedream-5-0-260128",
-      "workflow": "refine",
-      "protocol": "ark-images",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 10000000,
-        "maxTotalBytes": 10000000,
-        "maxDimension": 6000,
-        "maxPixels": 16000000,
-        "minDimension": 15,
-        "maxAspectRatio": 16,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png"
-        ],
-        "status": "partial",
-        "source": "https://tokendance.space/docs/ark-image-generations",
-        "note": "单图编辑；生成尺寸与输入尺寸是不同约束。渠道未完整公布输入限额，采用保守提交额度。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "ark",
       "model": "doubao-seedream-5-0-flash-260915",
       "workflow": "refine",
       "protocol": "ark-images",
@@ -5645,54 +5545,6 @@
     {
       "provider": "ark",
       "model": "doubao-seedream-5-0-pro-260628",
-      "workflow": "refine",
-      "protocol": "ark-images",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 10000000,
-        "maxTotalBytes": 10000000,
-        "maxDimension": 6000,
-        "maxPixels": 16000000,
-        "minDimension": 15,
-        "maxAspectRatio": 16,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png"
-        ],
-        "status": "partial",
-        "source": "https://tokendance.space/docs/ark-image-generations",
-        "note": "单图编辑；生成尺寸与输入尺寸是不同约束。渠道未完整公布输入限额，采用保守提交额度。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "ark",
-      "model": "doubao-seedream-4-5-251128",
-      "workflow": "refine",
-      "protocol": "ark-images",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 10000000,
-        "maxTotalBytes": 10000000,
-        "maxDimension": 6000,
-        "maxPixels": 16000000,
-        "minDimension": 15,
-        "maxAspectRatio": 16,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png"
-        ],
-        "status": "partial",
-        "source": "https://tokendance.space/docs/ark-image-generations",
-        "note": "单图编辑；生成尺寸与输入尺寸是不同约束。渠道未完整公布输入限额，采用保守提交额度。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "ark",
-      "model": "doubao-seedream-4-0-250828",
       "workflow": "refine",
       "protocol": "ark-images",
       "policy": {
@@ -9896,32 +9748,6 @@
     },
     {
       "provider": "tokendance",
-      "model": "mimo-v2.5",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "unconfirmed",
-        "source": "",
-        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
-      },
-      "channelGuide": "https://tokendance.space/docs/api-key-oauth",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "tokendance",
       "model": "qwen3-vl-plus",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
@@ -10575,30 +10401,6 @@
         ],
         "status": "partial",
         "source": "https://runware.ai/docs/models/google-gemini-3-5-flash",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://runware.ai/docs/platform/authentication",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "runware",
-      "model": "xai:grok-imagine@image-quality",
-      "workflow": "refine",
-      "protocol": "provider-images",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 4194304,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png"
-        ],
-        "status": "partial",
-        "source": "https://runware.ai/docs/models/xai-grok-imagine-image-quality",
         "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
       },
       "channelGuide": "https://runware.ai/docs/platform/authentication",
@@ -11976,30 +11778,6 @@
     },
     {
       "provider": "runware",
-      "model": "google:4@1",
-      "workflow": "refine",
-      "protocol": "provider-images",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 4194304,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png"
-        ],
-        "status": "partial",
-        "source": "https://runware.ai/docs/models/google-nano-banana",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://runware.ai/docs/platform/authentication",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "runware",
       "model": "runware:108@20",
       "workflow": "refine",
       "protocol": "provider-images",
@@ -12381,30 +12159,6 @@
         ],
         "status": "partial",
         "source": "https://runware.ai/docs/models/ideogram-3-0-replace-background",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://runware.ai/docs/platform/authentication",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "runware",
-      "model": "openai:1@1",
-      "workflow": "refine",
-      "protocol": "provider-images",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 4194304,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png"
-        ],
-        "status": "partial",
-        "source": "https://runware.ai/docs/models/openai-gpt-image-1",
         "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
       },
       "channelGuide": "https://runware.ai/docs/platform/authentication",
@@ -12860,32 +12614,6 @@
     },
     {
       "provider": "tokenhub",
-      "model": "glm-5v-turbo",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://cloud.tencent.com/document/product/1823/132061",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "tokenhub",
       "model": "kimi-k3",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
@@ -13094,30 +12822,6 @@
     },
     {
       "provider": "tokenhub",
-      "model": "hy-image-v3",
-      "workflow": "refine",
-      "protocol": "provider-images",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 4194304,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png"
-        ],
-        "status": "unconfirmed",
-        "source": "",
-        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
-      },
-      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "tokenhub",
       "model": "hy-image-v3.5-preview",
       "workflow": "refine",
       "protocol": "provider-images",
@@ -13317,30 +13021,6 @@
         ],
         "status": "partial",
         "source": "https://cloud.tencent.com/document/product/1823/132246",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "tokenhub",
-      "model": "seedream-image-v5.0-lite",
-      "workflow": "refine",
-      "protocol": "provider-images",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 4194304,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 14,
-        "maxAspectRatio": 16,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png"
-        ],
-        "status": "partial",
-        "source": "https://cloud.tencent.com/document/product/1823/136609",
         "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
       },
       "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
@@ -13854,30 +13534,6 @@
     },
     {
       "provider": "qianfan",
-      "model": "qwen-image-edit",
-      "workflow": "refine",
-      "protocol": "qianfan-images",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 4194304,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 128,
-        "maxAspectRatio": 4,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png"
-        ],
-        "status": "partial",
-        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "qianfan",
       "model": "qwen3.5-122b-a10b",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
@@ -13957,214 +13613,6 @@
     {
       "provider": "qianfan",
       "model": "qwen3.5-397b-a17b",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 5,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "qianfan",
-      "model": "deepseek-ocr",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 4194304,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 5,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "qianfan",
-      "model": "ernie-4.5-turbo-vl",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 5,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "qianfan",
-      "model": "ernie-4.5-turbo-vl-32k",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 5,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "qianfan",
-      "model": "ernie-5.0",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 5,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "qianfan",
-      "model": "ernie-5.0-thinking-latest",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 5,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "qianfan",
-      "model": "ernie-5.0-thinking-preview",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 5,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "qianfan",
-      "model": "internvl3-38b",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 5,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "partial",
-        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
-      },
-      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "qianfan",
-      "model": "qianfan-ocr",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
       "policy": {

@@ -30,7 +30,7 @@ test('R21 real Core modelRegistry objects preserve channel facts through all enr
     })
     const result = await runtime.legacy.modelRegistry({ provider: 'tokendance' })
     const models = result.providers.tokendance.models
-    assert.equal(models.length, 74)
+    assert.equal(models.length, 72)
     const find = (id: string) => models.find((model: any) => model.id === id)
     assertTokenDanceFacts((id: string) => find(id).auditSpecifications)
     assertTokenDanceFacts((id: string) => ({ fields: find(id).specificModelSpecifications.modalityFacts }))

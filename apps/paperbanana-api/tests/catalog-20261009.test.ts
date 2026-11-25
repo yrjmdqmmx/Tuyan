@@ -21,8 +21,7 @@ test('new native Claude controls reject invalid mode/effort combinations and pre
 
 test('retired identities and defaults survive; corrected Gemini shutdown does not expire early',()=>{
   assert.equal(catalog.openai.defaults.main,'gpt-5.6-sol')
-  assert.ok(catalog.mistral.models.find((m:any)=>m.id==='labs-leanstral-1-5'))
-  assert.equal(catalog.mistral.models.find((m:any)=>m.id==='labs-leanstral-1-5').selectable,false)
+  assert.equal(catalog.mistral.models.some((m:any)=>m.id==='labs-leanstral-1-5'),false)
   assert.equal(catalog.gemini.models.find((m:any)=>m.id==='gemini-2.5-flash-image').expirationDate,'2027-03-15')
   assert.equal(catalog.deepseek.defaults.vision,'deepseek-v4-flash-vision-exp')
 })

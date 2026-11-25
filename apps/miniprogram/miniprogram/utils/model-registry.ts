@@ -27,6 +27,7 @@ export interface RegistryModel {
   inputModalities: string[]
   outputModalities: string[]
   protocol: string
+  routingNotice?: {text: string; sourceUrl: string}
   availabilityNotes: string
   releasedAt: string | null
   vendorId?: string
@@ -183,6 +184,8 @@ function normalizeModel(input: unknown): RegistryModel {
     inputModalities: stringArray(source.inputModalities),
     outputModalities: stringArray(source.outputModalities),
     protocol: stringValue(source.protocol),
+    ...(typeof asRecord(source.routingNotice).text === 'string' && typeof asRecord(source.routingNotice).sourceUrl === 'string'
+      ? {routingNotice: source.routingNotice as RegistryModel['routingNotice']} : {}),
     availabilityNotes: stringValue(source.availabilityNotes),
     releasedAt: validReleasedAt(source.releasedAt),
     vendorId: stringValue(source.vendorId),

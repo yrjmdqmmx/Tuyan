@@ -25,7 +25,7 @@ test('phase 2 Core channel tables and partial masks survive full registry enrich
   t.mock.method(Date, 'now', () => Date.parse('2026-11-09T12:00:00Z'))
   const before = JSON.stringify(base), registry = await phase2Registry()
   const models = new Map<string, any>(Object.entries(registry.providers).flatMap(([channel, provider]: [string, any]) => provider.models.map((model: any) => [channel+'/'+model.id, model])))
-  assert.equal(models.size, 1030)
+  assert.equal(models.size, 965)
   assertPhase2Facts(key => models.get(key).cardSpecifications)
   for (const [key, row] of Object.entries(evidence.tables) as [string, any][]) {
     const id = key.slice('bailian/'.length)

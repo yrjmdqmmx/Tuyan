@@ -9,11 +9,12 @@ import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js';
 import { auditedModelLifecycle, removedModel } from '../src/lib/modelAudit.js';
 import batch from '../../../config/channel-audit/retirements-20261117.json' with { type: 'json' };
 
-beforeEach(t => t.mock.method(Date, 'now', () => Date.parse('2026-11-17T12:00:00+08:00')));
+beforeEach(t => t.mock.method(Date, 'now', () => Date.parse('2026-11-25T10:00:00+08:00')));
 afterEach(cleanup);
-for (const [provider, modelId] of [['openai', 'o1'], ['antling', 'Ling-2.6-1T']]) {
+for (const [provider, modelId] of [['openai', 'o1'], ['antling', 'Ling-2.6-1T'], ['ark', 'doubao-seed-1-6-250615'], ['bailian', 'qwen3-max'], ['runware', 'openai:1@1'], ['qianfan', 'ernie-5.0'], ['qianfan', 'qwen-image'], ...['MiniMax-M2.5','MiniMax-M2.5-highspeed','MiniMax-M2.7','MiniMax-M2.7-highspeed'].map(id => ['minimax',id])]) {
   test(`batch 1 saved ${provider}/${modelId} preset survives reopening and shows unavailable guidance`, () => {
-    const preset = { name: 'Saved research preset', models: { main: { libraryModelId: 'old', connectionId: 'c', accessProvider: provider, modelId } } };
+    const role = provider === 'runware' || modelId === 'qwen-image' ? 'image' : 'main';
+    const preset = { name: 'Saved research preset', models: { [role]: { libraryModelId: 'old', connectionId: 'c', accessProvider: provider, modelId } } };
     const library = { connections: [{ id: 'c', provider, label: 'Saved connection', hasCredential: true }], models: [{ id: 'old', connectionId: 'c', modelId }] };
     const saved = JSON.stringify({ preset, library });
     const key = `retirement-preset-${provider}`;
@@ -22,10 +23,10 @@ for (const [provider, modelId] of [['openai', 'o1'], ['antling', 'Ling-2.6-1T']]
       for (let reopen = 0; reopen < 2; reopen++) {
         const restored = JSON.parse(window.localStorage.getItem(key));
         const models = { registry: { providers: STATIC_MODEL_REGISTRY }, library: restored.library, ready: true, busy: false, registryStatus: 'ready', save: () => assert.fail('No implicit library save') };
-        const picker = render(React.createElement(WorkspaceModelPicker, { models, role: 'main', path: 'svg', current: restored.preset.models.main, onChange: () => assert.fail('No automatic preset rewrite') }));
+        const picker = render(React.createElement(WorkspaceModelPicker, { models, role, path: role === 'main' ? 'svg' : 'png', current: restored.preset.models[role], onChange: () => assert.fail('No automatic preset rewrite') }));
         assert.match(screen.getByRole('status').textContent, /原型号已不可用，请重新选择/);
-        assert.equal(screen.getByRole('button', { name: '主模型' }).textContent, '请选择');
-        fireEvent.click(screen.getByRole('button', { name: '主模型' }));
+        assert.equal(screen.getByRole('button', { name: role === 'main' ? '主模型' : '绘图模型' }).textContent, '请选择');
+        fireEvent.click(screen.getByRole('button', { name: role === 'main' ? '主模型' : '绘图模型' }));
         assert.equal(catalogRows(models.registry).some(row => row.provider === provider && row.model.id === modelId), false);
         picker.unmount();
         const listing = render(React.createElement(WorkspaceModelCatalog, { models, mode: 'library' }));
@@ -88,8 +89,8 @@ test('a library containing only o1 opens on its notice and counts one saved mode
   assert.match(container.querySelector('.tw-catalog-caption').textContent, /OpenAI \/ OpenAI 1 个型号/);
   assert.equal(screen.queryByText('还没有添加模型'), null);
 });
-test('batch 1 ten upcoming models remain listed and selectable until their explicit deadline', t => {
-  for (const row of batch.upcoming) {
+test('batch 1 remaining upcoming models remain listed and selectable until their explicit deadline', t => {
+  for (const row of batch.upcoming.filter(row => row.provider !== 'minimax')) {
     const { provider, id } = row, stop = Date.parse(row.time || row.date);
     const model = STATIC_MODEL_REGISTRY[provider].models.find(model => model.id === id);
     assert.ok(model, provider + '/' + id);
