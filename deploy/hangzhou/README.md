@@ -61,7 +61,7 @@ GitHub Actions、实际镜像、线上版本与零模型验收结果见 [2026-10
 
 ### 镜像传输与失败状态
 
-图研从杭州直接使用 Skopeo 拉取四个固定 digest 的 GHCR 镜像，显式移除继承的代理变量。OpenAcad 使用原有的独立镜像通道。宿主上的 `registry_import.py` 与接收器需由运维安装；网页发布包无法替换它们。保留 OCI 缓存与现有回退镜像。
+图研从杭州直接使用 Skopeo 拉取四个固定 digest 的 GHCR 镜像，显式移除继承的代理变量。Core 应用层约 288 MiB。为覆盖基础镜像更新时的冷缓存下载，图研单镜像下载时限为 120 分钟，发布作业总时限为 210 分钟。镜像导入在业务切换前执行。OpenAcad 使用原有的独立镜像通道。宿主上的 `registry_import.py` 与接收器需由运维安装；网页发布包无法替换它们。保留 OCI 缓存与现有回退镜像。
 
 校验固定来源 digest、OCI 配置 blob SHA256、Linux amd64、Docker 实际运行配置与所有解压层摘要，返回宿主不可变 image ID。Docker containerd 后端的 image ID 可以是 manifest digest，因此不把它误认为配置 blob digest。公开回执同时记录来源 digest 和实际运行 image ID。
 
